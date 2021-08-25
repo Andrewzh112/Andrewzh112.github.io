@@ -4,17 +4,17 @@ date: 2020-10-20T17:51:47+03:30
 draft: false
 headless: true
 
-full_name: "Andrew Zhao"
+full_name: "Andrew Zhao 赵启晨"
 profile_picture: "profile.png"
 cv: "cv.pdf"
 
 socials:
-    twitter: "HadiSinaee"
-    github: "hadisinaee"
-    facebook: "hadisinaee"
-    linkedin: "hadisinaee"
-    twitch: "hadisinaee"
-    google_scholar: "hadisinaee"
+    twitter: "AndrewZ45732491"
+    github: "Andrewzh112"
+    facebook: "N/A"
+    linkedin: "andrewqzhao/"
+    twitch: "N/A"
+    google_scholar: "Tlt5xsYAAAAJ&hl=en&authuser=1"
 
 interests:
     - Reinforcement Learning
@@ -27,7 +27,7 @@ affiliations:
     - affiliation:
         title: "Ph.D."
         name: "Tsinghua University"
-        email: "andrewzhao112@gmail.com"
+        email: "zqc21@mails.tsinghua.edu.cn"
 
 academia:
     - course:
@@ -52,5 +52,8 @@ academia:
 
 **Bio**
 
+Andrew Zhao is a PhD student at Tsinghua University. He obtained his masters degree from USC in 2020, and undergrad degree from UBC in 2017. His research interests are in machine learning and reinforcement learning. In particular, he is most interested in multitask learning and generalization in RL and reward free/unsupervised reinforcement learning.  
+
 
 [1]: https://google.com
+

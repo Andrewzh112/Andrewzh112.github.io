@@ -7,7 +7,9 @@ authors:
 - Haipeng Zhang
 - Zihan Ding
 - Hao Dong
-date: "2021-09-01"
+
+date: "2021-09-27"
+
 
 publication: "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2021)"
 
@@ -15,7 +17,8 @@ publication: "IEEE/RSJ International Conference on Intelligent Robots and System
 # format is, LINK_NAME : LINK_URL
 links:
     project page: https://hyperplane-lab.github.io/dmotion/
-    arxiv: https://arxiv.org/abs/2103.04301
+    code: https://github.com/hyperplane-lab/dmotion-code
+    paper: https://arxiv.org/abs/2103.04301
 ---
 
 [See the wiki page for tutorial!](https://github.com/hadisinaee/avicenna/wiki)
