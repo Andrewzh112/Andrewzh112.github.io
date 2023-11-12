@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/Andrewzh112/Andrewzh112.github.io/static/css/main.c1895759.css",
+    "main.js": "/Andrewzh112/Andrewzh112.github.io/static/js/main.12bbdb19.js",
+    "static/media/recon.png": "/Andrewzh112/Andrewzh112.github.io/static/media/recon.55874b12382f43b29067.png",
+    "static/media/moss.png": "/Andrewzh112/Andrewzh112.github.io/static/media/moss.b8841638c7821cef6dc3.png",
+    "static/media/expel.png": "/Andrewzh112/Andrewzh112.github.io/static/media/expel.93d14e31e3e9fea96807.png",
+    "static/media/gfucb.png": "/Andrewzh112/Andrewzh112.github.io/static/media/gfucb.86ca99808139e64322fb.png",
+    "static/media/dmotion.gif": "/Andrewzh112/Andrewzh112.github.io/static/media/dmotion.6e274e2dfbdee9916b22.gif",
+    "static/media/focus.png": "/Andrewzh112/Andrewzh112.github.io/static/media/focus.910ab095320092d4a6df.png",
+    "static/media/focus2.png": "/Andrewzh112/Andrewzh112.github.io/static/media/focus2.4966f29e4eb7d18e90a4.png",
+    "index.html": "/Andrewzh112/Andrewzh112.github.io/index.html",
+    "main.c1895759.css.map": "/Andrewzh112/Andrewzh112.github.io/static/css/main.c1895759.css.map",
+    "main.12bbdb19.js.map": "/Andrewzh112/Andrewzh112.github.io/static/js/main.12bbdb19.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c1895759.css",
+    "static/js/main.12bbdb19.js"
+  ]
+}
