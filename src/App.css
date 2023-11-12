@@ -1,0 +1,165 @@
+.theme-dark {
+    --first-color: #ffffff; 
+    --second-color: rgb(255, 233, 157); 
+    --third-color: #818FB4;
+    --fourth-color: #435585;
+    --gradient-col1: rgb(54, 48, 98);
+    --gradient-col2: rgb(67, 85, 133);
+}
+
+/* Hover and Transition Effects */
+.theme-dark a {
+    transition: color 0.3s ease-in-out;
+}
+
+.theme-dark a:hover {
+    color: var(--fourth-color); /* Light cream for hover effect */
+}
+
+.theme-light {
+    --first-color: rgb(0, 0, 0);       /* Off-white */
+    --second-color: #303030;      /* Light beige */
+    --third-color: #B0A695;       /* Medium brown */
+    --fourth-color: #776B5D;      /* Dark brown */
+    --gradient-col1: rgb(243, 238, 234);
+    --gradient-col2: rgb(235, 227, 213);
+}
+
+/* Hover and Transition Effects */
+.theme-light a {
+    transition: color 0.3s ease-in-out;
+}
+
+.theme-light a:hover {
+    color: var(--fourth-color); /* Dark brown for hover effect */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "PT Mono", monospace;
+    background: var(--third-color);
+    font-size: 16px; /* Base font size */
+    scroll-behavior: smooth;
+}
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    padding-left: 4%;
+    padding-right: 4%;
+    overflow: hidden;
+    background: linear-gradient(
+            180deg,
+            var(--gradient-col1),
+            var(--gradient-col2)
+        )
+        fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+}
+section {
+    width: 50vw;
+    padding: 10px 25px;
+    margin: 30px auto;
+}
+h1 {
+    color: var(--first-color);
+    font-size: 2.5em; /* Larger for main headings */
+}
+
+h2 {
+    color: var(--first-color);
+    font-size: 2em; /* Slightly smaller for secondary headings */
+}
+
+/* Button Styles */
+.button {
+    background-color: var(--first-color);
+    color: var(--fourth-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover {
+    background-color: var(--second-color);
+}
+
+/* Form Styling */
+input[type="text"],
+input[type="email"],
+textarea {
+    background-color: var(--third-color);
+    color: var(--first-color);
+    border: 1px solid var(--second-color);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--first-color);
+    color: var(--fourth-color);
+    padding: 20px;
+    text-align: center;
+}
+
+/* Link Styles */
+a:visited {
+    color: var(--third-color);
+}
+
+a:active {
+    color: var(--second-color);
+}
+
+/* Responsive Images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+/* ************************************************** */
+/* Media Queries */
+/* ************************************************** */
+@media only screen and (max-width: 1400px) {
+    section {
+        width: 65vw;
+        margin: 15px auto;
+    }
+}
+
+@media only screen and (max-width: 1048px) {
+    section {
+        width: 75vw;
+        margin: 15px auto;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    section {
+        width: 90vw;
+        margin: 15px auto;
+    }
+}

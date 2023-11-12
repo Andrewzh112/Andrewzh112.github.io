@@ -1,0 +1,111 @@
+/* ************************************************** */
+/* Publications Section Styling */
+/* ************************************************** */
+#fpublications {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 15px;
+}
+
+.publication-date {
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
+
+.publication-venue {
+    color: #666;
+    margin: 5px 0;
+}
+
+.highlighted {
+    color: red;
+}
+
+.publications-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Make it a single column grid */
+    gap: 20px;
+}
+
+.publication-entry {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-left: 20px; /* Increase left margin */
+}
+
+.publication-entry:hover {
+    background-color: rgb(255, 233, 157); /* Change background color on hover */
+    transform: scale(1.03);
+}
+
+.publication-image {
+    flex-shrink: 0;
+    width: 200px; /* Increase image width */
+    height: auto;
+    object-fit: cover;
+    margin-left: 20px; /* Add space to the left of the image */
+    transition: opacity 0.3s ease;
+}
+
+.publication-image:hover {
+    opacity: 0.7;
+}
+
+.publication-content {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.publication-content h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    cursor: pointer;
+}
+
+.publication-content p {
+    font-style: italic;
+    color: #666;
+    margin: 10px 0;
+}
+
+.publication-links {
+    margin-top: 10px;
+    font-size: 1.2rem; /* Increase the size of the icons */
+}
+
+.publication-links a {
+    margin-right: 15px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.publication-links a:hover {
+    color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .publication-entry {
+        flex-direction: column;
+    }
+
+    .publication-image {
+        width: 100%;
+        margin-left: 0; /* Reset margin for mobile view */
+    }
+
+    .publication-content {
+        background-image: none;
+    }
+}
