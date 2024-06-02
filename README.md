@@ -15,6 +15,8 @@ Hi, my name is Yash Walia and I welcome you to my little
 
 4. Run `npm run build` to build the static page for deployment.
 
+5. `npm run deploy`
+
 ## $ chown <your name> portfolio
 
 If you like the portfolio, please give it a :star: and if you want to copy it,
