@@ -16,7 +16,7 @@ const Landing = () => {
                             strings={[
                                 'Researcher',
                                 'PhD Student',
-                                'Capybara Lover',
+                                'Research Intern @ Microsoft Research',
                                 'Happily Engaged',
                             ]}
                             typeSpeed={40}

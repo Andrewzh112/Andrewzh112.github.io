@@ -9,15 +9,15 @@ const formatDate = (dateString) => {
 };
 
 const highlightText = (text) => {
-  // Pattern to highlight "(Spotlight)" and "(Oral)"
-  const regex = /\((Spotlight|Oral)\)/g;
+  // Pattern to highlight "Spotlight" and "Oral"
+  const regex = /(Spotlight|Oral)/g;
   const parts = text.split(regex);
 
   return (
     <>
       {parts.map((part, index) => (
         part.match(regex) ? 
-          <span key={index} className="highlighted">{part}</span> : 
+          <span key={index} className="highlighted" style={{fontWeight: 'bold'}}>{part}</span> : 
           part
       ))}
     </>
@@ -53,7 +53,7 @@ const FeaturedPublications = () => {
                 {highlightText(pub.name)}
               </h2>
               <p className="publication-date">{formatDate(pub.date)}</p>
-              <p className="publication-venue">{pub.journal}</p>
+              <p className="publication-venue">{highlightText(pub.journal)}</p>
               <p style={{ fontStyle: 'italic' }}>{formatAuthors(pub.authors)}</p>
               <div className="publication-links">
                 <a href={pub.link} rel="noopener noreferrer" target="_blank">
