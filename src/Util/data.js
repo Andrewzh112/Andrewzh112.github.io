@@ -196,152 +196,46 @@ export const PUBLICATIONS = [
     },
 ];
 
-// export const SKILLS = [
-//     {
-//         name: "Python",
-//         icon: "devicon-python-plain colored",
-//     },
-//     {
-//         name: "Javascript",
-//         icon: "devicon-javascript-plain colored",
-//     },
-//     {
-//         name: "C/C++",
-//         icon: "devicon-c-plain colored",
-//     },
-//     {
-//         name: "Java",
-//         icon: "devicon-java-plain colored",
-//     },
-//     {
-//         name: "Reactjs",
-//         icon: "devicon-react-original colored",
-//     },
-//     {
-//         name: "Typescript",
-//         icon: "devicon-typescript-plain colored",
-//     },
-//     {
-//         name: "Flask",
-//         svg: "https://user-images.githubusercontent.com/48391286/116382927-045e8080-a834-11eb-95bd-f2dacbd6b0f8.png",
-//     },
-//     {
-//         name: "Django",
-//         svg: "https://static.djangoproject.com/img/icon-touch.e4872c4da341.png",
-//     },
-//     {
-//         name: "Node",
-//         icon: "devicon-nodejs-plain colored",
-//     },
-//     {
-//         name: "MongoDB",
-//         icon: "devicon-mongodb-plain colored",
-//     },
-//     {
-//         name: "Git",
-//         icon: "devicon-git-plain colored",
-//     },
-//     {
-//         name: "Docker",
-//         icon: "devicon-docker-plain colored",
-//     },
-//     {
-//         name: "Bash",
-//         icon: "devicon-bash-plain colored",
-//     },
-//     {
-//         name: "Linux",
-//         svg: "https://user-images.githubusercontent.com/48391286/116357092-b63c8380-a819-11eb-8975-30668aa7d647.png",
-//     },
-// ];
+export const ACADEMIC_TALKS = [
+    {
+        title: "ExpeL: LLM Agents are Experiential Learners",
+        date: "August 2024",
+        venue: "IJCAI 2024 AI4Research Workshop",
+        description: "Invited Paper Talk",
+        link: "https://ai4research.github.io/"
+    },
+    {
+        title: "ExpeL: LLM Agents are Experiential Learners",
+        date: "February 2024",
+        venue: "AAAI 2024",
+        description: "Oral Presentation"
+    },
+    {
+        title: "ExpeL: LLM Agents are Experiential Learners",
+        date: "January 2024",
+        venue: "AI TIME Youth PhD Talk"
+    },
+    {
+        title: "A Mixture of Surprises for Unsupervised Reinforcement Learning",
+        date: "February 2023",
+        venue: "AI TIME Youth PhD Talk"
+    }
+];
 
 export const ABOUT = [
     {
-        index: "1",
-        text: "I am a PhD student at Tsinghua University, advised by Professor Gao Huang.",
+        icon: "🎓",
+        title: "Education",
+        text: "PhD student at Tsinghua University advised by Professor Gao Huang."
     },
     {
-        index: "2",
-        text: "Research Intern @ Micosoft Research, Redmond. Ex. Research Intern @ BIGAI.",
+        icon: "💼",
+        title: "Experience",
+        text: "Ex. Research Intern at Microsoft Research, Research Intern at BIGAI."
     },
     {
-        index: "3",
-        text: "My research interests are in reinforcement learning and automated decision making.",
-    },
+        icon: "🔬",
+        title: "Research Area",
+        text: "Focusing on Reinforcement Learning and Automated Decision Making."
+    }
 ];
-
-// export const WORK = [
-//     {
-//         title: "Dune API Landing Page",
-//         description: "Documentation for the Dune API",
-//         description2: "Reactjs",
-//         ghlink: "https://github.com/ywalia01/dune-api-frontend",
-//         extlink: "https://ywalia01.github.io/dune-api-frontend/",
-//     },
-//     {
-//         title: "Dune API",
-//         description:
-//             "A simple API which provides you with book, character, movie and quotes JSON data",
-//         description2: "Nodejs, Expressjs",
-//         ghlink: "https://github.com/ywalia01/dune-api",
-//         extlink: "https://the-dune-api.herokuapp.com/quotes/1",
-//     },
-//     {
-//         title: "random-dune-quotes",
-//         description:
-//             "A simple NPM package that serves random quotes from the Dune franchise",
-//         description2: "Nodejs, Expressjs",
-//         ghlink: "",
-//         extlink: "https://www.npmjs.com/package/random-dune-quotes",
-//     },
-//     {
-//         title: "Developer Portfolio",
-//         description: "A clean, minimal responsive portfolio for developers",
-//         description2: "Reactjs",
-//         ghlink: "https://github.com/ywalia01/ywalia01.github.io",
-//         extlink: "https://ywalia01.netlify.app/",
-//     },
-//     {
-//         title: "Artist Portfolio",
-//         description: "A responsive grid portfolio template for artists",
-//         description2: "Reactjs, Nodejs, Expressjs, MongoDB",
-//         ghlink: "https://github.com/ywalia01/artist-portfolio",
-//         extlink: "https://artist-pfolio.netlify.app/",
-//     },
-//     {
-//         title: "Jchain",
-//         description: "A simple blockchain simulation GUI application",
-//         description2: "Java, Swing",
-//         ghlink: "https://github.com/ywalia01/jchain",
-//         extlink: "https://github.com/ywalia01/jchain",
-//     },
-//     {
-//         title: "iHeard",
-//         description: "A web app designed for the hard of hearing",
-//         description2: "Machine Learning, Speech to text, Google Cloud API",
-//         ghlink: "https://github.com/ywalia01/iheard",
-//         extlink: "https://iheard.tech/",
-//     },
-//     {
-//         title: "Yelpcamp",
-//         description:
-//             "An implementation of the popular crowd-sourced review service provider - Yelp. It has basic CRUD Functionality",
-//         description2: "Nodejs, Expressjs, MongoDB",
-//         ghlink: "https://github.com/ywalia01/yelpcampv9",
-//         extlink: "https://github.com/ywalia01/yelpcampv9",
-//     },
-//     {
-//         title: "CountDune",
-//         description: "A simple countdown timer for Dune 2021",
-//         description2: "Vanilla Javascript",
-//         ghlink: "https://github.com/ywalia01/countdune",
-//         extlink: "https://ywalia01.github.io/countdune/",
-//     },
-//     {
-//         title: "Yodish Converter",
-//         description: "A simple API interface for English to Yodish conversion",
-//         description2: "Vanilla Javascript",
-//         ghlink: "https://github.com/ywalia01/yodish",
-//         extlink: "https://ywalia01.github.io/yodish/",
-//     },
-// ];

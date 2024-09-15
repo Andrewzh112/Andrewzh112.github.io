@@ -6,7 +6,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px 20px; /* Reduced padding */
+    margin-bottom: 30px; /* Add margin-bottom to create space before About section */
 }
 
 .text-content {

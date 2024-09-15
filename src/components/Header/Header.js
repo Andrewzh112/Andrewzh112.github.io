@@ -13,8 +13,8 @@ const Header = () => {
             <li><a href="#news">News</a></li>
             <li><a href="#publications">Publications</a></li>
             <li><a href="#featured-publications">Featured Publications</a></li>
+            <li><a href="#academic-talks">Academic Talks</a></li> {/* Add this line */}
             <li><a href="#contact">Contact</a></li>
-            {/* <li><a href="https://yashwalia.hashnode.dev/" rel="noopener noreferrer" target="_blank">Blog</a></li> */}
           </ul>
         </nav>
       </header>

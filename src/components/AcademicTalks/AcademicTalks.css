@@ -1,0 +1,90 @@
+#academic-talks {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 15px;
+}
+
+.talks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.talk-item {
+    background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: all 0.3s ease;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+.talk-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(30deg);
+    transition: all 0.5s ease;
+}
+
+.talk-item:hover {
+    transform: translateY(-5px) rotate(1deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.talk-item:hover::before {
+    transform: rotate(0deg);
+}
+
+.talk-item h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+}
+
+.talk-date, .talk-venue, .talk-description {
+    color: #666;
+    margin: 3px 0;
+    font-size: 0.85rem;
+}
+
+.talk-description {
+    font-style: italic;
+}
+
+.talk-item a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #0056b3;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.talk-item a:hover {
+    color: #003d82;
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .talks-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .talks-grid {
+        grid-template-columns: 1fr;
+    }
+}

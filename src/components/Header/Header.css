@@ -5,7 +5,7 @@ header {
     position: sticky;
     background: transparent;
     width: 50vw;
-    margin: 40px auto 60px auto;
+    margin: 20px auto 30px auto; /* Reduced top and bottom margins */
     top: 0;
     left: 0;
 }
