@@ -1,0 +1,144 @@
+.custom-cursor {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transition: all 150ms ease;
+    transition-property: background-color, opacity, transform;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cursor-ring {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: all 150ms ease;
+}
+
+.custom-cursor--dark {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.custom-cursor--light {
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.custom-cursor--dark .cursor-ring {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.custom-cursor--light .cursor-ring {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.custom-cursor--hidden {
+    opacity: 0;
+}
+
+.custom-cursor--clicked {
+    transform: scale(0.9);
+}
+
+.custom-cursor--clicked .cursor-ring {
+    transform: scale(1.5);
+}
+
+.cursor-trail {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transition: all 150ms ease;
+    z-index: 9998;
+}
+
+.cursor-trail--dark {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.cursor-trail--light {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Hide the default cursor */
+* {
+    cursor: none !important;
+}
+
+/* Add hover effect for interactive elements */
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor {
+    transform: scale(1.5);
+}
+
+.laser-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+    mix-blend-mode: difference;
+}
+
+.laser-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px 2px rgba(255, 0, 0, 0.7);
+}
+
+.laser-ring {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.laser-cursor--hidden {
+    opacity: 0;
+}
+
+.laser-cursor--clicked .laser-dot {
+    transform: translate(-50%, -50%) scale(2);
+    box-shadow: 0 0 16px 4px rgba(255, 0, 0, 0.9);
+}
+
+/* Hide the default cursor */
+* {
+    cursor: none !important;
+}
+
+/* Add hover effect for interactive elements */
+a:hover ~ .laser-cursor .laser-ring,
+button:hover ~ .laser-cursor .laser-ring {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(255, 0, 0, 0.8);
+}
