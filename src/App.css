@@ -177,3 +177,23 @@ img {
     position: relative;
     z-index: 1;
 }
+
+/* Add these styles to your existing App.css */
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--third-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--second-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--first-color);
+}

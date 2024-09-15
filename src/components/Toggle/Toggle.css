@@ -1,55 +1,75 @@
 .toggle-container {
-    position: absolute;
-    width: 90px;
-    left: 90%;
-    top: 47px;
-    min-height: 20px;
-    z-index: 1;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
 }
+
 #moon,
 #sun {
     color: var(--second-color);
 }
 .switch {
-    display: flex;
-    padding: 5px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.switch input:checked ~ .slider {
-    background-color: var(--first-color);
-}
-.switch input:checked ~ .slider::before {
-    transform: translateX(20px);
-}
-.switch .slider {
-    width: 30px;
-    height: 15px;
-    display: flex;
-    border-radius: 100px;
-    background-color: #777;
     position: relative;
-    align-items: center;
-    justify-content: center;
-    transition: all ease-in-out 300ms;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
 }
-.switch .slider::before {
-    content: "";
-    font-family: Arial, Helvetica, sans-serif;
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
     position: absolute;
-    width: 15px;
-    height: 15px;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
     border-radius: 50%;
-    background-color: #fff;
-    border: 1px solid #777;
-    left: -5px;
-    transition: all cubic-bezier(0.6, 0, 0.4, 1) 300ms;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+@keyframes toggleAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.switch:active .slider:before {
+    animation: toggleAnimation 0.3s ease-in-out;
 }
 
 @media only screen and (max-width: 768px) {
