@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Paper Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #ec4899;
+            --background: #ffffff;
+            --text: #1e293b;
+            --card-bg: #f8fafc;
+        }
+
+        .dark-mode {
+            --primary: #60a5fa;
+            --secondary: #f472b6;
+            --background: #0f172a;
+            --text: #e2e8f0;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            transition: all 0.5s ease;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .authors {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .main-figure {
+            width: 80%;
+            max-width: 800px;
+            aspect-ratio: 16/9;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .main-figure::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                transparent,
+                var(--primary),
+                var(--secondary)
+            );
+            transform: rotate(45deg);
+            animation: borderGlow 3s linear infinite;
+        }
+
+        .main-figure::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: var(--card-bg);
+            border-radius: 0.9rem;
+        }
+
+        .links {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease 0.6s backwards;
+        }
+
+        .links a {
+            color: var(--text);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .links a:hover {
+            transform: translateY(-5px);
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin: 6rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .bibtex {
+            font-family: 'Space Mono', monospace;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: var(--secondary);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes borderGlow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <nav>
+        <div class="logo">Research</div>
+        <div class="nav-links">
+            <a href="#abstract">Abstract</a>
+            <a href="#methodology">Methodology</a>
+            <a href="#results">Results</a>
+            <a href="#bibtex">Citation</a>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </nav>
+
+    <div class="hero">
+        <h1>TITLE</h1>  <!-- FILL -->
+        <p class="authors">Author One · Author Two · Author Three</p>  <!-- FILL -->
+        <div class="main-figure"></div>  <!-- FILL -->
+        <div class="links">
+            <a href="#" title="arXiv"><i class="fas fa-file-pdf"></i></a>  <!-- FILL -->
+            <a href="#" title="GitHub"><i class="fab fa-github"></i></a>  <!-- FILL -->
+            <a href="#" title="Dataset"><i class="fas fa-database"></i></a>  <!-- FILL -->
+        </div>
+    </div>
+
+    <div class="content">
+        <section id="abstract" class="section">
+            <h2>Abstract</h2>
+            <div class="card">
+                <p>Your abstract goes here. This is a modern, interactive version of your research paper landing page.</p>  <!-- FILL -->
+            </div>
+        </section>
+
+        <section id="methodology" class="section">
+            <h2>Methodology</h2>
+            <div class="card">
+                <p>Describe your methodology here. The page features smooth animations, interactive elements, and a dynamic background.</p>  <!-- FILL -->
+            </div>
+        </section>
+
+        <section id="results" class="section">
+            <h2>Results</h2>
+            <div class="card">
+                <p>Present your results here. The design includes a dark mode toggle and modern gradient effects.</p>  <!-- FILL -->
+            </div>
+        </section>
+
+        <section id="bibtex" class="section">
+            <h2>Citation</h2>
+            <div class="bibtex">  <!-- FILL -->
+                <button class="copy-button" onclick="copyBibtex()">Copy</button>
+                <code>
+@article{your_paper,
+    title={Your Paper Title},
+    author={Author One and Author Two and Author Three},
+    journal={Journal Name},
+    year={2024},
+    publisher={Publisher}
+}
+                </code>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Three.js Background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const geometry = new THREE.IcosahedronGeometry(1, 0);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x2563eb,
+            wireframe: true
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.001;
+            cube.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Intersection Observer for scroll animations
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.querySelector('.theme-toggle');
+            button.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        // Copy BibTeX
+        function copyBibtex() {
+            const bibtex = document.querySelector('.bibtex code').textContent;
+            navigator.clipboard.writeText(bibtex);
+            const button = document.querySelector('.copy-button');
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+            }, 2000);
+        }
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
