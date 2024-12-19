@@ -17,6 +17,8 @@ Hi, my name is Yash Walia and I welcome you to my little
 
 5. `npm run deploy`
 
+100. `http-server public --index index.html` for subpage
+
 ## $ chown <your name> portfolio
 
 If you like the portfolio, please give it a :star: and if you want to copy it,

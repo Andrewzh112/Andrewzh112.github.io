@@ -50,13 +50,13 @@
         nav {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            position: fixed;
+            padding: 1rem 2rem;
             width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 60px;
         }
 
         .nav-links {
@@ -87,7 +87,7 @@
         }
 
         .hero {
-            min-height: 100vh;
+            min-height: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -115,41 +115,18 @@
         }
 
         .main-figure {
-            width: 80%;
-            max-width: 800px;
-            aspect-ratio: 16/9;
+            width: auto;
+            max-width: 100%;
             background: var(--card-bg);
             border-radius: 1rem;
             margin: 2rem 0;
-            position: relative;
-            overflow: hidden;
-            animation: fadeInUp 1s ease 0.4s backwards;
         }
 
-        .main-figure::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                transparent,
-                var(--primary),
-                var(--secondary)
-            );
-            transform: rotate(45deg);
-            animation: borderGlow 3s linear infinite;
-        }
-
-        .main-figure::after {
-            content: '';
-            position: absolute;
-            inset: 3px;
-            background: var(--card-bg);
+        .main-figure img {
+            width: 100%;
+            height: auto;
             border-radius: 0.9rem;
+            display: block;
         }
 
         .links {
@@ -244,15 +221,6 @@
             }
         }
 
-        @keyframes borderGlow {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .theme-toggle {
             background: none;
             border: none;
@@ -277,7 +245,7 @@
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
     <div id="canvas-container"></div>
     
     <nav>
@@ -288,19 +256,39 @@
             <a href="#results">Results</a>
             <a href="#bibtex">Citation</a>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
     </nav>
 
-    <div class="hero">
+    <div class="hero" style="text-align: center;">
         <h1>TITLE</h1>  <!-- FILL -->
         <p class="authors">Author One · Author Two · Author Three</p>  <!-- FILL -->
-        <div class="main-figure"></div>  <!-- FILL -->
-        <div class="links">
-            <a href="#" title="arXiv"><i class="fas fa-file-pdf"></i></a>  <!-- FILL -->
-            <a href="#" title="GitHub"><i class="fab fa-github"></i></a>  <!-- FILL -->
-            <a href="#" title="Dataset"><i class="fas fa-database"></i></a>  <!-- FILL -->
-        </div>
-    </div>
+        <div class="main-figure" style="margin-top: 20px; position: relative; z-index: 1;">
+            <img src="../assets/main.png" alt="Main Figure" style="width: 100%; height: auto; display: block; position: relative; z-index: 10;">
+        </div>     
+        <div class="links" style="display: flex; justify-content: center; gap: 40px; margin-top: 20px;">
+            <!-- ArXiv Link -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 70px;">
+                <a href="https://arxiv.org/abs/your_paper_id" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="../assets/arxiv.png" alt="arXiv" style="height: 40px; display: block; margin: 0 auto;">
+                    <p style="margin: 0; font-size: 14px;">Paper</p>
+                </a>
+            </div>
+            <!-- GitHub Link -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 70px;">
+                <a href="#" title="GitHub" style="text-decoration: none; color: inherit;">
+                    <i class="fab fa-github" style="font-size: 40px; display: block; margin: 0 auto;"></i>
+                    <p style="margin: 0; font-size: 14px;">Code</p>
+                </a>
+            </div>
+            <!-- Dataset Link -->
+            <div style="display: flex; flex-direction: column; align-items: center; width: 70px;">
+                <a href="#" title="Dataset" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-database" style="font-size: 40px; display: block; margin: 0 auto;"></i>
+                    <p style="margin: 0; font-size: 14px;">Data</p>
+                </a>
+            </div>
+        </div>        
+    </div>    
 
     <div class="content">
         <section id="abstract" class="section">
@@ -326,85 +314,5 @@
 
         <section id="bibtex" class="section">
             <h2>Citation</h2>
-            <div class="bibtex">  <!-- FILL -->
-                <button class="copy-button" onclick="copyBibtex()">Copy</button>
-                <code>
-@article{your_paper,
-    title={Your Paper Title},
-    author={Author One and Author Two and Author Three},
-    journal={Journal Name},
-    year={2024},
-    publisher={Publisher}
-}
-                </code>
-            </div>
-        </section>
-    </div>
-
-    <script>
-        // Three.js Background
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-        const geometry = new THREE.IcosahedronGeometry(1, 0);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0x2563eb,
-            wireframe: true
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        camera.position.z = 5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.001;
-            cube.rotation.y += 0.001;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Intersection Observer for scroll animations
-        const sections = document.querySelectorAll('.section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // Theme Toggle
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const button = document.querySelector('.theme-toggle');
-            button.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        }
-
-        // Copy BibTeX
-        function copyBibtex() {
-            const bibtex = document.querySelector('.bibtex code').textContent;
-            navigator.clipboard.writeText(bibtex);
-            const button = document.querySelector('.copy-button');
-            button.textContent = 'Copied!';
-            setTimeout(() => {
-                button.textContent = 'Copy';
-            }, 2000);
-        }
-
-        // Resize handler
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
-</body>
-</html>
+            <div class="bibtex" style="background: var(--card-bg); padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: relative; color: var(--text);">
+                <button class="copy-button" onclick="copyBibtex()" style="position: absolute; top: 10px; right: 10px; background: var(--primary); color: white; border: none; padding: 0.5rem
