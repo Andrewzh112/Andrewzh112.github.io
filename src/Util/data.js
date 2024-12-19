@@ -79,7 +79,8 @@ export const FEATUREDPUBLICATIONS = [
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
         image: diverct,
-        projectPage: "https://andrewzh112.github.io/dive-rct"
+        projectPage: "https://andrewzh112.github.io/diver-ct",
+        code: "https://github.com/LeapLabTHU/diver-ct",
     },
     {
         id: 3,
@@ -123,7 +124,8 @@ export const PUBLICATIONS = [
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
         image: diverct,
-        projectPage: "https://andrewzh112.github.io/diver-ct"
+        projectPage: "https://andrewzh112.github.io/diver-ct",
+        code: "https://github.com/LeapLabTHU/diver-ct"
     },
     {
         id: 7,
