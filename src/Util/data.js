@@ -41,6 +41,10 @@ export const SOCIAL_LINKS = [
 
 export const NEWS = [
     {
+        date: "Dec 2024",
+        content: "One new paper accepted to AAAI 2025!",
+    },
+    {
         date: "June 2024",
         content: "Started internship at Microsoft Research, Redmond. Working on LLM based agents.",
     },
@@ -70,12 +74,12 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 4,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "arXiv Preprint",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025)",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
         image: diverct,
-        projectPage: "https://andrewzh112.github.io/#diverct"
+        projectPage: "https://andrewzh112.github.io/dive-rct"
     },
     {
         id: 3,
@@ -86,7 +90,7 @@ export const FEATUREDPUBLICATIONS = [
         link: "https://arxiv.org/abs/2308.10144",
         image: expel,
         code: "https://github.com/LeapLabTHU/ExpeL",
-        projectPage: "https://andrewzh112.github.io/#expel"
+        projectPage: "https://andrewzh112.github.io/expel"
     },
     {
         id: 2,
@@ -114,12 +118,12 @@ export const PUBLICATIONS = [
     {
         id: 8,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "arXiv Preprint",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025)",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
         image: diverct,
-        projectPage: "https://andrewzh112.github.io/#diverct"
+        projectPage: "https://andrewzh112.github.io/diver-ct"
     },
     {
         id: 7,
@@ -159,7 +163,7 @@ export const PUBLICATIONS = [
         link: "https://arxiv.org/abs/2308.10144",
         image: expel,
         code: "https://github.com/LeapLabTHU/ExpeL",
-        projectPage: "https://andrewzh112.github.io/#expel"
+        projectPage: "https://andrewzh112.github.io/expel"
     },
     {
         id: 3,
