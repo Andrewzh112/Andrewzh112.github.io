@@ -1,0 +1,45 @@
+.visitor-counter {
+    padding: 10px;
+    margin: 0 auto 20px auto;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+}
+
+.map-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.map-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    filter: opacity(0.8);
+    transition: filter 0.3s ease;
+}
+
+.map-image:hover {
+    filter: opacity(1);
+}
+
+.visitor-counter h3 {
+    color: var(--first-color);
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .visitor-counter {
+        max-width: 350px;
+    }
+} 

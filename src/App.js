@@ -8,6 +8,7 @@ import { keepTheme } from './Util/themes';
 import Toggle from './components/Toggle/Toggle';
 import CustomCursor from './components/CustomCursor/CustomCursor';
 import LoadingAnimation from './components/LoadingAnimation/LoadingAnimation';
+import VisitorCounter from './components/VisitorCounter/VisitorCounter';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ function App() {
         <Toggle />
         <Header />
         <Container />
+        <VisitorCounter />
         <Footer />
         <ScrollButton />
       </div>

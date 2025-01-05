@@ -6,6 +6,8 @@ import recon from '../assets/recon.png';
 import seg from '../assets/seg.png';
 import diverct from '../assets/diverct.png';
 import motion from '../assets/motion.png';
+import surgery from '../assets/surgery.png';
+import optim from '../assets/optim.png';
 import sr from '../assets/sr.png';
 
 export const FULL_NAME = "Andrew Zhao 赵启晨";
@@ -116,6 +118,24 @@ export const FEATUREDPUBLICATIONS = [
 ]
 
 export const PUBLICATIONS = [
+    {
+        id: 10,
+        name: "LLM-based Optimization of Compound AI Systems: A Survey",
+        journal: "arXiv Preprint",
+        date: "Oct 2024",
+        authors: "Matthieu Lin, Jenny Sheng, Andrew Zhao, Shenzhi Wang, Yang Yue, Yiran Wu, Huan Liu, Jun Liu, Gao Huang, Yong-Jin Liu",
+        link: "https://arxiv.org/abs/2410.16392",
+        image: optim
+    },
+    {
+        id: 9,
+        name: "Model Surgery: Modulating LLM's Behavior Via Simple Parameter Editing",
+        journal: "arXiv Preprint",
+        date: "July 2024",
+        authors: "Huanqian Wang, Yang Yue, Rui Lu, Jingxin Shi, Andrew Zhao, Shenzhi Wang, Shiji Song, Gao Huang",
+        link: "https://arxiv.org/abs/2407.08770",
+        image: surgery
+    },
     {
         id: 8,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
