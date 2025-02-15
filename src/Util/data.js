@@ -43,6 +43,10 @@ export const SOCIAL_LINKS = [
 
 export const NEWS = [
     {
+        date: "Feb 2025",
+        content: "DiveR-CT was selected as an Oral Presentation at AAAI 2025, see you in Philly!",
+    },
+    {
         date: "Dec 2024",
         content: "One new paper accepted to AAAI 2025!",
     },
@@ -76,7 +80,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 4,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025)",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (Oral)",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
@@ -139,7 +143,7 @@ export const PUBLICATIONS = [
     {
         id: 8,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025)",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (Oral)",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
