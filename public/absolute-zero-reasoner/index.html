@@ -1122,6 +1122,12 @@
             padding: 0 2rem;
         }
 
+        .abstract-motivation {
+            max-width: 1000px;
+            margin: 4rem auto 1rem;
+            padding: 0 2rem;
+        }
+
         .section-title {
             font-size: 2.8rem;
             margin-bottom: 2rem;
@@ -1132,6 +1138,10 @@
         }
 
         .performance-highlight .section-title {
+            text-align: left;
+        }
+
+        .abstract-motivation .section-title {
             text-align: left;
         }
 
@@ -1197,6 +1207,7 @@
 
             /* Center these blocks within the padded body */
             .performance-highlight, 
+            .abstract-motivation,
             .content, 
             .figure-container,
             .hero {
@@ -1229,6 +1240,7 @@
             }
             
             .performance-highlight, 
+            .abstract-motivation,
             .content, 
             .figure-container,
             .hero {
@@ -1858,7 +1870,7 @@
             </div>
         </div>
         <div class="links">
-            <a href="https://arxiv.org/abs/2405.19026" target="_blank" title="Research Paper">
+            <a href="\TODO" target="_blank" title="Research Paper">
                 <div class="link-item">
                     <i class="fas fa-file-alt"></i>
                     <span>Paper</span>
@@ -1892,6 +1904,12 @@
                     <span>Logs</span>
                 </div>
             </a>
+            <a href="#citation" title="Citation">
+                <div class="link-item">
+                    <i class="fas fa-quote-right"></i>
+                    <span>Citation</span>
+                </div>
+            </a>
         </div>
         
         <div class="job-notice">
@@ -1923,6 +1941,20 @@
             <li class="sidebar-item"><a href="#citation">4. Citation</a></li>
         </ul>
     </div>
+
+    <section class="section abstract-motivation" id="abstract-motivation">
+        <div class="section-wrapper">
+            <h2>Abstract & Motivation</h2>
+            <div class="paradigm-explanation">
+                <p>
+                    Current reasoning models trained with Reinforcement Learning with Verifiable Rewards (RLVR) often rely on manually curated datasets, raising scalability concerns and potentially limiting future AI growth beyond human-defined tasks. To address this, we propose the <span style="font-weight: bold; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">Absolute Zero</span> paradigm, where a single model autonomously proposes tasks optimized for its own learning and improves by solving them through self-play, entirely eliminating the need for external data. This approach uses feedback from a verifiable environment, ensuring grounded learning and preventing reward hacking.
+                </p>
+                <p>
+                    Our implementation, the <span style="font-weight: bold; color: var(--primary);">Absolute Zero Reasoner (AZR)</span>, leverages this paradigm for code-based reasoning. AZR uses a code executor to validate self-generated tasks (covering deduction, abduction, and induction) and verify solutions, providing reliable rewards for training. Despite using zero human-curated data, AZR achieves state-of-the-art results on diverse coding and math reasoning benchmarks, even outperforming models trained on large in-domain datasets. This demonstrates the potential for sophisticated reasoning skills to emerge purely through self-play without domain-specific supervision.
+                </p>
+            </div>
+        </div>
+    </section>
 
     <section class="performance-highlight">
         <h2 class="section-title">Out-of-Distribution General Reasoning Performance</h2>
@@ -2805,7 +2837,7 @@ if __name__ == "__main__":
                 
                 <p>The <span style="font-weight: bold; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">Absolute Zero</span> paradigm eliminates this dependency on human data. The model simultaneously proposes tasks, solves them, and learns from both stages through self-play. As shown in <a href="#paradigm-figure">Figure 1</a>, the agent autonomously creates tasks optimized for learnability and learns to solve them using a unified model.</p>
                 
-                <p>In the <a href="#az-loop-figure">Absolute Zero Loop (Figure 2)</a>, the agent π acts in two roles: as a proposer π<sup>propose</sup> that generates tasks τ, and as a solver π<sup>solve</sup> that produces answers y. The environment e validates proposed tasks into (x, y★) pairs and provides both learnability rewards r<sup>propose</sup> and solution rewards r<sup>solve</sup>. This enables continuous self-improvement without any human-curated data.</p>
+                <p>The agent π acts in two roles: as a proposer π<sup>propose</sup> that generates tasks τ, and as a solver π<sup>solve</sup> that produces answers y. The environment e validates proposed tasks into (x, y★) pairs and provides both learnability rewards r<sup>propose</sup> and solution rewards r<sup>solve</sup>. This enables continuous self-improvement without any human-curated data.</p>
             </div>
             
             <figure class="numbered-figure" id="paradigm-figure">
@@ -2831,19 +2863,6 @@ if __name__ == "__main__":
                     We envision that the agent should autonomously propose tasks optimized for learnability and learn how to solve them 
                     using a unified model. The agent learns by interacting with an environment that provides verifiable feedback, enabling 
                     reliable and continuous self-improvement entirely without human intervention.
-                </figcaption>
-            </figure>
-
-            <figure class="numbered-figure" id="az-loop-figure">
-                <img src="/assets/absolute-zero-reasoner/az_loop.png" 
-                     class="research-image" 
-                     alt="Absolute Zero Loop">
-                <figcaption class="latex-caption">
-                    <span class="textbf">The Absolute Zero Loop.</span> The Absolute Zero loop begins with the agent \(\pi\) proposing task \(\tau\), 
-                    which is transformed by \(f\) with the environment \(e\) into a validated problem \((x, y^\star)\), and also emits 
-                    a reward \(r^\text{propose}\) for learnability. Then, a standard RL step follows: the agent solves \(x\) by producing \(y\), 
-                    receiving reward \(r^\text{solve}\) from \(e\) by matching with \(y^\star\). \(\pi^\text{propose}\) and \(\pi^\text{solve}\) 
-                    are jointly trained and this process can be repeated indefinitely.
                 </figcaption>
             </figure>
         </section>
@@ -3371,8 +3390,8 @@ if __name__ == "__main__":
                 <pre><code>@article{zhao2024absolute,
     title={Absolute Zero: Reinforced Self-play Reasoning with Zero Data},
     author={Zhao, Andrew and Wu, Yiran and Yue, Yang and Wu, Tong and Xu, Quentin and Yue, Yang and Lin, Matthieu and Wang, Shenzhi and Wu, Qingyun and Zheng, Zilong and Huang, Gao},
-    journal={arXiv preprint arXiv:2405.19026},
-    year={2024}
+    journal={arXiv preprint arXiv:\TODO},
+    year={2025}
 }</code></pre>
             </div>
         </section>
@@ -3889,6 +3908,16 @@ if __name__ == "__main__":
                         top: offsetTop,
                         behavior: 'smooth'
                     });
+
+                    // Hide sidebar on mobile after clicking a link
+                    if (window.innerWidth <= 768) {
+                        const sidebarNav = document.getElementById('sidebar-nav');
+                        const toggleBtn = document.querySelector('.sidebar-toggle');
+                        sidebarNav.classList.remove('active');
+                        if (toggleBtn) {
+                            toggleBtn.innerHTML = '<i class="fas fa-bars"></i>'; // Reset icon
+                        }
+                    }
                 });
             });
             
