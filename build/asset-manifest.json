@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/static/css/main.76422f14.chunk.css",
+    "main.js": "/static/js/main.21d9396f.chunk.js",
+    "main.js.map": "/static/js/main.21d9396f.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.351e9c47.js",
+    "runtime-main.js.map": "/static/js/runtime-main.351e9c47.js.map",
+    "static/js/2.df2832a4.chunk.js": "/static/js/2.df2832a4.chunk.js",
+    "static/js/2.df2832a4.chunk.js.map": "/static/js/2.df2832a4.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.27a2c76f4788e99d074f07771d64688f.js": "/precache-manifest.27a2c76f4788e99d074f07771d64688f.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.76422f14.chunk.css.map": "/static/css/main.76422f14.chunk.css.map",
+    "static/js/2.df2832a4.chunk.js.LICENSE.txt": "/static/js/2.df2832a4.chunk.js.LICENSE.txt",
+    "static/media/diverct.png": "/static/media/diverct.d499079a.png",
+    "static/media/dmotion.gif": "/static/media/dmotion.77e66b0f.gif",
+    "static/media/expel.png": "/static/media/expel.08fbd50b.png",
+    "static/media/focus.png": "/static/media/focus.38858f70.png",
+    "static/media/focus2.png": "/static/media/focus2.f32b3428.png",
+    "static/media/gfucb.png": "/static/media/gfucb.ae155602.png",
+    "static/media/moss.png": "/static/media/moss.4f667da7.png",
+    "static/media/motion.png": "/static/media/motion.dfa6f4ed.png",
+    "static/media/optim.png": "/static/media/optim.ccae196b.png",
+    "static/media/recon.png": "/static/media/recon.256f97bf.png",
+    "static/media/seg.png": "/static/media/seg.c5ebb4e4.png",
+    "static/media/sr.png": "/static/media/sr.840e3225.png",
+    "static/media/surgery.png": "/static/media/surgery.06c0c390.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.351e9c47.js",
+    "static/js/2.df2832a4.chunk.js",
+    "static/css/main.76422f14.chunk.css",
+    "static/js/main.21d9396f.chunk.js"
+  ]
+}
