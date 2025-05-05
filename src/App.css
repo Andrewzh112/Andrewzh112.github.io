@@ -5,6 +5,8 @@
     --fourth-color: #435585;
     --gradient-col1: rgb(54, 48, 98);
     --gradient-col2: rgb(67, 85, 133);
+    --highlight-gradient-start: #FFFF00; /* Bright Yellow for dark mode */
+    --highlight-gradient-end: #FFA500;   /* Orange for dark mode */
 }
 
 /* Hover and Transition Effects */
@@ -23,6 +25,8 @@
     --fourth-color: #776B5D;      /* Dark brown */
     --gradient-col1: rgb(243, 238, 234);
     --gradient-col2: rgb(235, 227, 213);
+    --highlight-gradient-start: #00008B; /* Dark Blue for light mode */
+    --highlight-gradient-end: #008080;   /* Teal for light mode */
 }
 
 /* Hover and Transition Effects */

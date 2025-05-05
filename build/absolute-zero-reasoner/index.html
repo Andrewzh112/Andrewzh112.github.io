@@ -1,0 +1,4046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Absolute Zero Reasoner</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❄️</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/umap-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/libgif-js@1.0.9/libgif.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      window.MathJax = {
+        tex: {
+          macros: {
+            best: ["\\textbf{\\textcolor{bestcol}{#1}}", 1],
+          },
+          packages: {'[+]': ['color']}
+        },
+        startup: {
+          ready() {
+            MathJax.startup.defaultReady();
+            MathJax.tex2chtml('\\definecolor{bestcol}{RGB}{0,102,204}\\definecolor{propose}{HTML}{EF8E8D}\\definecolor{solve}{HTML}{5755A3}');
+          }
+        }
+      };
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #ec4899;
+            --background: #ffffff;
+            --text: #1e293b;
+            --card-bg: #f8fafc;
+            --bestcol: #0066cc; /* Deep blue color */
+            --propose: #EF8E8D;
+            --solve: #5755A3;
+            
+            /* RGB Values for opacity control */
+            --primary-rgb: 37, 99, 235;
+            --text-rgb: 30, 41, 59;
+            --card-bg-rgb: 248, 250, 252;
+        }
+
+        .dark-mode {
+            --primary: #60a5fa;
+            --secondary: #f472b6;
+            --background: #0f172a;
+            --text: #e2e8f0;
+            --card-bg: #1e293b;
+            
+            /* RGB Values for opacity control */
+            --primary-rgb: 96, 165, 250;
+            --text-rgb: 226, 232, 240;
+            --card-bg-rgb: 30, 41, 59;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            transition: all 0.5s ease;
+            counter-reset: figure-counter;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        nav.scrolled {
+            background: rgba(15, 23, 42, 0.85);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-link {
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-decoration: none;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 0.25rem 0;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        .logo-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+            line-height: 1.2;
+            padding: 0 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .title-part {
+            display: inline-block;
+            text-align: center;
+            margin: 0 0.5rem;
+        }
+        
+        /* For large screens - two line layout */
+        @media (min-width: 1201px) {
+            .hero h1 {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .title-part:nth-child(1) {
+                display: inline-block;
+                margin-right: 0.5rem;
+            }
+            
+            .title-part:nth-child(2),
+            .title-part:nth-child(3),
+            .title-part:nth-child(4) {
+                display: inline-block;
+                margin: 0 0.5rem;
+            }
+            
+            .title-part:nth-child(5) {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
+        
+        /* Responsive title styling */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 3.5rem;
+                flex-direction: column;
+            }
+            
+            .title-part {
+                margin: 0.1rem 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+                padding: 0 1.5rem;
+            }
+            
+            .title-part {
+                white-space: normal;
+                margin-bottom: 0.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+                padding: 0 1rem;
+                text-align: center;
+            }
+            
+            .title-part {
+                padding: 0 0.5rem;
+            }
+        }
+
+        .authors {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .author-list {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .author-list span {
+            white-space: nowrap;
+        }
+
+        .author-list a {
+            color: var(--text);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        
+        .author-list a:hover {
+            color: var(--primary);
+        }
+        
+        .author-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .author-list a:hover::after {
+            width: 100%;
+        }
+
+        .affiliations {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .corresponding-note {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .emails {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-family: monospace;
+        }
+
+        .job-notice {
+            margin-top: 1.5rem;
+            padding: 1.2rem 1.8rem;
+            background: linear-gradient(to right, rgba(var(--primary-rgb), 0.15), rgba(var(--secondary-rgb), 0.15));
+            border-radius: 0.8rem;
+            border: 2px solid transparent;
+            border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;
+            display: inline-block;
+            max-width: 80%;
+            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3), 0 0 20px rgba(var(--secondary-rgb), 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            animation: glow-pulse 3s infinite ease-in-out;
+        }
+
+        .job-notice::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: -1;
+            border-radius: 1rem;
+            opacity: 0.4;
+            filter: blur(8px);
+            animation: glow-rotation 4s infinite linear;
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3), 0 0 20px rgba(var(--secondary-rgb), 0.2); }
+            50% { box-shadow: 0 4px 25px rgba(var(--primary-rgb), 0.6), 0 0 30px rgba(var(--secondary-rgb), 0.5); }
+            100% { box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3), 0 0 20px rgba(var(--secondary-rgb), 0.2); }
+        }
+
+        @keyframes glow-rotation {
+            0% { filter: blur(8px) hue-rotate(0deg); }
+            100% { filter: blur(8px) hue-rotate(360deg); }
+        }
+
+        .job-notice p {
+            margin: 0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .job-notice a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .job-notice a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .job-notice .email {
+            font-family: monospace;
+            padding: 0.1rem 0.4rem;
+            background: rgba(var(--card-bg-rgb), 0.6);
+            border-radius: 4px;
+            margin-left: 0.3rem;
+        }
+
+        .links {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease 0.6s backwards;
+        }
+
+        .links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .links a:hover {
+            transform: translateY(-5px);
+        }
+        
+        .link-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .link-item i {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .link-item span {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .hf-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.3rem;
+            height: 2rem;
+        }
+
+        .content {
+            max-width: calc(1000px + 4rem); /* Increased to account for padding */
+            margin: 0 auto;
+            padding: 2rem 2rem;
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+
+        .section {
+            margin: 6rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Explorer specific styles */
+        .explorer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Model selector styling and indicator */
+        .model-selector-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .model-select-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            position: absolute;
+            top: -25px;
+            left: 0;
+            white-space: nowrap;
+        }
+        
+        .model-select-indicator i {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--text);
+            background-color: var(--background);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hover-instructions {
+            margin: 0.5rem auto 1rem;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            border: 1px dashed rgba(37, 99, 235, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            max-width: 80%;
+        }
+
+        .dark-mode .hover-instructions {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(96, 165, 250, 0.3);
+        }
+
+        .hover-instructions i {
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .hover-instructions .pointer {
+            font-size: 1.2rem;
+            margin-right: 0.25rem;
+        }
+
+        .visualization {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            cursor: move;
+        }
+
+        .dot {
+            fill-opacity: 0.7;
+            stroke: #fff;
+            stroke-width: 0.5;
+            cursor: pointer;
+            transition: r 0.2s ease;
+        }
+
+        .dot:hover {
+            stroke-width: 1.5;
+            fill-opacity: 1;
+        }
+
+        .panel {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 500px;
+            max-height: calc(100% - 2rem);
+            overflow-y: auto;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        pre {
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        code {
+            font-family: 'Space Mono', monospace;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .details-section {
+            margin-bottom: 1rem;
+        }
+
+        .details-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .tools {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .tool-btn:hover {
+            background: var(--secondary);
+        }
+
+        .task-type {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .task-type.abduction {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+        }
+
+        .task-type.deduction {
+            background: rgba(236, 72, 153, 0.2);
+            color: var(--secondary);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .panel {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-height: 50vh;
+            }
+            
+            .animation-container {
+                margin: 0 -1rem;
+                width: calc(100% + 2rem);
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        /* Animation Gallery Styles */
+        .section-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .animation-container {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 0.8rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            margin: 0 auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .animation-container::-webkit-scrollbar {
+            height: 5px;
+        }
+        
+        .animation-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .animation-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 10px;
+        }
+
+        .animation-card {
+            flex: 0 0 auto;
+            width: 160px;
+            min-width: 160px;
+            transform-origin: center;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, 
+                rgba(var(--card-bg-rgb), 0.8), 
+                rgba(var(--card-bg-rgb), 0.95)
+            );
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+        
+        .animation-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: -1;
+            border-radius: 16px;
+            opacity: 0.4;
+        }
+
+        /* Glow effect for AZR cards */
+        .animation-card.azr-card::before {
+            animation: pulse-glow 4s ease-in-out infinite;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), #9333ea);
+        }
+
+        .animation-card.azr-card {
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            animation: pulse-shadow 4s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.4; filter: blur(2px); }
+            50% { opacity: 0.8; filter: blur(4px); }
+            100% { opacity: 0.4; filter: blur(2px); }
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(236, 72, 153, 0.5); }
+            100% { box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); }
+        }
+
+        .animation-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+        
+        .animation-wrapper {
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 6px;
+            border: 1px solid rgba(var(--text-rgb), 0.2);
+            background-color: rgba(var(--card-bg-rgb), 0.2);
+            position: relative;
+        }
+        
+        .animation-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        /* Make AZR model name more visible against the glowing background */
+        .azr-card .model-name {
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            -webkit-text-fill-color: initial;
+            -webkit-background-clip: initial;
+            text-shadow: 0 0 5px rgba(37, 99, 235, 0.8), 0 0 10px rgba(236, 72, 153, 0.8);
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            padding: 4px 8px;
+            margin: 0 auto 8px;
+            max-width: 85%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.75rem;
+        }
+
+        /* Remove the previous backdrop */
+        .azr-card .model-name::before {
+            display: none;
+        }
+        
+        .model-name {
+            font-size: 0.8rem;
+            padding: 0.4rem 0;
+            /* Apply gradient */
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Ensure background clip works */
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        
+        .code-hover {
+            position: relative;
+            padding: 0.4rem;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 4px;
+            background: rgba(var(--card-bg-rgb), 0.6);
+            border-radius: 4px;
+            border: 1px solid rgba(var(--text-rgb), 0.1);
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            color: var(--text);
+        }
+        
+        .code-hover:hover {
+            background: rgba(var(--primary-rgb), 0.2);
+        }
+        
+        .code-hover i {
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .code-tooltip {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: none;
+            overflow: auto;
+            padding: 5rem 2rem 2rem;
+            box-sizing: border-box;
+        }
+
+        .code-tooltip pre {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-height: none;
+            overflow: visible;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .code-tooltip code {
+            display: block;
+            width: 100%;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+
+        .code-tooltip .close-btn {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 10000;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9998;
+            display: none;
+        }
+
+        .figure-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            box-sizing: border-box;
+        }
+
+        .numbered-figure {
+            margin: 2rem auto;
+            counter-increment: figure-counter;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* First figure (Figure 1) specific adjustments */
+        .numbered-figure:first-of-type {
+            margin-top: 1rem;
+        }
+        
+        .section .numbered-figure {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .numbered-figure::before {
+            content: "Figure " counter(figure-counter);
+            display: block;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .research-figure {
+            width: 100%;
+            height: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .latex-caption {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+        }
+
+        /* LaTeX styling classes */
+        .latex-caption .best {
+            font-weight: bold;
+            color: var(--bestcol);
+        }
+        
+        .latex-caption .textbf {
+            font-weight: bold;
+        }
+        
+        .latex-caption .textcolor-bestcol {
+            color: var(--bestcol);
+        }
+        
+        .latex-caption .textcolor-propose {
+            color: var(--propose);
+        }
+        
+        .latex-caption .textcolor-solve {
+            color: var(--solve);
+        }
+
+        .latex-caption .textcolor-red {
+            color: red;
+        }
+        
+        .latex-caption .textcolor-gray {
+            color: gray;
+        }
+
+        .numbered-figure:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .research-image {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .numbered-figure:hover .research-image {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .slideshow-container {
+            position: relative;
+            height: 600px;
+        }
+
+        .slideshow-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .slideshow-image:nth-child(1) {
+            animation: show-sft 3s infinite step-start;
+        }
+
+        .slideshow-image:nth-child(2) {
+            animation: show-rlvr 3s infinite step-start;
+        }
+
+        .slideshow-image:nth-child(3) {
+            animation: show-az 3s infinite step-start;
+        }
+
+        @keyframes show-sft {
+            0% { opacity: 1; }
+            33.3% { opacity: 1; }
+            33.4% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes show-rlvr {
+            0% { opacity: 0; }
+            33.3% { opacity: 0; }
+            33.4% { opacity: 1; }
+            66.6% { opacity: 1; }
+            66.7% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes show-az {
+            0% { opacity: 0; }
+            66.6% { opacity: 0; }
+            66.7% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        .performance-highlight {
+            max-width: 1000px;
+            margin: 4rem auto 1rem;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .performance-highlight .section-title {
+            text-align: left;
+        }
+
+        .highlight-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 16px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .highlight-caption {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+        }
+
+        .highlight-caption .textbf {
+            font-weight: bold;
+        }
+        
+        .highlight-caption .textcolor-red {
+            color: red;
+        }
+
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+        }
+
+        .sidebar-nav {
+            position: fixed;
+            top: 60px; /* Increased from.0 to allow space for the top nav bar */
+            left: 0;
+            width: 180px; /* Reduced from 220px to make it thinner */
+            height: calc(100vh - 60px); /* Adjust height to account for top offset */
+            background-color: rgba(30, 41, 59, 0.5); /* Increased transparency from 0.7 to 0.5 */
+            backdrop-filter: blur(8px);
+            padding: 1.5rem 1.2rem; /* Reduced padding to fit thinner sidebar */
+            box-shadow: 0 4px 16px -1px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            padding-top: 20px; /* Reduced from 80px since we already offset the top */
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Updated for desktop: always show sidebar and properly offset content */
+        @media (min-width: 769px) {
+            .sidebar-nav {
+                transform: translateX(0);
+            }
+            
+            /* Define the main content area to the right of the sidebar */
+            body { /* Or a dedicated main content wrapper if you have one */
+                padding-left: 180px; /* Create space for the sidebar */
+            }
+
+            /* Center these blocks within the padded body */
+            .performance-highlight, 
+            .content, 
+            .figure-container,
+            .hero {
+                /* Remove width calc and margin-left 180px */
+                max-width: 1000px; /* Let max-width constrain */
+                margin-left: auto;  /* Center horizontally */
+                margin-right: auto; /* Center horizontally */
+                box-sizing: border-box;
+                /* Ensure padding doesn't conflict if these elements have their own */
+                padding-left: 2rem; /* Adjust as needed if body padding isn't enough */
+                padding-right: 2rem; /* Adjust as needed */
+            }
+
+            /* Adjust .content's max-width to account for its own padding */
+            .content {
+                max-width: calc(1000px + 4rem); /* Compensate for its 2rem padding */
+                /* Keep margin auto from above */
+            }
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .sidebar-nav {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar-nav.active {
+                transform: translateX(0);
+                z-index: 1001;
+            }
+            
+            .performance-highlight, 
+            .content, 
+            .figure-container,
+            .hero {
+                width: 100%;
+                margin-left: 0;
+                max-width: 100%;
+            }
+            
+            /* Mobile sidebar toggle button */
+            .sidebar-toggle {
+                display: block;
+                position: fixed;
+                top: 70px;
+                left: 20px;
+                z-index: 101;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                border: none;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }
+            
+            .sidebar-toggle:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            }
+            
+            .sidebar-toggle i {
+                font-size: 1.2rem;
+            }
+            
+            /* Make sidebar toggle sticky when scrolling */
+            .sidebar-toggle.sticky {
+                position: fixed;
+                top: 20px;
+            }
+        }
+        
+        .sidebar-item.active > a,
+        .sidebar-sub-item.active > a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.7rem; /* Slightly reduced */
+            font-size: 0.9rem; /* Slightly reduced */
+            font-weight: 400;
+        }
+
+        .sidebar-item a {
+            color: var(--text);
+            text-decoration: none;
+            display: block;
+            padding: 0.35rem 0.7rem; /* Slightly reduced */
+            border-radius: 0.3rem;
+            transition: all 0.2s ease;
+            position: relative;
+            opacity: 0.7; /* Increased transparency from 0.8 */
+        }
+
+        .sidebar-item a:hover {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            transform: translateX(3px);
+            opacity: 1;
+        }
+        
+        .sidebar-item a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10%;
+            height: 80%;
+            width: 0;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-item.active a::before,
+        .sidebar-sub-item.active a::before {
+            width: 3px;
+            opacity: 1;
+        }
+
+        .sidebar-sub-list {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-top: 0.4rem;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+        }
+        
+        .sidebar-item.active .sidebar-sub-list {
+            max-height: 200px; /* Adjust based on expected height */
+        }
+
+        .sidebar-sub-item {
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .sidebar-sub-item a {
+            padding: 0.3rem 0.6rem;
+        }
+
+        /* Results Table Styling */
+        .results-table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+        }
+        
+        .results-table th, 
+        .results-table td {
+            padding: 0.5rem 0.4rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .results-table th {
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .results-table .section-header {
+            text-align: center;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.6rem;
+        }
+        
+        .results-table .ours-row {
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .results-table .model-col {
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .positive-change {
+            color: #10b981;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .negative-change {
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .best-result {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .table-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+        }
+        
+        /* Chapter Section Styling */
+        .chapter-section {
+            padding-top: 3rem;
+        }
+        
+        .chapter-section .section {
+            margin: 5rem 0;
+        }
+        
+        .chapter-section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+        }
+        
+        .subsection {
+            margin: 2.5rem 0;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subsection h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .subsection p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+        }
+        
+        /* Bibtex Container */
+        .bibtex-container {
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Removed overflow-x: auto; */
+        }
+        
+        .bibtex-container pre {
+            margin: 0;
+            /* Removed overflow-x: visible; */
+            white-space: pre-wrap; /* Ensure wrapping */
+            word-wrap: break-word; /* Ensure long words break */
+            max-height: none;
+            background: var(--card-bg) !important;
+        }
+        
+        .bibtex-container code {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            white-space: pre-wrap; /* Ensure wrapping */
+            word-wrap: break-word; /* Ensure long words break */
+        }
+
+        /* BibTeX Syntax Highlighting */
+        .bibtex-keyword {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .bibtex-type {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .bibtex-field {
+            color: #10b981; /* Green */
+        }
+        
+        .bibtex-string {
+            color: #f59e0b; /* Amber */
+        }
+        
+        .bibtex-braces {
+            color: var(--text);
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .chapter-section h2 {
+                font-size: 2.2rem;
+            }
+            
+            .subsection h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .job-notice .highlight-text {
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 0 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .job-notice .highlight-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 1px;
+        }
+
+        .paradigm-explanation {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 1.7;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .paradigm-explanation p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+        
+        .paradigm-explanation p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .paradigm-explanation ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+        
+        .paradigm-explanation li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .paradigm-explanation a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .paradigm-explanation a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+        
+        .paradigm-explanation strong {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .figure-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .figure-link:hover {
+            color: var(--secondary);
+        }
+
+        .figure-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .figure-link:hover::after {
+            width: 100%;
+        }
+
+        .algorithm-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            counter-reset: line-number;
+        }
+
+        .algorithm-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .algorithm-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        .algorithm-lines {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .algorithm-lines li {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .algorithm-lines li::before {
+            content: counter(line-number) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .algorithm-indented {
+            padding-left: 1rem;
+        }
+
+        .algorithm-indented-2 {
+            padding-left: 2rem;
+        }
+
+        .algorithm-indented-3 {
+            padding-left: 3rem;
+        }
+
+        .comment {
+            color: gray;
+            font-style: italic;
+        }
+
+        .subsection-title {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .scale-result {
+            font-weight: 500;
+        }
+
+        .scale-explanation {
+            margin-top: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            background: rgba(var(--card-bg-rgb), 0.7);
+            padding: 1.5rem;
+            border-radius: 0.8rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .scale-explanation p {
+            margin-bottom: 1rem;
+        }
+
+        .scale-explanation p:last-child {
+            margin-bottom: 0;
+        }
+
+        .scale-explanation code {
+            background: rgba(var(--text-rgb), 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.3rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+        }
+
+        .scale-explanation em {
+            font-style: italic;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .scaling-container {
+            margin-top: 4rem;
+            border-top: 1px solid rgba(var(--text-rgb), 0.1);
+            padding-top: 2rem;
+        }
+
+        /* Back to Top Button Styles */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px) rotate(-45deg);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0) rotate(-45deg);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) rotate(-45deg);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .back-to-top.launching {
+            animation: rocket-launch 1s ease-in;
+        }
+
+        @keyframes rocket-launch {
+            0% {
+                transform: translateY(0) rotate(-45deg);
+            }
+            20% {
+                transform: translateY(5px) rotate(-45deg);
+            }
+            50% {
+                transform: translateY(-50vh) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Special styling for home and feature navigation items */
+        .sidebar-item.feature-nav a {
+            background: rgba(var(--primary-rgb), 0.08);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item.feature-nav a:hover {
+            background: rgba(var(--primary-rgb), 0.15);
+            transform: translateX(3px);
+            opacity: 1;
+        }
+        
+        .sidebar-item.feature-nav i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .sidebar-item.feature-nav.home-nav a {
+            background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--secondary-rgb), 0.15));
+            border: 1px solid rgba(var(--primary-rgb), 0.1);
+            padding: 0.5rem 1rem;
+        }
+        
+        .sidebar-item.feature-nav.home-nav a i {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div id="canvas-container"></div>
+    
+    <!-- Back to top button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-rocket"></i>
+    </button>
+    
+    <nav>
+        <a href="/" class="logo-link">Andrew Zhao</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#projects">Projects</a>
+            <a href="/#publications">Publications</a>
+        </div>
+        <button class="theme-toggle" id="theme-toggle"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <div class="hero" style="margin-top: 60px;">
+        <h1>
+            <span class="title-part">Absolute Zero: Reinforced Self-play Reasoning with Zero Data</span>
+        </h1>
+        <div class="authors">
+            <div class="author-list">
+                <span><a href="https://andrewzh112.github.io/" target="_blank">Andrew Zhao</a><sup>1</sup></span>, 
+                <span><a href="https://scholar.google.com/citations?user=2Gx5IQ4AAAAJ&hl=en" target="_blank">Yiran Wu</a><sup>3</sup></span>, 
+                <span><a href="https://yueyang130.github.io/" target="_blank">Yang Yue</a><sup>1</sup></span>, 
+                <span><a href="https://wutong4012.github.io/" target="_blank">Tong Wu</a><sup>2</sup></span>, 
+                <span><a href="https://scholar.google.com/citations?user=cmAvcCEAAAAJ&hl=en" target="_blank">Quentin Xu</a><sup>1</sup></span>, 
+                <span><a href="https://scholar.google.com/citations?user=Q9cLkdcAAAAJ&hl=en" target="_blank">Yang Yue</a><sup>1</sup></span>, 
+                <span><a href="https://linyuhongg.github.io/" target="_blank">Matthieu Lin</a><sup>1</sup></span>, 
+                <span><a href="https://shenzhi-wang.netlify.app/" target="_blank">Shenzhi Wang</a><sup>1</sup></span>, 
+                <span><a href="https://qingyun-wu.github.io/" target="_blank">Qingyun Wu</a><sup>3</sup></span>, 
+                <span><a href="https://zilongzheng.github.io/" target="_blank">Zilong Zheng</a><sup>2,✉️</sup></span> and 
+                <span><a href="https://www.gaohuang.net/" target="_blank">Gao Huang</a><sup>1,✉️</sup></span>
+            </div>
+            <div class="affiliations">
+                <span><sup>1</sup>Tsinghua University</span> &nbsp;&nbsp;&nbsp; 
+                <span><sup>2</sup>Beijing Institute for General Artificial Intelligence</span> &nbsp;&nbsp;&nbsp; 
+                <span><sup>3</sup>Pennsylvania State University</span>
+            </div>
+            <div class="corresponding-note">
+                <span><sup>✉️</sup>Corresponding author</span>
+            </div>
+            <div class="emails">
+                <span>Andrew Zhao: zqc21@mails.tsinghua.edu.cn, Yiran Wu: yiran.wu@psu.edu, Zilong Zheng: zlzheng@bigai.ai, Gao Huang: gaohuang@tsinghua.edu.cn</span>
+            </div>
+        </div>
+        <div class="links">
+            <a href="https://arxiv.org/abs/2405.19026" target="_blank" title="Research Paper">
+                <div class="link-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Paper</span>
+                </div>
+            </a>
+            <a href="https://github.com/LeapLabTHU/Absolute-Zero-Reasoner" target="_blank" title="GitHub Repository">
+                <div class="link-item">
+                    <i class="fab fa-github"></i>
+                    <span>Code</span>
+                </div>
+            </a>
+            <a href="https://huggingface.co/collections/andrewzh/absolute-zero-reasoner-68139b2bca82afb00bc69e5b" target="_blank" title="HuggingFace Models">
+                <div class="link-item">
+                    <div class="hf-icon">
+                        <svg width="25" height="25" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M59.9809 32C66.5086 32 72.4251 33.343 77.7304 36.0289C83.0357 38.7148 87.2799 42.5549 90.4629 47.5489C93.6459 52.5429 95.2373 58.4091 95.2373 65.1479C95.2373 71.8866 93.6459 77.7341 90.4629 82.6901C87.2799 87.6461 83.0357 91.4676 77.7304 94.1535C72.4251 96.8394 66.5086 98.1823 59.9809 98.1823C53.4531 98.1823 47.5367 96.8394 42.2314 94.1535C36.9261 91.4676 32.6819 87.6461 29.4989 82.6901C26.3159 77.7341 24.7245 71.8866 24.7245 65.1479C24.7245 58.4091 26.3159 52.5429 29.4989 47.5489C32.6819 42.5549 36.9261 38.7148 42.2314 36.0289C47.5367 33.343 53.4531 32 59.9809 32ZM76.8347 50.4673H70.0036V60.4552H60.0157V67.2862H70.0036V77.2742H76.8347V67.2862H86.8226V60.4552H76.8347V50.4673ZM39.5304 50.4673H46.3614V77.2742H39.5304V50.4673Z" fill="url(#gradient)" />
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="var(--primary)" />
+                                    <stop offset="100%" stop-color="var(--secondary)" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span>Models</span>
+                </div>
+            </a>
+            <a href="https://wandb.ai/andrewzhao112/AbsoluteZeroReasoner" target="_blank" title="Weights & Biases Logs">
+                <div class="link-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Logs</span>
+                </div>
+            </a>
+        </div>
+        
+        <div class="job-notice">
+            <p><a href="https://andrewzh112.github.io/" target="_blank">Andrew Zhao</a> is currently looking for <span class="highlight-text">full-time research scientist industry positions</span> (preferrably in NA) starting June 2026. Feel free to email: <span class="email">andrewzhao112@gmail.com</span> or <span class="email">zqc21@mails.tsinghua.edu.cn</span>. His research interests mainly include RL for LLMs, reasoning, and RL agents.</p>
+        </div>
+    </div>
+
+    <div id="sidebar-nav" class="sidebar-nav">
+        <ul class="sidebar-list">
+            <li class="sidebar-item feature-nav home-nav"><a href="/" onclick="event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'});"><i class="fas fa-home"></i> Home</a></li>
+            <li class="sidebar-item feature-nav"><a href="#explorer-section"><i class="fas fa-search"></i> Proposed Programs</a></li>
+            <li class="sidebar-item feature-nav"><a href="#animation-gallery-section"><i class="fas fa-code"></i> Vibe Check</a></li>
+            <li class="sidebar-item"><a href="#absolute-zero-paradigm">1. Absolute Zero Paradigm</a></li>
+            <li class="sidebar-item"><a href="#absolute-zero-reasoner">2. Absolute Zero Reasoner</a>
+                <ul class="sidebar-sub-list">
+                    <li class="sidebar-sub-item"><a href="#propose-solve">2.1. Propose and Solve Roles</a></li>
+                    <li class="sidebar-sub-item"><a href="#reasoning-modes">2.2. Reasoning Modes</a></li>
+                    <li class="sidebar-sub-item"><a href="#algorithm">2.3. Algorithm</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-item"><a href="#results">3. Results</a>
+                <ul class="sidebar-sub-list">
+                    <li class="sidebar-sub-item"><a href="#main-results">3.1. Main Results</a></li>
+                    <li class="sidebar-sub-item"><a href="#scaling-results">3.2. Scaling Results</a></li>
+                    <li class="sidebar-sub-item"><a href="#key-findings">3.3. Other Key Findings</a></li>
+                    <li class="sidebar-sub-item"><a href="#examples">3.4. Examples</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-item"><a href="#citation">4. Citation</a></li>
+        </ul>
+    </div>
+
+    <section class="performance-highlight">
+        <h2 class="section-title">Out-of-Distribution General Reasoning Performance</h2>
+        <div class="highlight-container">
+            <img src="/assets/absolute-zero-reasoner/azr_teaser.jpg" 
+                 class="research-image" 
+                 alt="Absolute Zero Reasoner Performance">
+            <div class="highlight-caption">
+                <span class="textbf">Absolute Zero Reasoner achieves state-of-the-art performance with <span class="textcolor-red">ZERO DATA</span></span>. 
+                Without relying on any gold labels or human-defined queries, our Absolute Zero Reasoner trained using 
+                our proposed self-play approach demonstrates remarkable out-of-distribution reasoning capabilities, 
+                even outperforming models trained on tens of thousands of expert-labeled in-domain examples.
+            </div>
+        </div>
+    </section>
+
+    <div class="content">
+        <section class="section" id="explorer-section">
+            <h2>AZR Proposed Programs</h2>
+            <p class="section-description" style="font-size: 0.9rem; opacity: 0.7;">All AZR proposed code samples are first embedded with <code>jina-embeddings-v2-base-code</code> then projected to 2D using UMAP.</p>
+            <div class="explorer-container">
+                <div class="controls">
+                    <div class="model-selector-container">
+                        <div class="model-select-indicator">
+                            <i class="fas fa-exchange-alt"></i> Try different models
+                        </div>
+                        <select id="model-selector">
+                            <option value="default" disabled>Select a model</option>
+                            <option value="azr_coder_7b" selected>AZR Coder 7B</option>
+                            <option value="azr_base_7b">AZR Base 7B</option>
+                            <option value="azr_coder_14b">AZR Coder 14B</option>
+                            <option value="azr_base_14b">AZR Base 14B</option>
+                        </select>
+                    </div>
+                    <div class="tools">
+                        <button class="tool-btn" id="zoom-in"><i class="fas fa-search-plus"></i></button>
+                        <button class="tool-btn" id="zoom-out"><i class="fas fa-search-minus"></i></button>
+                        <button class="tool-btn" id="reset-view"><i class="fas fa-home"></i></button>
+                    </div>
+                </div>
+                <div class="hover-instructions">
+                    <i class="fas fa-info-circle"></i> 
+                    <span><i class="fas fa-hand-pointer pointer"></i> Hover over dots to explore programs. Click to lock selection.</span>
+                </div>
+                <div class="visualization">
+                    <svg id="embedding-viz"></svg>
+                    <div class="panel" id="details-panel">
+                        <div class="details-section">
+                            <div class="details-title">Python Code</div>
+                            <pre><code class="language-python" id="code-display"></code></pre>
+                        </div>
+                        <div class="details-section">
+                            <div class="details-title">Input</div>
+                            <div id="input-display"></div>
+                        </div>
+                        <div class="details-section">
+                            <div class="details-title">Output</div>
+                            <div id="output-display"></div>
+                        </div>
+                        <div class="details-section">
+                            <div class="details-title">Task Information</div>
+                            <div id="task-type" class="task-type"></div>
+                            <div class="details-title" style="margin-top: 10px;">Training Step</div>
+                            <div id="steps-display" class="steps"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="animation-gallery-section">
+            <h2>Spinning Hexagon Vibe Check</h2>
+            <p class="section-description"><strong style="color: var(--primary);">Prompt:</strong> Write a script that shows 10 balls bouncing inside a spinning hexagon. The balls should be affected by gravity and friction, and must bounce off the rotating walls realistically</p>
+            
+            <div class="animation-container">
+                <div class="animation-card azr-card">
+                    <h3 class="model-name">AZR-Coder-14b (Ours)</h3>
+                    <div class="animation-wrapper">
+                        <img src="/assets/absolute-zero-reasoner/vibes/azr_coder_14b.gif" 
+                             class="animation-gif" 
+                             alt="AZR-Coder-14b"
+                             data-speed="3">
+                    </div>
+                    <div class="code-hover">
+                        <span>Code</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-python">
+import pygame
+import math
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the display
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Bouncing Balls in a Spinning Hexagon")
+
+# Define colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+
+# Define constants
+FPS = 60
+GRAVITY = 0.1
+FRICTION = 0.99
+BALL_RADIUS = 10
+NUM_BALLS = 10
+
+# Define the hexagon
+hexagon_center = (width // 2, height // 2)
+hexagon_radius = 200
+hexagon_vertices = [
+    (hexagon_center[0] + hexagon_radius * math.cos(2 * math.pi * i / 6),
+        hexagon_center[1] + hexagon_radius * math.sin(2 * math.pi * i / 6))
+    for i in range(6)
+]
+
+# Define the balls
+balls = []
+for _ in range(NUM_BALLS):
+    x = random.randint(BALL_RADIUS, width - BALL_RADIUS)
+    y = random.randint(BALL_RADIUS, height - BALL_RADIUS)
+    vx = random.uniform(-5, 5)
+    vy = random.uniform(-5, 5)
+    balls.append((x, y, vx, vy, RED))
+
+# Game loop
+running = True
+clock = pygame.time.Clock()
+angle = 0
+while running:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Clear the screen
+    screen.fill(WHITE)
+
+    # Rotate the hexagon
+    angle += 0.01
+    rotated_vertices = [
+        (hexagon_center[0] + (v[0] - hexagon_center[0]) * math.cos(angle) - (v[1] - hexagon_center[1]) * math.sin(angle),
+            hexagon_center[1] + (v[0] - hexagon_center[0]) * math.sin(angle) + (v[1] - hexagon_center[1]) * math.cos(angle))
+        for v in hexagon_vertices
+    ]
+
+    # Draw the hexagon
+    pygame.draw.polygon(screen, BLACK, rotated_vertices)
+
+    # Update the positions and velocities of the balls
+    for i, (x, y, vx, vy, color) in enumerate(balls):
+        # Apply gravity
+        vy += GRAVITY
+
+        # Apply friction
+        vx *= FRICTION
+        vy *= FRICTION
+
+        # Update position
+        x += vx
+        y += vy
+
+        # Check for collisions with the hexagon walls
+        for j in range(6):
+            v1 = rotated_vertices[j]
+            v2 = rotated_vertices[(j + 1) % 6]
+            dx = v2[0] - v1[0]
+            dy = v2[1] - v1[1]
+            dist = math.sqrt(dx**2 + dy**2)
+            nx = dy / dist
+            ny = -dx / dist
+            px = x - v1[0]
+            py = y - v1[1]
+            proj = px * nx + py * ny
+            if 0 <= proj <= dist:
+                if px * ny - py * nx <= BALL_RADIUS:
+                    overlap = BALL_RADIUS - (px * nx + py * ny)
+                    x -= overlap * nx
+                    y -= overlap * ny
+                    vx = -vx * 0.9
+                    vy = -vy * 0.9
+
+        # Check for collisions with the screen edges
+        if x - BALL_RADIUS < 0 or x + BALL_RADIUS > width:
+            vx = -vx
+        if y - BALL_RADIUS < 0 or y + BALL_RADIUS > height:
+            vy = -vy
+
+        # Update the ball's position and velocity
+        balls[i] = (x, y, vx, vy, color)
+
+        # Draw the ball
+        pygame.draw.circle(screen, color, (int(x), int(y)), BALL_RADIUS)
+
+    # Update the display
+    pygame.display.flip()
+    clock.tick(FPS)
+
+# Quit Pygame
+pygame.quit()
+                            </code></pre>
+                        </div>
+                    </div>
+                    <div class="code-hover">
+                        <span>Config</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-json">
+{
+    "parameters": {
+        "temperature": 0.6,
+        "top_p": 0.8
+    },
+    "generation_config": {
+        "do_sample": true
+    }
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animation-card">
+                    <h3 class="model-name">GPT-4o-mini</h3>
+                    <div class="animation-wrapper">
+                        <img src="/assets/absolute-zero-reasoner/vibes/gpt4o_mini.gif" 
+                             class="animation-gif" 
+                             alt="GPT-4o-mini"
+                             data-speed="3">
+                    </div>
+                    <div class="code-hover">
+                        <span>Code</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-python">
+        
+import pygame
+import random
+import math
+
+# Initialize Pygame
+pygame.init()
+
+# Screen settings
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Bouncing Balls in Spinning Hexagon')
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BALL_COLOR = (255, 0, 0)
+HEX_COLOR = (0, 255, 0)
+
+# Constants
+GRAVITY = 0.1  # Gravity affecting the balls
+FRICTION = 0.99  # Friction affecting the ball's speed when not bouncing
+BALL_RADIUS = 10  # Radius of the balls
+NUM_BALLS = 10  # Number of balls
+
+# Hexagon settings
+HEX_SIZE = 250  # Hexagon radius
+HEX_CENTER = (WIDTH // 2, HEIGHT // 2)
+
+# Ball class
+class Ball:
+    def __init__(self, x, y, radius):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.vx = random.uniform(-2, 2)  # Initial x velocity
+        self.vy = random.uniform(-2, 2)  # Initial y velocity
+
+    def move(self):
+        self.x += self.vx
+        self.y += self.vy
+        self.vy += GRAVITY  # Apply gravity
+
+        # Apply friction
+        self.vx *= FRICTION
+        self.vy *= FRICTION
+
+    def bounce(self, normal):
+        # Reflect the ball's velocity based on the surface normal (for realistic bouncing)
+        dot = self.vx * normal[0] + self.vy * normal[1]
+        self.vx -= 2 * dot * normal[0]
+        self.vy -= 2 * dot * normal[1]
+
+# Function to draw the hexagon
+def draw_hexagon(angle):
+    points = []
+    for i in range(6):
+        x = HEX_CENTER[0] + HEX_SIZE * math.cos(math.radians(i * 60 + angle))
+        y = HEX_CENTER[1] + HEX_SIZE * math.sin(math.radians(i * 60 + angle))
+        points.append((x, y))
+    pygame.draw.polygon(screen, HEX_COLOR, points, 5)
+
+# Function to check if the ball is inside the hexagon
+def check_collision_with_hexagon(ball):
+    angle = pygame.time.get_ticks() / 10  # Time-dependent rotation angle
+
+    # Hexagon vertices (rotated)
+    hex_points = []
+    for i in range(6):
+        x = HEX_CENTER[0] + HEX_SIZE * math.cos(math.radians(i * 60 + angle))
+        y = HEX_CENTER[1] + HEX_SIZE * math.sin(math.radians(i * 60 + angle))
+        hex_points.append((x, y))
+
+    for i in range(6):
+        p1 = hex_points[i]
+        p2 = hex_points[(i + 1) % 6]
+        
+        # Calculate the normal vector of the edge
+        edge = (p2[0] - p1[0], p2[1] - p1[1])
+        normal = (-edge[1], edge[0])  # Perpendicular to the edge
+
+        # Normalize the normal
+        length = math.sqrt(normal[0]**2 + normal[1]**2)
+        normal = (normal[0] / length, normal[1] / length)
+
+        # Check if the ball is outside the hexagon (distance from the center to the edge)
+        ball_to_edge = (ball.x - p1[0], ball.y - p1[1])
+        dist = ball_to_edge[0] * normal[0] + ball_to_edge[1] * normal[1]
+        
+        if dist < ball.radius:
+            ball.bounce(normal)
+            break
+
+# Create a list of balls
+balls = [Ball(random.randint(50, WIDTH-50), random.randint(50, HEIGHT-50), BALL_RADIUS) for _ in range(NUM_BALLS)]
+
+# Main game loop
+running = True
+clock = pygame.time.Clock()
+
+while running:
+    screen.fill(BLACK)  # Clear screen
+    
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Draw the spinning hexagon
+    angle = pygame.time.get_ticks() / 10  # Get a time-based rotation angle
+    draw_hexagon(angle)
+
+    # Update and draw the balls
+    for ball in balls:
+        ball.move()
+        check_collision_with_hexagon(ball)
+        
+        # Draw ball
+        pygame.draw.circle(screen, BALL_COLOR, (int(ball.x), int(ball.y)), ball.radius)
+
+    # Refresh the display
+    pygame.display.flip()
+
+    # Cap the frame rate
+    clock.tick(60)
+
+# Quit Pygame
+pygame.quit()
+                            </code></pre>
+                        </div>
+                    </div>
+                    <div class="code-hover">
+                        <span>Config</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-json">
+{
+    "query_date": "2025-05-03",
+    "api_location": "https://chatgpt.com/"
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animation-card">
+                    <h3 class="model-name">Qwen2.5-72B-Instruct</h3>
+                    <div class="animation-wrapper">
+                        <img src="/assets/absolute-zero-reasoner/vibes/qwen_72b_instruct.gif" 
+                             class="animation-gif" 
+                             alt="Qwen2.5-72B-Instruct"
+                             data-speed="3">
+                    </div>
+                    <div class="code-hover">
+                        <span>Code</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-python">
+import pygame
+import math
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Screen dimensions
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Balls Bouncing in a Spinning Hexagon")
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+
+# Hexagon properties
+hexagon_center = (WIDTH // 2, HEIGHT // 2)
+hexagon_radius = 200
+hexagon_sides = 6
+hexagon_angle = 0  # Initial angle of the hexagon
+hexagon_rotation_speed = 0.01  # Rotation speed in radians per frame
+
+# Ball properties
+num_balls = 10
+balls = []
+ball_radius = 10
+gravity = 0.5
+friction = 0.99
+
+# Function to create a ball
+def create_ball():
+    x = random.randint(ball_radius, WIDTH - ball_radius)
+    y = random.randint(ball_radius, HEIGHT - ball_radius)
+    vx = random.uniform(-3, 3)
+    vy = random.uniform(-3, 3)
+    return [x, y, vx, vy]
+
+# Create balls
+for _ in range(num_balls):
+    balls.append(create_ball())
+
+# Function to draw the hexagon
+def draw_hexagon(angle):
+    points = []
+    for i in range(hexagon_sides):
+        angle_i = angle + i * (2 * math.pi / hexagon_sides)
+        x = hexagon_center[0] + hexagon_radius * math.cos(angle_i)
+        y = hexagon_center[1] + hexagon_radius * math.sin(angle_i)
+        points.append((x, y))
+    pygame.draw.polygon(screen, RED, points, 3)
+
+# Function to check collision with the hexagon
+def check_collision(ball, angle):
+    x, y, vx, vy = ball
+    for i in range(hexagon_sides):
+        angle_i = angle + i * (2 * math.pi / hexagon_sides)
+        angle_next = angle + (i + 1) * (2 * math.pi / hexagon_sides)
+        x1 = hexagon_center[0] + hexagon_radius * math.cos(angle_i)
+        y1 = hexagon_center[1] + hexagon_radius * math.sin(angle_i)
+        x2 = hexagon_center[0] + hexagon_radius * math.cos(angle_next)
+        y2 = hexagon_center[1] + hexagon_radius * math.sin(angle_next)
+        
+        # Check collision with the line segment (x1, y1) to (x2, y2)
+        dx = x2 - x1
+        dy = y2 - y1
+        dot = dx * (x - x1) + dy * (y - y1)
+        len_sq = dx * dx + dy * dy
+        param = -1
+        if len_sq != 0:  # in case of a zero length line
+            param = dot / len_sq
+        
+        if param < 0:
+            nx = x1
+            ny = y1
+        elif param > 1:
+            nx = x2
+            ny = y2
+        else:
+            nx = x1 + param * dx
+            ny = y1 + param * dy
+        
+        dx = x - nx
+        dy = y - ny
+        dist = math.sqrt(dx * dx + dy * dy)
+        
+        if dist < ball_radius:
+            # Calculate the normal and tangent vectors
+            nx = (x - nx) / dist
+            ny = (y - ny) / dist
+            tx = -ny
+            ty = nx
+            
+            # Reflect the velocity
+            dot = vx * nx + vy * ny
+            vx = vx - 2 * dot * nx
+            vy = vy - 2 * dot * ny
+            
+            # Move the ball away from the wall
+            x += nx * (ball_radius - dist)
+            y += ny * (ball_radius - dist)
+            
+            ball[0] = x
+            ball[1] = y
+            ball[2] = vx
+            ball[3] = vy
+
+# Main loop
+running = True
+clock = pygame.time.Clock()
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Update ball positions and velocities
+    for ball in balls:
+        x, y, vx, vy = ball
+        vy += gravity
+        x += vx
+        y += vy
+        vx *= friction
+        vy *= friction
+        ball[0] = x
+        ball[1] = y
+        ball[2] = vx
+        ball[3] = vy
+
+        # Check collision with the hexagon
+        check_collision(ball, hexagon_angle)
+
+    # Update hexagon angle
+    hexagon_angle += hexagon_rotation_speed
+
+    # Draw everything
+    screen.fill(BLACK)
+    draw_hexagon(hexagon_angle)
+    for ball in balls:
+        pygame.draw.circle(screen, WHITE, (int(ball[0]), int(ball[1])), ball_radius)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+                            </code></pre>
+                        </div>
+                    </div>
+                    <div class="code-hover">
+                        <span>Config</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-json">
+{
+    "api_location": "https://huggingface.co/Qwen/Qwen2.5-Coder-72B-Instruct"
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animation-card">
+                    <h3 class="model-name">Qwen2.5-32B-Instruct</h3>
+                    <div class="animation-wrapper">
+                        <img src="/assets/absolute-zero-reasoner/vibes/qwen_32b_instruct.gif" 
+                             class="animation-gif" 
+                             alt="Qwen2.5-32B-Instruct"
+                             data-speed="3">
+                    </div>
+                    <div class="code-hover">
+                        <span>Code</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-python">
+import pygame
+import math
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the display
+screen_width, screen_height = 800, 600
+win = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Bouncing Balls Inside Spinning Hexagon")
+
+# Colors
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+
+# Constants for the simulation
+FPS = 60
+GRAVITY = 0.1
+BALL_RADIUS = 10
+FRIC_COEFFICIENT = 0.98  # To reduce velocity upon collision.
+MAX_ANGLE_DEGREES = 360
+DEG_TO_RAD = math.pi / 180  # Conversion factor between degrees and radians.
+
+class Ball:
+    def __init__(self):
+        self.pos = pygame.Vector2(random.randint(BALL_RADIUS, screen_width-BALL_RADIUS),
+                                    random.randint(BALL_RADIUS, screen_height-BALL_RADIUS))
+        self.vel = pygame.Vector2(random.uniform(-3, 3), random.uniform(-3, 3))
+
+    def update(self):
+        self.vel.y += GRAVITY
+        self.pos += self.vel
+
+        # Check for collisions with borders
+        if self.pos.x - BALL_RADIUS <= 0 or self.pos.x + BALL_RADIUS >= screen_width:
+            self.vel.x *= -FRIC_COEFFICIENT
+            if self.pos.x - BALL_RADIUS <= 0:
+                self.pos.x = BALL_RADIUS
+            elif self.pos.x + BALL_RADIUS >= screen_width:
+                self.pos.x = screen_width - BALL_RADIUS
+        if self.pos.y - BALL_RADIUS <= 0 or self.pos.y + BALL_RADIUS >= screen_height:
+            self.vel.y *= -FRIC_COEFFICIENT
+            if self.pos.y - BALL_RADIUS <= 0:
+                self.pos.y = BALL_RADIUS
+            elif self.pos.y + BALL_RADIUS >= screen_height:
+                self.pos.y = screen_height - BALL_RADIUS
+
+    def draw(self, win):
+        pygame.draw.circle(win, RED, (int(self.pos.x), int(self.pos.y)), BALL_RADIUS)
+
+def get_hexagon_points(center, radius, angle_degrees):
+    """Generate points of a hexagon."""
+    points = []
+    for i in range(6):
+        theta = (math.pi * 2) / 6 * i + angle_degrees * DEG_TO_RAD
+        x = center.x + radius * math.cos(theta)
+        y = center.y + radius * math.sin(theta)
+        points.append(pygame.Vector2(x, y))
+    return points
+
+def check_bounce(ball, poly_points):
+    """Check if the ball has hit any of the edges and bounce off appropriately."""
+    p1, p2, p3, p4, p5, p6 = poly_points
+    for start_point, end_point in [(p1, p2), (p2, p3), (p3, p4), (p4, p5), (p5, p6), (p6, p1)]:
+        line_vec = end_point - start_point
+        normal_vec = pygame.Vector2(-line_vec.y, line_vec.x).normalize()  # Normal vector to edge
+        
+        # Line equation parameters: Ax + By + C = 0
+        A = normal_vec.y
+        B = -normal_vec.x
+        C = -(A * start_point.x + B * start_point.y)
+        
+        # Point-line-distance formula
+        distance = A * ball.pos.x + B * ball.pos.y + C
+        distance /= math.sqrt(A**2 + B**2)
+        
+        if abs(distance) < BALL_RADIUS:
+            # Ball is hitting this edge.
+            dist_vec = ball.pos - (start_point + end_point) / 2
+            dot_product = dist_vec.dot(normal_vec)
+            reflection_vec = ball.vel.reflect(normal_vec)
+            
+            if dot_product < 0 and reflection_vec.x * A + reflection_vec.y * B > 0:
+                # Reflect and apply some slowdown using friction coefficient.
+                ball.vel = reflection_vec * FRIC_COEFFICIENT
+
+def redraw_window(win, balls, poly_points):
+    win.fill(WHITE)
+    pygame.draw.polygon(win, (0, 0, 255), [(p.x, p.y) for p in poly_points])
+    for ball in balls:
+        ball.draw(win)
+    
+    pygame.display.update()
+
+def main():
+    run = True
+    clock = pygame.time.Clock()
+
+    balls = [Ball() for _ in range(10)]
+    hexagon_center = pygame.Vector2(screen_width // 2, screen_height // 2)
+    hexagon_radius = screen_height // 4
+    angle_degrees = 0
+
+    while run:
+        dt = clock.tick(FPS) / 1000  # time elapsed since last frame in seconds
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        
+        # Spin the hexagon by increasing the angle
+        angle_degrees = (angle_degrees + 1 * dt * MAX_ANGLE_DEGREES) % MAX_ANGLE_DEGREES
+        poly_points = get_hexagon_points(hexagon_center, hexagon_radius, angle_degrees)
+
+        # Update each ball and check for collision with hexagon walls.
+        for ball in balls:
+            ball.update()
+            check_bounce(ball, poly_points)
+
+        redraw_window(win, balls, poly_points)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
+                            </code></pre>
+                        </div>
+                    </div>
+                    <div class="code-hover">
+                        <span>Config</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-json">
+{
+    "api_location": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct"
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animation-card">
+                    <h3 class="model-name">Qwen2.5-14B-Instruct</h3>
+                    <div class="animation-wrapper">
+                        <img src="/assets/absolute-zero-reasoner/vibes/qwen_14b_instruct.gif" 
+                             class="animation-gif" 
+                             alt="Qwen2.5-14B-Instruct"
+                             data-speed="3">
+                    </div>
+                    <div class="code-hover">
+                        <span>Code</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-python">
+import pygame
+import sys
+import math
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Screen dimensions
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Bouncing Balls in Spinning Hexagon")
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+
+# Ball properties
+BALL_RADIUS = 10
+BALL_COUNT = 10
+balls = []
+
+# Hexagon properties
+HEX_SIDES = 6
+HEX_RADIUS = 200
+HEX_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+HEX_SPIN_SPEED = 0.01
+
+# Gravity and friction
+GRAVITY = 0.5
+FRICTION = 0.99
+
+def create_balls():
+    for _ in range(BALL_COUNT):
+        x = SCREEN_WIDTH // 2 + (random.randint(-100, 100))
+        y = SCREEN_HEIGHT // 2 + (random.randint(-100, 100))
+        vx = random.uniform(-3, 3)
+        vy = random.uniform(-3, 3)
+        balls.append([x, y, vx, vy])
+
+def draw_hexagon(angle):
+    points = []
+    for i in range(HEX_SIDES):
+        angle_rad = math.radians(i * 60 - angle)
+        x = HEX_CENTER[0] + HEX_RADIUS * math.cos(angle_rad)
+        y = HEX_CENTER[1] + HEX_RADIUS * math.sin(angle_rad)
+        points.append((int(x), int(y)))
+    return points
+
+def check_collision(ball, points):
+    px, py = ball[:2]
+    for i in range(len(points)):
+        j = (i + 1) % len(points)
+        if is_point_in_triangle(px, py, points[i], points[j], HEX_CENTER):
+            return True
+    return False
+
+def is_point_in_triangle(px, py, p1, p2, p3):
+    def sign(p1, p2, p3):
+        return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
+    
+    b1 = sign((px, py), p1, p2) < 0
+    b2 = sign((px, py), p2, p3) < 0
+    b3 = sign((px, py), p3, p1) < 0
+    
+    return ((b1 == b2) and (b2 == b3))
+
+def update_ball(ball, points):
+    x, y, vx, vy = ball
+    x += vx
+    y += vy
+    vy += GRAVITY
+    
+    if check_collision(ball, points):
+        # Bounce logic
+        normal_vector = get_normal_vector(ball, points)
+        reflect_vector(normal_vector, ball)
+        
+        # Apply friction
+        vx *= FRICTION
+        vy *= FRICTION
+        
+    ball[0] = x
+    ball[1] = y
+    ball[2] = vx
+    ball[3] = vy
+
+def get_normal_vector(ball, points):
+    px, py = ball[:2]
+    closest_point = min(points, key=lambda point: math.hypot(point[0] - px, point[1] - py))
+    dx, dy = closest_point[0] - px, closest_point[1] - py
+    length = math.sqrt(dx**2 + dy**2)
+    return [dx / length, dy / length]
+
+def reflect_vector(normal, ball):
+    px, py, vx, vy = ball
+    dot_product = vx * normal[0] + vy * normal[1]
+    reflected_vx = vx - 2 * dot_product * normal[0]
+    reflected_vy = vy - 2 * dot_product * normal[1]
+    ball[2] = reflected_vx
+    ball[3] = reflected_vy
+
+def main():
+    clock = pygame.time.Clock()
+    angle = 0
+    create_balls()
+    
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        
+        screen.fill(WHITE)
+        
+        # Draw the hexagon
+        points = draw_hexagon(angle)
+        pygame.draw.polygon(screen, BLACK, points)
+        
+        # Update and draw balls
+        for ball in balls:
+            update_ball(ball, points)
+            pygame.draw.circle(screen, RED, (int(ball[0]), int(ball[1])), BALL_RADIUS)
+        
+        angle += HEX_SPIN_SPEED
+        pygame.display.flip()
+        clock.tick(60)
+
+if __name__ == "__main__":
+    main()
+                            </code></pre>
+                        </div>
+                    </div>
+                    <div class="code-hover">
+                        <span>Config</span> <i class="fas fa-hand-pointer"></i>
+                        <div class="code-tooltip">
+                            <pre><code class="language-json">
+{
+    "parameters": {
+        "temperature": 0.6,
+        "top_p": 0.8,
+        "do_sample": true
+    }
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <div class="content chapter-section">
+        <section class="section" id="absolute-zero-paradigm">
+            <h2>1. Absolute Zero Paradigm</h2>
+            
+            <div class="paradigm-explanation">
+                <p>Traditional approaches to training reasoning models rely heavily on human-curated data:</p>
+                
+                <ul>
+                    <li><span style="font-weight: bold; color: gray;">Supervised Fine-Tuning (SFT)</span> requires datasets with human-written queries, rationales, and answers.</li>
+                    <li><span style="font-weight: bold; color: gray;">Reinforcement Learning with Verifiable Rewards (RLVR)</span> still needs human-labeled tasks and answers, even if the model generates its own reasoning.</li>
+                </ul>
+                
+                <p>The <span style="font-weight: bold; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">Absolute Zero</span> paradigm eliminates this dependency on human data. The model simultaneously proposes tasks, solves them, and learns from both stages through self-play. As shown in <a href="#paradigm-figure">Figure 1</a>, the agent autonomously creates tasks optimized for learnability and learns to solve them using a unified model.</p>
+                
+                <p>In the <a href="#az-loop-figure">Absolute Zero Loop (Figure 2)</a>, the agent π acts in two roles: as a proposer π<sup>propose</sup> that generates tasks τ, and as a solver π<sup>solve</sup> that produces answers y. The environment e validates proposed tasks into (x, y★) pairs and provides both learnability rewards r<sup>propose</sup> and solution rewards r<sup>solve</sup>. This enables continuous self-improvement without any human-curated data.</p>
+            </div>
+            
+            <figure class="numbered-figure" id="paradigm-figure">
+                <div class="slideshow-container">
+                    <img src="/assets/absolute-zero-reasoner/sft.png" 
+                         class="slideshow-image" 
+                         alt="Supervised Learning"
+                         style="animation-delay: 0s">
+                    <img src="/assets/absolute-zero-reasoner/rlvr.png" 
+                         class="slideshow-image" 
+                         alt="RL from Verified Rewards"
+                         style="animation-delay: 2s">
+                    <img src="/assets/absolute-zero-reasoner/az.png" 
+                         class="slideshow-image" 
+                         alt="Absolute Zero Paradigm"
+                         style="animation-delay: 6s">
+                </div>
+                <figcaption class="latex-caption">
+                    <span class="textbf">Absolute Zero Paradigm.</span> <span class="textbf"><span class="textcolor-gray">Supervised learning</span></span> relies on human-curated reasoning traces for behavior cloning. 
+                    <span class="textbf"><span class="textcolor-gray">Reinforcement learning from verified rewards</span></span> enables agents to self-learn reasoning, but still depends on expert-defined 
+                    learning distribution and a respective set of curated QA pairs, demanding domain expertise and manual effort. 
+                    In contrast, we introduce a new paradigm, <span class="best">Absolute Zero</span>, for training reasoning models without any human-curated data. 
+                    We envision that the agent should autonomously propose tasks optimized for learnability and learn how to solve them 
+                    using a unified model. The agent learns by interacting with an environment that provides verifiable feedback, enabling 
+                    reliable and continuous self-improvement entirely without human intervention.
+                </figcaption>
+            </figure>
+
+            <figure class="numbered-figure" id="az-loop-figure">
+                <img src="/assets/absolute-zero-reasoner/az_loop.png" 
+                     class="research-image" 
+                     alt="Absolute Zero Loop">
+                <figcaption class="latex-caption">
+                    <span class="textbf">The Absolute Zero Loop.</span> The Absolute Zero loop begins with the agent \(\pi\) proposing task \(\tau\), 
+                    which is transformed by \(f\) with the environment \(e\) into a validated problem \((x, y^\star)\), and also emits 
+                    a reward \(r^\text{propose}\) for learnability. Then, a standard RL step follows: the agent solves \(x\) by producing \(y\), 
+                    receiving reward \(r^\text{solve}\) from \(e\) by matching with \(y^\star\). \(\pi^\text{propose}\) and \(\pi^\text{solve}\) 
+                    are jointly trained and this process can be repeated indefinitely.
+                </figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="absolute-zero-reasoner">
+            <h2>2. Absolute Zero Reasoner</h2>
+            
+            <div class="paradigm-explanation">
+                <p>The Absolute Zero Reasoner (AZR) is our first implementation of the Absolute Zero Paradigm. AZR uses a unified language model that serves dual roles while learning through code-based reasoning challenges. The model works through a continuous self-improvement loop without requiring any human-curated data.</p>
+                
+                <div id="propose-solve" class="subsection">
+                    <h3>2.1. Propose and Solve Roles</h3>
+                    <p>The Absolute Zero Reasoner employs a unified model that acts in two complementary roles:</p>
+                    
+                    <ul>
+                        <li><strong>Proposer Role:</strong> Generates tasks with high learning potential - neither too easy nor impossible for the current solver. The model is rewarded for creating challenges that provide meaningful learning opportunities.</li>
+                        
+                        <li><strong>Solver Role:</strong> Attempts to solve the proposed problems, receiving binary rewards based on the correctness of solutions, verified through Python execution.</li>
+                    </ul>
+                    
+                    <p>For the proposer, we design a specialized reward function based on Monte Carlo rollouts that encourages the generation of tasks with optimal difficulty - problems where the solver sometimes succeeds and sometimes fails. This creates the richest learning signal for continuous improvement.</p>
+                </div>
+                
+                <div id="reasoning-modes" class="subsection">
+                    <h3>2.2. Reasoning Modes</h3>
+                    <p>As shown in <a href="#algorithm-figure" class="figure-link">Figure 3</a>, the Absolute Zero Reasoner operates across three fundamental reasoning modes, each focusing on different aspects of a triplet (program, input, output):</p>
+                    
+                    <ul>
+                        <li><strong>Deduction:</strong> Predicting the output given a program and input, capturing step-by-step logical reasoning. This tests the model's ability to trace program execution.</li>
+                        
+                        <li><strong>Abduction:</strong> Inferring a plausible input given a program and its output, resembling trial-and-error or search processes. This tests the model's ability to work backward from results.</li>
+                        
+                        <li><strong>Induction:</strong> Synthesizing a program from input-output examples, requiring generalization from partial information. This tests the model's ability to discover underlying patterns.</li>
+                    </ul>
+                    
+                    <p>The model begins with minimal seed examples (as simple as an identity function) and bootstraps its way to increasingly complex reasoning capabilities through continual self-play and verification.</p>
+                </div>
+            </div>
+            
+            <figure class="numbered-figure" id="algorithm-figure">
+                <img src="/assets/absolute-zero-reasoner/azr.png" 
+                     class="research-image" 
+                     alt="Absolute Zero Reasoner Training">
+                <figcaption class="latex-caption">
+                    <span class="textbf">Absolute Zero Reasoner Training Overview.</span> At every iteration, Absolute Zero Reasoner first <span class="textbf"><span class="textcolor-propose">PROPOSES</span></span> 
+                    a batch of tasks, conditioned on past self-generated triplets stored in a buffer and a particular task type: abduction, deduction, 
+                    or induction. From these generated tasks, Python is used to filter and construct valid code-based reasoning questions. 
+                    A learnability reward \(r_\text{propose}\) is also calculated for each proposed task. The Absolute Zero Reasoner then <span class="textbf"><span class="textcolor-solve">SOLVES</span></span> 
+                    the batch of reasoning questions. Python is used again to verify the generated responses and compute the accuracy reward \(r_\text{solve}\). 
+                    Finally, the Absolute Zero Reasoner is jointly updated using both \(r_\text{propose}\) and \(r_\text{solve}\) across all three task types, using TRR++.
+                </figcaption>
+            </figure>
+            <div id="algorithm" class="subsection">
+                <h3>2.3. Absolute Zero Reasoner Algorithm</h3>
+                <figure class="numbered-figure" id="algorithm-detail-figure">
+                    <img src="/assets/absolute-zero-reasoner/algorithm.png"
+                         class="research-image"
+                         alt="Absolute Zero Reasoner Algorithm">
+                    <!-- Optionally add a caption here later if needed -->
+                    <!-- <figcaption class="latex-caption">...</figcaption> -->
+                </figure>
+            </div>
+        </section>
+
+        <section class="section" id="results">
+            <h2>3. Results</h2>
+            
+            <div class="results-table-container">
+                <h3 class="subsection-title">3.1. Main Results</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Base</th>
+                            <th>#data</th>
+                            <th>HEval<sup>+</sup></th>
+                            <th>MBPP<sup>+</sup></th>
+                            <th>LCBv5</th>
+                            <th>AME24</th>
+                            <th>AME25</th>
+                            <th>AMC</th>
+                            <th>M500</th>
+                            <th>Minva</th>
+                            <th>Olypiad</th>
+                            <th>CAvg</th>
+                            <th>MAvg</th>
+                            <th>AVG</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="section-header" colspan="15">Base Models</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Qwen2.5-7B</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>73.2</td>
+                            <td>65.3</td>
+                            <td>17.5</td>
+                            <td>6.7</td>
+                            <td>3.3</td>
+                            <td>37.5</td>
+                            <td>64.8</td>
+                            <td>25.0</td>
+                            <td>27.7</td>
+                            <td>52.0</td>
+                            <td>27.5</td>
+                            <td>39.8</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Qwen2.5-7B-Ins</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>75.0</td>
+                            <td>68.5</td>
+                            <td>25.5</td>
+                            <td>13.3</td>
+                            <td>6.7</td>
+                            <td>52.5</td>
+                            <td>76.4</td>
+                            <td>35.7</td>
+                            <td>37.6</td>
+                            <td>56.3</td>
+                            <td>37.0</td>
+                            <td>46.7</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Qwen2.5-7B-Coder</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>80.5</td>
+                            <td>69.3</td>
+                            <td>19.9</td>
+                            <td>6.7</td>
+                            <td>3.3</td>
+                            <td>40.0</td>
+                            <td>54.0</td>
+                            <td>17.3</td>
+                            <td>21.9</td>
+                            <td>56.6</td>
+                            <td>23.9</td>
+                            <td>40.2</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Qwen2.5-7B-Math</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>61.0</td>
+                            <td>57.9</td>
+                            <td>16.2</td>
+                            <td>10.0</td>
+                            <td>16.7</td>
+                            <td>42.5</td>
+                            <td>64.2</td>
+                            <td>15.4</td>
+                            <td>28.0</td>
+                            <td>45.0</td>
+                            <td>29.5</td>
+                            <td>37.3</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="section-header" colspan="15">Zero-Style Reasoners Trained on Curated Coding Data</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">AceCoder-RM</td>
+                            <td>Ins</td>
+                            <td>22k</td>
+                            <td>79.9</td>
+                            <td>71.4</td>
+                            <td>23.6</td>
+                            <td>20.0</td>
+                            <td>6.7</td>
+                            <td>50.0</td>
+                            <td>76.4</td>
+                            <td>34.6</td>
+                            <td>36.7</td>
+                            <td>58.3</td>
+                            <td>37.4</td>
+                            <td>47.9</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">AceCoder-Rule</td>
+                            <td>Ins</td>
+                            <td>22k</td>
+                            <td>77.4</td>
+                            <td>69.0</td>
+                            <td>19.9</td>
+                            <td>13.3</td>
+                            <td>6.7</td>
+                            <td>50.0</td>
+                            <td>76.0</td>
+                            <td>37.5</td>
+                            <td>37.8</td>
+                            <td>55.4</td>
+                            <td>36.9</td>
+                            <td>46.2</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">AceCoder-RM</td>
+                            <td>Coder</td>
+                            <td>22k</td>
+                            <td>78.0</td>
+                            <td>66.4</td>
+                            <td>27.5</td>
+                            <td>13.3</td>
+                            <td>3.3</td>
+                            <td>27.5</td>
+                            <td>62.6</td>
+                            <td>29.4</td>
+                            <td>29.0</td>
+                            <td>57.3</td>
+                            <td>27.5</td>
+                            <td>42.4</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">AceCoder-Rule</td>
+                            <td>Coder</td>
+                            <td>22k</td>
+                            <td>80.5</td>
+                            <td>70.4</td>
+                            <td>29.0</td>
+                            <td>6.7</td>
+                            <td>6.7</td>
+                            <td>40.0</td>
+                            <td>62.8</td>
+                            <td>27.6</td>
+                            <td>27.4</td>
+                            <td>60.0</td>
+                            <td>28.5</td>
+                            <td>44.3</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">CodeR1-LC2k</td>
+                            <td>Ins</td>
+                            <td>2k</td>
+                            <td>81.7</td>
+                            <td>71.7</td>
+                            <td>28.1</td>
+                            <td>13.3</td>
+                            <td>10.0</td>
+                            <td>45.0</td>
+                            <td>75.0</td>
+                            <td>33.5</td>
+                            <td>36.7</td>
+                            <td>60.5</td>
+                            <td>35.6</td>
+                            <td>48.0</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">CodeR1-12k</td>
+                            <td>Ins</td>
+                            <td>12k</td>
+                            <td>81.1</td>
+                            <td>73.5</td>
+                            <td>29.3</td>
+                            <td>13.3</td>
+                            <td>3.3</td>
+                            <td>37.5</td>
+                            <td>74.0</td>
+                            <td>35.7</td>
+                            <td>36.9</td>
+                            <td>61.3</td>
+                            <td>33.5</td>
+                            <td>47.4</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="section-header" colspan="15">Zero-Style Reasoners Trained on Curated Math Data</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">PRIME-Zero</td>
+                            <td>Coder</td>
+                            <td>484k</td>
+                            <td>49.4</td>
+                            <td>51.1</td>
+                            <td>11.0</td>
+                            <td>23.3</td>
+                            <td>23.3</td>
+                            <td>67.5</td>
+                            <td>81.2</td>
+                            <td>37.9</td>
+                            <td>41.8</td>
+                            <td>37.2</td>
+                            <td class="best-result">45.8</td>
+                            <td>41.5</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">SimpleRL-Zoo</td>
+                            <td>Base</td>
+                            <td>8.5k</td>
+                            <td>73.2</td>
+                            <td>63.2</td>
+                            <td>25.6</td>
+                            <td>16.7</td>
+                            <td>3.3</td>
+                            <td>57.5</td>
+                            <td>77.0</td>
+                            <td>35.7</td>
+                            <td>41.0</td>
+                            <td>54.0</td>
+                            <td>38.5</td>
+                            <td>46.3</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Oat-Zero</td>
+                            <td>Math</td>
+                            <td>8.5k</td>
+                            <td>62.2</td>
+                            <td>59.0</td>
+                            <td>15.2</td>
+                            <td>30.0</td>
+                            <td>16.7</td>
+                            <td>62.5</td>
+                            <td>80.0</td>
+                            <td>34.9</td>
+                            <td>41.6</td>
+                            <td>45.5</td>
+                            <td>44.3</td>
+                            <td>44.9</td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">ORZ</td>
+                            <td>Base</td>
+                            <td>57k</td>
+                            <td>80.5</td>
+                            <td>64.3</td>
+                            <td>22.0</td>
+                            <td>13.3</td>
+                            <td>16.7</td>
+                            <td>60.0</td>
+                            <td>81.8</td>
+                            <td>32.7</td>
+                            <td>45.0</td>
+                            <td>55.6</td>
+                            <td>41.6</td>
+                            <td>48.6</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="section-header" colspan="15">Absolute Zero Training w/ No Curated Data (Ours)</td>
+                        </tr>
+                        <tr class="ours-row">
+                            <td class="model-col">AZR (Ours)</td>
+                            <td>Base</td>
+                            <td class="best-result">0</td>
+                            <td>71.3 <span class="negative-change">-1.9</span></td>
+                            <td>69.1 <span class="positive-change">+3.8</span></td>
+                            <td>25.3 <span class="positive-change">+7.8</span></td>
+                            <td>13.3 <span class="positive-change">+6.6</span></td>
+                            <td>13.3 <span class="positive-change">+10.0</span></td>
+                            <td>52.5 <span class="positive-change">+15.0</span></td>
+                            <td>74.4 <span class="positive-change">+9.6</span></td>
+                            <td>38.2 <span class="positive-change">+13.2</span></td>
+                            <td>38.5 <span class="positive-change">+10.8</span></td>
+                            <td>55.2 <span class="positive-change">+3.2</span></td>
+                            <td>38.4 <span class="positive-change">+10.9</span></td>
+                            <td>46.8 <span class="positive-change">+7.0</span></td>
+                        </tr>
+                        <tr class="ours-row">
+                            <td class="model-col">AZR (Ours)</td>
+                            <td>Coder</td>
+                            <td class="best-result">0</td>
+                            <td>83.5 <span class="positive-change">+3.0</span></td>
+                            <td>69.6 <span class="positive-change">+0.3</span></td>
+                            <td>31.7 <span class="positive-change">+11.8</span></td>
+                            <td>20.0 <span class="positive-change">+13.3</span></td>
+                            <td>10.0 <span class="positive-change">+6.7</span></td>
+                            <td>57.5 <span class="positive-change">+17.5</span></td>
+                            <td>72.6 <span class="positive-change">+22.6</span></td>
+                            <td>36.4 <span class="positive-change">+19.1</span></td>
+                            <td>38.2 <span class="positive-change">+16.3</span></td>
+                            <td class="best-result">61.6 <span class="positive-change">+5.0</span></td>
+                            <td>39.1 <span class="positive-change">+15.2</span></td>
+                            <td class="best-result">50.4 <span class="positive-change">+10.2</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-caption">
+                    <strong>Performance of RL-Trained Reasoner on Reasoning Benchmarks Based on Qwen2.5-7B Models.</strong>
+                    Performance of various models is evaluated on three standard code benchmarks (HumanEval<sup>+</sup>, MBPP<sup>+</sup>, LCB v5) 
+                    and six math benchmarks (AIME'24, AIME'25, AMC'23, MATH500, Minerva, OlympiadBench). 
+                    Average performance across coding and math benchmarks is calculated as average of the two averages: AVG = (CAvg + MAvg) / 2. 
+                    We use <span style="color: #10b981">+</span> for absolute percentage increase from base model. 
+                    All models are trained using different variants of the Qwen2.5-7B model, with the variant and data usage labeled.
+                </div>
+            </div>
+
+            <div class="results-table-container scaling-container">
+                <h3 class="subsection-title">3.2. Scaling Results</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Model Family</th>
+                            <th>Variant</th>
+                            <th>Code Avg</th>
+                            <th>Math Avg</th>
+                            <th>Total Avg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="model-col">Qwen2.5-3B Coder</td>
+                            <td></td>
+                            <td>51.2</td>
+                            <td>18.8</td>
+                            <td>35.0</td>
+                        </tr>
+                        <tr class="ours-row">
+                            <td class="model-col">Qwen2.5-3B Coder</td>
+                            <td>+ AZR (Ours)</td>
+                            <td class="scale-result">54.9 <span class="positive-change">+3.7</span></td>
+                            <td class="scale-result">26.5 <span class="positive-change">+7.7</span></td>
+                            <td class="scale-result">40.7 <span class="positive-change">+5.7</span></td>
+                        </tr>
+                        <tr>
+                            <td class="section-header" colspan="5"></td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Qwen2.5-7B Coder</td>
+                            <td></td>
+                            <td>56.6</td>
+                            <td>23.9</td>
+                            <td>40.2</td>
+                        </tr>
+                        <tr class="ours-row">
+                            <td class="model-col">Qwen2.5-7B Coder</td>
+                            <td>+ AZR (Ours)</td>
+                            <td class="scale-result">61.6 <span class="positive-change">+5.0</span></td>
+                            <td class="scale-result">39.1 <span class="positive-change">+15.2</span></td>
+                            <td class="scale-result">50.4 <span class="positive-change">+10.2</span></td>
+                        </tr>
+                        <tr>
+                            <td class="section-header" colspan="5"></td>
+                        </tr>
+                        <tr>
+                            <td class="model-col">Qwen2.5-14B Coder</td>
+                            <td></td>
+                            <td>60.0</td>
+                            <td>20.2</td>
+                            <td>40.1</td>
+                        </tr>
+                        <tr class="ours-row">
+                            <td class="model-col">Qwen2.5-14B Coder</td>
+                            <td>+ AZR (Ours)</td>
+                            <td class="scale-result">63.6 <span class="positive-change">+3.6</span></td>
+                            <td class="scale-result">43.0 <span class="positive-change">+22.8</span></td>
+                            <td class="scale-result">53.3 <span class="positive-change">+13.2</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="scale-explanation">
+                    <p><strong>Out-of-distribution reasoning performance</strong> across different model sizes, reported as the average of code tasks, math tasks, and their overall average. We examine the effects of scaling model size from 3B to 14B parameters.</p>
+                    
+                    <p>Given the strong performance of coder models in the 7B category, we extend the analysis by evaluating smaller and larger variants: <code>Qwen2.5-3B-Coder</code> and <code>Qwen2.5-14B-Coder</code>. Due to the absence of existing baselines for these zero-style reasoner models, we compare each model's performance to its corresponding base coder model.</p>
+                    
+                    <p>The results reveal a clear trend: our method delivers <em>greater gains on larger, more capable models</em>. In the in-distribution setting, the 7B and 14B models continue to improve beyond 200 training steps, whereas the smaller 3B model appears to plateau. For out-of-distribution domains, larger models also show greater overall performance improvements than smaller ones: +5.7, +10.2, +13.2 overall performance gains, respectively for 3B, 7B and 14B. This is an encouraging sign, suggesting that scaling enhances the effectiveness of AZR. In future work, we aim to investigate the scaling laws that govern performance in the Absolute Zero paradigm.</p>
+                </div>
+            </div>
+
+            <div class="subsection" id="key-findings">
+                <h3 class="subsection-title">3.3. Other Key Findings</h3>
+                
+                <div class="paradigm-explanation">
+                    <ul>
+                        <li><strong>Code priors amplify reasoning.</strong> The base <code>Qwen-Coder-7b</code> model started with math performance 3.6 points lower than <code>Qwen-7b</code>. But after AZR training for both models, the coder variant surpassed the base by 0.7 points, suggesting that strong coding capabilities may potentially amplify overall reasoning improvements after AZR training.</li>
+                        
+                        <li><strong>Cross domain transfer is more pronounced for AZR.</strong> After RLVR, expert code models raise math accuracy by only 0.65 points on average, whereas <code>AZR‑Base‑7B</code> and <code>AZR‑Coder‑7B</code> trained on self-proposed code reasoning tasks improve math average by 10.9 and 15.2, respectively, demonstrating much stronger generalized reasoning capability gains.</li>
+                        
+                        <li><strong>Comments as intermediate plans emerge naturally.</strong> When solving code induction tasks, AZR often interleaves step-by-step plans as comments and code (see <a href="#react-figure" class="figure-link">Figure 4</a>), resembling the ReAct prompting framework. Similar behavior has been observed in much larger formal-math models such as DeepSeek Prover v2 (671B). We therefore believe that allowing the model to use intermediate scratch-pads when generating long-form answers may be beneficial in other domains as well.</li>
+                        
+                        <li><strong>Cognitive Behaviors and Token length depends on reasoning mode.</strong> Distinct cognitive behaviors—such as step-by-step reasoning, enumeration, and trial-and-error all emerged through AZR training, but different behaviors are particularly evident across different types of tasks. Furthermore token counts grow over AZR training, but the magnitude of increase also differs by task types: abduction grows the most because the model performs trial-and-error until output matches, whereas deduction and induction grow modestly.</li>
+                        
+                        <li><strong>Safety alarms ringing.</strong> We observe AZR with <code>Llama3.1-8b</code> as the base occasionally produces concerning chains of thought, we term the "uh‑oh moment", example shown in <a href="#uhoh-figure" class="figure-link">Figure 5</a>, highlighting the need for future work on safety‑aware training.</li>
+                    </ul>
+                </div>
+                
+                <figure class="numbered-figure" id="react-figure">
+                    <img src="/assets/absolute-zero-reasoner/react_program.png" 
+                         class="research-image" 
+                         alt="Example of Comments as Intermediate Plans">
+                    <figcaption class="latex-caption">
+                        <span class="textbf">Example of Comments as Intermediate Plans.</span> 
+                        The model naturally develops a habit of using comments as intermediate planning steps when solving complex reasoning tasks,
+                        similar to the ReAct prompting framework. This emergent behavior demonstrates how the model breaks down problems
+                        into manageable steps through self-commentary.
+                    </figcaption>
+                </figure>
+
+                <figure class="numbered-figure" id="uhoh-figure">
+                    <img src="/assets/absolute-zero-reasoner/uh_oh.png" 
+                         class="research-image" 
+                         alt="Safety Concerns in Reasoning">
+                    <figcaption class="latex-caption">
+                        <span class="textbf">Example of "Uh-Oh Moment" in AZR Training.</span>
+                        When using Llama3.1-8b as the base model, we occasionally observe concerning chains of thought during reasoning.
+                        This example highlights the need for safety-aware training in future iterations of the Absolute Zero paradigm.
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="subsection" id="examples">
+                <h3 class="subsection-title">3.4. Examples</h3>
+                
+                <figure class="numbered-figure" id="example-figure">
+                    <img src="/assets/absolute-zero-reasoner/aaa.png" 
+                         class="research-image" 
+                         alt="Example of a Model-Proposed Task and Its Response">
+                    <figcaption class="latex-caption">
+                        <span class="textbf">Example of a Model-Proposed Task and Its Response for Solving an Abduction Task.</span> 
+                        (Left) The model autonomously proposes an input and program for the abduction task. We execute the program to verify its validity and obtain the corresponding output. 
+                        (Right) The model's reasoning process when solving the abduction task: given the code and output, it attempts to infer the original input. 
+                        The model begins by analyzing the program, proposes an initial input, and reasons through the code to produce an output. 
+                        If there is a mismatch, it reflects on the discrepancy and iteratively adjusts the input until the generated output matches the target. 
+                        Interestingly, the agent arrives at a different input than the gold one, but since it produces the correct output, the answer is considered correct.
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="section" id="citation">
+            <h2>4. Citation</h2>
+            <div class="bibtex-container">
+                <pre><code>@article{zhao2024absolute,
+    title={Absolute Zero: Reinforced Self-play Reasoning with Zero Data},
+    author={Zhao, Andrew and Wu, Yiran and Yue, Yang and Wu, Tong and Xu, Quentin and Yue, Yang and Lin, Matthieu and Wang, Shenzhi and Wu, Qingyun and Zheng, Zilong and Huang, Gao},
+    journal={arXiv preprint arXiv:2405.19026},
+    year={2024}
+}</code></pre>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Background animation
+        const canvas = document.createElement('canvas');
+        document.getElementById('canvas-container').appendChild(canvas);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+
+        const particles = [];
+        const geometry = new THREE.SphereGeometry(0.1, 8, 8);
+        const primaryColor = new THREE.Color(0x2563eb);
+        const secondaryColor = new THREE.Color(0xec4899);
+
+        for (let i = 0; i < 50; i++) {
+            const material = new THREE.MeshBasicMaterial({
+                color: i % 2 === 0 ? primaryColor : secondaryColor,
+                transparent: true,
+                opacity: 0.7
+            });
+            const particle = new THREE.Mesh(geometry, material);
+            
+            particle.position.x = Math.random() * 60 - 30;
+            particle.position.y = Math.random() * 60 - 30;
+            particle.position.z = Math.random() * 60 - 30;
+            
+            particle.velocity = new THREE.Vector3(
+                Math.random() * 0.02 - 0.01,
+                Math.random() * 0.02 - 0.01,
+                Math.random() * 0.02 - 0.01
+            );
+            
+            particles.push(particle);
+            scene.add(particle);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            particles.forEach(particle => {
+                particle.position.add(particle.velocity);
+                
+                if (particle.position.x < -30 || particle.position.x > 30) particle.velocity.x = -particle.velocity.x;
+                if (particle.position.y < -30 || particle.position.y > 30) particle.velocity.y = -particle.velocity.y;
+                if (particle.position.z < -30 || particle.position.z > 30) particle.velocity.z = -particle.velocity.z;
+            });
+            
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Theme toggling
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeIcon.classList.toggle('fa-sun');
+            themeIcon.classList.toggle('fa-moon');
+        });
+
+        // Scroll animations
+        const sections = document.querySelectorAll('.section');
+        
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Interactive Explorer Logic
+        const modelSelector = document.getElementById('model-selector');
+        const svg = d3.select('#embedding-viz');
+        const detailsPanel = document.getElementById('details-panel');
+        const codeDisplay = document.getElementById('code-display');
+        const inputDisplay = document.getElementById('input-display');
+        const outputDisplay = document.getElementById('output-display');
+        const taskType = document.getElementById('task-type');
+        const stepsDisplay = document.getElementById('steps-display');
+        const zoomIn = document.getElementById('zoom-in');
+        const zoomOut = document.getElementById('zoom-out');
+        const resetView = document.getElementById('reset-view');
+
+        // Global variables for data and visualization
+        let modelData = {
+            points: [],
+            umap: null
+        };
+        let zoom = d3.zoom().scaleExtent([0.5, 10]).on('zoom', zoomed);
+        let selectedPoint = null;
+
+        // Initialize SVG
+        const width = svg.node().getBoundingClientRect().width;
+        const height = svg.node().getBoundingClientRect().height;
+        const g = svg.append('g');
+
+        // Apply zoom behavior
+        svg.call(zoom);
+
+        function zoomed(event) {
+            g.attr('transform', event.transform);
+        }
+
+        // Zoom controls
+        zoomIn.addEventListener('click', () => {
+            svg.transition().call(zoom.scaleBy, 1.5);
+        });
+
+        zoomOut.addEventListener('click', () => {
+            svg.transition().call(zoom.scaleBy, 0.75);
+        });
+
+        resetView.addEventListener('click', () => {
+            svg.transition().call(zoom.transform, d3.zoomIdentity);
+        });
+
+        // Model selection
+        modelSelector.addEventListener('change', async () => {
+            const selectedModel = modelSelector.value;
+            if (selectedModel === 'default') return;
+            
+            // Clear existing visualization
+            g.selectAll('*').remove();
+            detailsPanel.style.display = 'none';
+            
+            try {
+                // Show loading message
+                g.selectAll('*').remove();
+                g.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'middle')
+                    .text('Loading data...')
+                    .attr('fill', 'var(--text)');
+
+                // Load model data from JSONL files
+                await loadModelData(selectedModel);
+                
+                // Apply initial zoom for better view
+                svg.call(zoom.transform, d3.zoomIdentity.scale(0.65).translate(width/2, height/3));
+            } catch (error) {
+                console.error('Error loading model data:', error);
+                g.selectAll('*').remove();
+                g.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2)
+                    .attr('text-anchor', 'middle')
+                    .text('Error loading data: ' + error.message)
+                    .attr('fill', 'var(--text)');
+                
+                // Show fallback message about processing
+                g.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2 + 30)
+                    .attr('text-anchor', 'middle')
+                    .text('Run preprocess_embeddings.py first to generate the data files')
+                    .attr('fill', 'var(--text)');
+                
+                throw error;
+            }
+        });
+
+        // Load model data from JSONL files
+        async function loadModelData(model) {
+            try {
+                // Show loading message
+                g.selectAll('*').remove();
+                g.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'middle')
+                    .text('Loading data...')
+                    .attr('fill', 'var(--text)');
+
+                // Load combined lightweight processed file
+                const response = await fetch(`/assets/absolute-zero-reasoner/processed/${model}_combined_light.jsonl`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load data file');
+                }
+                
+                const text = await response.text();
+                
+                // Parse JSONL file
+                modelData.points = text.trim().split('\n')
+                    .filter(line => line.trim() !== '')
+                    .map(line => JSON.parse(line));
+                
+                console.log(`Loaded ${modelData.points.length} data points`);
+                
+                // Visualize the data
+                visualizeEmbeddings();
+            } catch (error) {
+                console.error('Error loading model data:', error);
+                g.selectAll('*').remove();
+                g.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2)
+                    .attr('text-anchor', 'middle')
+                    .text('Error loading data: ' + error.message)
+                    .attr('fill', 'var(--text)');
+                
+                // Show fallback message about processing
+                g.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2 + 30)
+                    .attr('text-anchor', 'middle')
+                    .text('Run preprocess_embeddings.py first to generate the data files')
+                    .attr('fill', 'var(--text)');
+                
+                throw error;
+            }
+        }
+
+        // Process stream in chunks to avoid memory issues
+        async function processStreamInChunks(reader, maxPoints, taskType) {
+            // Code removed as we're now using preprocessed files
+        }
+
+        // Simple embedding dimensionality reduction for browser performance
+        function simplifyEmbeddings() {
+            // Code removed as we're now using preprocessed files with UMAP already applied
+        }
+
+        // Visualize embeddings in the SVG
+        function visualizeEmbeddings() {
+            g.selectAll('*').remove();
+            
+            // Find min/max for scaling
+            const xExtent = d3.extent(modelData.points, d => d.x);
+            const yExtent = d3.extent(modelData.points, d => d.y);
+            
+            // Create scales
+            const xScale = d3.scaleLinear()
+                .domain(xExtent)
+                .range([50, width - 50]);
+            
+            const yScale = d3.scaleLinear()
+                .domain(yExtent)
+                .range([50, height - 50]);
+            
+            // Use same color for all points
+            const pointColor = 'var(--secondary)';
+            
+            // Create drag behavior
+            const drag = d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended);
+                
+            // Draw points
+            g.selectAll('circle')
+                .data(modelData.points)
+                .enter()
+                .append('circle')
+                .attr('class', 'dot')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 5)
+                .attr('fill', pointColor)
+                .call(drag)
+                .on('mouseover', function(event, d) {
+                    // Highlight the dot
+                    d3.select(this).attr('r', 8);
+                    
+                    // Set as selected point
+                    selectedPoint = d;
+                    
+                    // Display details
+                    displayDetails(d);
+                })
+                .on('mouseout', function(event, d) {
+                    // Return to normal size if not the active selection
+                    if (!event.buttons) { // Only shrink if not currently dragging
+                        d3.select(this).attr('r', 5);
+                        // Hide details panel on mouseout (optional - remove if you want panel to stay)
+                        // detailsPanel.style.display = 'none';
+                    }
+                })
+                .on('click', function(event, d) {
+                    // Prevent drag from interfering with click
+                    if (event.defaultPrevented) return;
+                    
+                    // Reset all points to normal
+                    g.selectAll('circle')
+                        .attr('r', 5)
+                        .attr('stroke-width', 0.5);
+                    
+                    // Highlight this point
+                    d3.select(this).attr('r', 8).attr('stroke-width', 2);
+                    
+                    // Set as selected point
+                    selectedPoint = d;
+                    
+                    // Display details
+                    displayDetails(d);
+                    
+                    // Stop propagation to parent elements
+                    event.stopPropagation();
+                });
+            
+            // Drag functions
+            function dragstarted(event, d) {
+                if (event.sourceEvent) {
+                    // Prevent click event from firing
+                    event.sourceEvent.stopPropagation();
+                }
+                d3.select(this).raise().attr('stroke-width', 2);
+            }
+            
+            function dragged(event, d) {
+                d3.select(this)
+                    .attr('cx', event.x)
+                    .attr('cy', event.y);
+                // Update the data point's coordinates to match the visual position
+                d.visualX = event.x;
+                d.visualY = event.y;
+            }
+            
+            function dragended(event, d) {
+                d3.select(this).attr('stroke-width', selectedPoint === d ? 2 : 0.5);
+            }
+        }
+
+        // Display details for the selected point
+        function displayDetails(point) {
+            detailsPanel.style.display = 'block';
+            
+            // Display code with syntax highlighting
+            codeDisplay.textContent = point.snippet;
+            Prism.highlightElement(codeDisplay);
+            
+            // Display input, output, task type, and steps
+            inputDisplay.textContent = point.input;
+            outputDisplay.textContent = point.output;
+            
+            taskType.textContent = point.task_type;
+            taskType.className = `task-type ${point.task_type.toLowerCase()}`;
+            
+            // Display steps count
+            stepsDisplay.textContent = point.steps || 'Not available';
+        }
+
+        // Resize handling
+        window.addEventListener('resize', () => {
+            const newWidth = svg.node().getBoundingClientRect().width;
+            const newHeight = svg.node().getBoundingClientRect().height;
+            
+            // Resize SVG and re-render if needed
+            if (modelData.points.length > 0) {
+                visualizeEmbeddings();
+            }
+        });
+
+        // Load default model when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await loadModelData('azr_coder_7b');
+                // Apply an initial zoom out to show all dots
+                svg.call(zoom.transform, d3.zoomIdentity.scale(0.65).translate(width/2, height/3));
+            } catch (error) {
+                console.error('Error loading default model:', error);
+            }
+            
+            // Initialize code tooltips for animation gallery
+            initializeCodeTooltips();
+
+            // Initialize GIF playback control
+            document.querySelectorAll('.animation-gif').forEach(gifImg => {
+                const rub = new SuperGif({ 
+                    gif: gifImg,
+                    auto_play: true 
+                });
+                
+                const speedMultiplier = gifImg.dataset.speed || 3; // Default 3x speed
+                
+                rub.load(() => {
+                    rub.get_frames().forEach(frame => {
+                        frame.delay = Math.max(1, frame.delay / speedMultiplier);
+                    });
+                    rub.move_to(0);
+                });
+            });
+        });
+        
+        // Function to initialize code tooltips with syntax highlighting
+        function initializeCodeTooltips() {
+            const backdrop = document.createElement('div');
+            backdrop.className = 'backdrop';
+            document.body.appendChild(backdrop);
+            
+            document.querySelectorAll('.code-hover').forEach((hover) => {
+                const originalTooltip = hover.querySelector('.code-tooltip');
+                const codeElement = originalTooltip.querySelector('code');
+                
+                // Get the text content directly, avoiding any headers or suffixes
+                let codeContent = codeElement.textContent.trim();
+                
+                // Create new tooltip with the clean code content
+                const tooltip = document.createElement('div');
+                tooltip.className = 'code-tooltip code-tooltip-dynamic';
+                
+                // Use the original class for syntax highlighting
+                const langClass = codeElement.className;
+                
+                // Create code element and set text content properly
+                const pre = document.createElement('pre');
+                const code = document.createElement('code');
+                code.className = langClass;
+                code.textContent = codeContent;
+                pre.appendChild(code);
+                
+                tooltip.appendChild(pre);
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'close-btn';
+                closeBtn.textContent = '✕ CLOSE';
+                tooltip.appendChild(closeBtn);
+                
+                document.body.appendChild(tooltip);
+                
+                // Add event listeners
+                hover.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    tooltip.style.display = 'block';
+                    backdrop.style.display = 'block';
+                    Prism.highlightElement(code);
+                    document.body.style.overflow = 'hidden';
+                });
+                
+                closeBtn.addEventListener('click', () => {
+                    tooltip.style.display = 'none';
+                    backdrop.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            backdrop.addEventListener('click', () => {
+                document.querySelectorAll('.code-tooltip-dynamic').forEach(tooltip => {
+                    tooltip.style.display = 'none';
+                });
+                backdrop.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = [
+                document.querySelector('.slideshow-image:nth-child(1)'), // SFT
+                document.querySelector('.slideshow-image:nth-child(2)'), // RLVR
+                document.querySelector('.slideshow-image:nth-child(3)')  // AZ
+            ];
+
+            let currentIndex = 0;
+            const cycleDuration = 1000; // 2 seconds per image
+
+            function cycleImages() {
+                // Hide all images
+                images.forEach(img => img.style.display = 'none');
+                
+                // Show current image
+                images[currentIndex].style.display = 'block';
+                
+                // Move to next image
+                currentIndex = (currentIndex + 1) % images.length;
+            }
+
+            // Initial call and set interval
+            cycleImages();
+            setInterval(cycleImages, cycleDuration);
+        });
+
+        // Sidebar navigation highlight active section
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.sidebar-item a, .sidebar-sub-item a');
+            const sections = document.querySelectorAll('section[id], div[id]:not(.sidebar-nav)');
+            
+            // Add click event listeners
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get the target section
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Smooth scroll to target with offset for navbar
+                    const targetSection = document.getElementById(targetId);
+                    const offsetTop = targetSection.getBoundingClientRect().top + window.pageYOffset - 80;
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Highlight active section on scroll
+            function highlightActiveSection() {
+                let scrollPosition = window.scrollY + 200; // Add offset to trigger earlier
+                
+                // Find the current section
+                let currentSection = null;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSection = section;
+                    }
+                });
+                
+                if (currentSection) {
+                    const id = currentSection.getAttribute('id');
+                    
+                    // Remove active class from all links
+                    sidebarLinks.forEach(link => {
+                        link.parentElement.classList.remove('active');
+                    });
+                    
+                    // Add active class to corresponding link
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) {
+                        activeLink.parentElement.classList.add('active');
+                        
+                        // If this is a sub-item, also activate parent
+                        if (activeLink.parentElement.classList.contains('sidebar-sub-item')) {
+                            activeLink.parentElement.parentElement.parentElement.classList.add('active');
+                        }
+                    }
+                }
+            }
+            
+            window.addEventListener('scroll', highlightActiveSection);
+            
+            // Call once on load
+            highlightActiveSection();
+            
+            // Add mobile sidebar toggle functionality
+            if (window.innerWidth <= 768) {
+                // Create toggle button
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'sidebar-toggle';
+                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.appendChild(toggleBtn);
+                
+                toggleBtn.addEventListener('click', () => {
+                    document.getElementById('sidebar-nav').classList.toggle('active');
+                });
+            }
+        });
+
+        // Add sidebar toggle button
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.querySelector('body');
+            const sidebarNav = document.getElementById('sidebar-nav');
+            
+            // Create sidebar toggle button if it doesn't exist
+            if (!document.querySelector('.sidebar-toggle')) {
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'sidebar-toggle';
+                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                body.appendChild(toggleBtn);
+                
+                toggleBtn.addEventListener('click', () => {
+                    sidebarNav.classList.toggle('active');
+                    if (sidebarNav.classList.contains('active')) {
+                        toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    } else {
+                        toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+            }
+            
+            // Make toggle button sticky when scrolling
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    toggleBtn.classList.add('sticky');
+                } else {
+                    toggleBtn.classList.remove('sticky');
+                }
+            });
+        });
+
+        // Make navigation bar sticky when scrolling
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Apply custom BibTeX syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simplified BibTeX styling - just apply styling to the text directly
+            const bibtexContainer = document.querySelector('.bibtex-container');
+            if (bibtexContainer) {
+                bibtexContainer.style.fontFamily = "'Space Mono', monospace";
+                bibtexContainer.style.fontSize = "0.95rem";
+                bibtexContainer.style.lineHeight = "1.7";
+            }
+        });
+
+        // Back to top button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+            
+            // Scroll to top with animation when clicked
+            backToTopButton.addEventListener('click', () => {
+                backToTopButton.classList.add('launching');
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    backToTopButton.classList.remove('launching');
+                }, 1000);
+            });
+        });
+
+        // Make navigation bar sticky when scrolling
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html> 
