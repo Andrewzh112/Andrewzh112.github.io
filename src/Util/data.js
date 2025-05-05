@@ -43,6 +43,14 @@ export const SOCIAL_LINKS = [
 
 export const NEWS = [
     {
+        date: "Apr 2025",
+        content: "Self-Reference has been accepted to Neural Networks!",
+    },
+    {
+        date: "Feb 2025",
+        content: "DiveR-CT was selected as an Oral Presentation at AAAI 2025, see you in Philly!",
+    },
+    {
         date: "Dec 2024",
         content: "One new paper accepted to AAAI 2025!",
     },
@@ -76,7 +84,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 4,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025)",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (Oral)",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
@@ -97,11 +105,11 @@ export const FEATUREDPUBLICATIONS = [
     },
     {
         id: 2,
-        name: "Augmenting Unsupervised Reinforcement Learning with Self-Reference",
-        journal: "arXiv Preprint",
-        date: "Nov 2023",
+        name: "Self-Referencing Agents for Unsupervised Reinforcement Learning",
+        journal: "Neural Networks",
+        date: "Apr 2025",
         authors: "Andrew Zhao, Erle Zhu, Rui Lu, Matthieu Lin, Yong-Jin Liu, Gao Huang",
-        link: "https://arxiv.org/abs/2311.09692",
+        link: "https://www.sciencedirect.com/science/article/pii/S0893608025003272",
         image: sr,
     },
     {
@@ -119,7 +127,7 @@ export const FEATUREDPUBLICATIONS = [
 
 export const PUBLICATIONS = [
     {
-        id: 10,
+        id: 11,
         name: "LLM-based Optimization of Compound AI Systems: A Survey",
         journal: "arXiv Preprint",
         date: "Oct 2024",
@@ -128,7 +136,7 @@ export const PUBLICATIONS = [
         image: optim
     },
     {
-        id: 9,
+        id: 10,
         name: "Model Surgery: Modulating LLM's Behavior Via Simple Parameter Editing",
         journal: "arXiv Preprint",
         date: "July 2024",
@@ -137,9 +145,9 @@ export const PUBLICATIONS = [
         image: surgery
     },
     {
-        id: 8,
+        id: 9,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025)",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (Oral)",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
@@ -148,7 +156,7 @@ export const PUBLICATIONS = [
         code: "https://github.com/LeapLabTHU/diver-ct"
     },
     {
-        id: 7,
+        id: 8,
         name: "Exploring Temporal Feature Correlation for Efficient and Stable Video Semantic Segmentation",
         journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024)",
         date: "Oct 2023",
@@ -157,7 +165,7 @@ export const PUBLICATIONS = [
         image: seg,
     },
     {
-        id: 6,
+        id: 7,
         name: "Exploring Temporal Feature Correlation for Efficient and Stable Video Semantic Segmentation",
         journal: "CVPR 2024 Human Motion Generation (HuMoGen) Workshop",
         date: "April 2024",
@@ -166,7 +174,7 @@ export const PUBLICATIONS = [
         image: motion,
     },
     {
-        id: 5,
+        id: 6,
         name: "Avalon's Game of Thoughts: Battle Against Deception through Recursive Contemplation",
         journal: "Findings of the Association for Computational Linguistics: ACL 2024",
         date: "Oct 2023",
@@ -177,7 +185,7 @@ export const PUBLICATIONS = [
         // projectPage: "https://example.com/projects/project1"
     },
     {
-        id: 4,
+        id: 5,
         name: "ExpeL: LLM Agents are Experiential Learners",
         journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024) (Oral)",
         date: "Aug 2023",
@@ -186,6 +194,15 @@ export const PUBLICATIONS = [
         image: expel,
         code: "https://github.com/LeapLabTHU/ExpeL",
         projectPage: "https://andrewzh112.github.io/expel"
+    },
+    {
+        id: 4,
+        name: "Self-Referencing Agents for Unsupervised Reinforcement Learning",
+        journal: "Neural Networks",
+        date: "Apr 2025",
+        authors: "Andrew Zhao, Erle Zhu, Rui Lu, Matthieu Lin, Yong-Jin Liu, Gao Huang",
+        link: "https://www.sciencedirect.com/science/article/pii/S0893608025003272",
+        image: sr,
     },
     {
         id: 3,
