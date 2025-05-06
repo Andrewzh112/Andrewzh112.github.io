@@ -1819,6 +1819,81 @@
         .sidebar-item.feature-nav.home-nav a i {
             color: var(--primary);
         }
+
+        /* Image Popup Styles */
+        .image-popup {
+            display: none; /* Hidden by default */
+            position: fixed; 
+            z-index: 10001; /* Ensure it's above everything */
+            padding-top: 50px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            cursor: pointer; /* Indicate clicking background closes it */
+        }
+
+        .image-popup-content {
+            margin: auto;
+            display: block;
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain; /* Maintain aspect ratio */
+            animation-name: zoom;
+            animation-duration: 0.4s;
+            cursor: default; /* Reset cursor for image */
+        }
+
+        .image-popup-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 50px; /* Space for caption */
+            font-size: 0.9rem;
+            cursor: default;
+        }
+
+        @keyframes zoom {
+            from {transform: scale(0.1)} 
+            to {transform: scale(1)}
+        }
+
+        .image-popup-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 10002; /* Above image */
+        }
+
+        .image-popup-close:hover,
+        .image-popup-close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        /* Add cursor pointer to images that will be expandable */
+        .research-image, .animation-gif {
+            cursor: zoom-in;
+        }
+
+        /* Mobile adjustments */
+        @media only screen and (max-width: 700px){
+            .image-popup-content {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body class="dark-mode">
@@ -2841,20 +2916,9 @@ if __name__ == "__main__":
             </div>
             
             <figure class="numbered-figure" id="paradigm-figure">
-                <div class="slideshow-container">
-                    <img src="/assets/absolute-zero-reasoner/sft.png" 
-                         class="slideshow-image" 
-                         alt="Supervised Learning"
-                         style="animation-delay: 0s">
-                    <img src="/assets/absolute-zero-reasoner/rlvr.png" 
-                         class="slideshow-image" 
-                         alt="RL from Verified Rewards"
-                         style="animation-delay: 2s">
-                    <img src="/assets/absolute-zero-reasoner/az.png" 
-                         class="slideshow-image" 
-                         alt="Absolute Zero Paradigm"
-                         style="animation-delay: 6s">
-                </div>
+                <img src="/assets/absolute-zero-reasoner/az.png" 
+                     class="research-image"
+                     alt="Absolute Zero Paradigm">
                 <figcaption class="latex-caption">
                     <span class="textbf">Absolute Zero Paradigm.</span> <span class="textbf"><span class="textcolor-gray">Supervised learning</span></span> relies on human-curated reasoning traces for behavior cloning. 
                     <span class="textbf"><span class="textcolor-gray">Reinforcement learning from verified rewards</span></span> enables agents to self-learn reasoning, but still depends on expert-defined 
@@ -3387,7 +3451,7 @@ if __name__ == "__main__":
         <section class="section" id="citation">
             <h2>4. Citation</h2>
             <div class="bibtex-container">
-                <pre><code>@article{zhao2024absolute,
+                <pre><code>@article{zhao2025absolutezero,
     title={Absolute Zero: Reinforced Self-play Reasoning with Zero Data},
     author={Zhao, Andrew and Wu, Yiran and Yue, Yang and Wu, Tong and Xu, Quentin and Yue, Yang and Lin, Matthieu and Wang, Shenzhi and Wu, Qingyun and Zheng, Zilong and Huang, Gao},
     journal={arXiv preprint arXiv:\TODO},
@@ -3861,32 +3925,6 @@ if __name__ == "__main__":
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const images = [
-                document.querySelector('.slideshow-image:nth-child(1)'), // SFT
-                document.querySelector('.slideshow-image:nth-child(2)'), // RLVR
-                document.querySelector('.slideshow-image:nth-child(3)')  // AZ
-            ];
-
-            let currentIndex = 0;
-            const cycleDuration = 1000; // 2 seconds per image
-
-            function cycleImages() {
-                // Hide all images
-                images.forEach(img => img.style.display = 'none');
-                
-                // Show current image
-                images[currentIndex].style.display = 'block';
-                
-                // Move to next image
-                currentIndex = (currentIndex + 1) % images.length;
-            }
-
-            // Initial call and set interval
-            cycleImages();
-            setInterval(cycleImages, cycleDuration);
-        });
-
         // Sidebar navigation highlight active section
         document.addEventListener('DOMContentLoaded', () => {
             const sidebarLinks = document.querySelectorAll('.sidebar-item a, .sidebar-sub-item a');
@@ -4070,6 +4108,66 @@ if __name__ == "__main__":
                 nav.classList.remove('scrolled');
             }
         });
+
+        // Image Popup Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const popup = document.getElementById('image-popup');
+            const popupImg = document.getElementById('popup-img');
+            const popupCaption = document.getElementById('popup-caption');
+            const closeBtn = document.querySelector('.image-popup-close');
+
+            // Select all images you want to make expandable
+            const expandableImages = document.querySelectorAll('.research-image, .animation-gif');
+
+            expandableImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    popup.style.display = 'block';
+                    popupImg.src = this.src;
+                    
+                    // Try to get caption from figure or alt text
+                    let captionText = '';
+                    const figure = this.closest('figure'); // Find parent figure
+                    if (figure) {
+                        const figcaption = figure.querySelector('figcaption');
+                        if (figcaption) {
+                            // Use a simplified version of the caption text
+                            captionText = figcaption.textContent.split('.')[0] + '.'; 
+                        }
+                    }
+                    if (!captionText) {
+                        captionText = this.alt || 'Expanded Image'; // Fallback to alt text
+                    }
+                    popupCaption.textContent = captionText;
+                    
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                });
+            });
+
+            // Function to close the popup
+            function closePopup() {
+                popup.style.display = 'none';
+                popupImg.src = ''; // Clear image src
+                popupCaption.textContent = '';
+                document.body.style.overflow = ''; // Restore background scrolling
+            }
+
+            // Close popup when the close button is clicked
+            closeBtn.addEventListener('click', closePopup);
+
+            // Close popup when clicking on the background overlay
+            popup.addEventListener('click', function(event) {
+                // Close only if the click is on the background itself, not the image/caption/button
+                if (event.target === popup) { 
+                    closePopup();
+                }
+            });
+        });
     </script>
+
+    <div id="image-popup" class="image-popup">
+        <span class="image-popup-close">&times;</span>
+        <img class="image-popup-content" id="popup-img">
+        <div class="image-popup-caption" id="popup-caption"></div>
+    </div>
 </body>
 </html> 
