@@ -2010,7 +2010,6 @@
                     <li class="sidebar-sub-item"><a href="#main-results">3.1. Main Results</a></li>
                     <li class="sidebar-sub-item"><a href="#scaling-results">3.2. Scaling Results</a></li>
                     <li class="sidebar-sub-item"><a href="#key-findings">3.3. Other Key Findings</a></li>
-                    <li class="sidebar-sub-item"><a href="#examples">3.4. Examples</a></li>
                 </ul>
             </li>
             <li class="sidebar-item"><a href="#citation">4. Citation</a></li>
@@ -3395,13 +3394,13 @@ if __name__ == "__main__":
                     <ul>
                         <li><strong>Code priors amplify reasoning.</strong> The base <code>Qwen-Coder-7b</code> model started with math performance 3.6 points lower than <code>Qwen-7b</code>. But after AZR training for both models, the coder variant surpassed the base by 0.7 points, suggesting that strong coding capabilities may potentially amplify overall reasoning improvements after AZR training.</li>
                         
-                        <li><strong>Cross domain transfer is more pronounced for AZR.</strong> After RLVR, expert code models raise math accuracy by only 0.65 points on average, whereas <code>AZR‑Base‑7B</code> and <code>AZR‑Coder‑7B</code> trained on self-proposed code reasoning tasks improve math average by 10.9 and 15.2, respectively, demonstrating much stronger generalized reasoning capability gains.</li>
+                        <li><strong>Cross domain transfer is more pronounced for AZR.</strong> After RLVR, expert code models raise math accuracy by only 0.65 points on average, whereas <code>AZR-Base-7B</code> and <code>AZR-Coder-7B</code> trained on self-proposed code reasoning tasks improve math average by 10.9 and 15.2, respectively, demonstrating much stronger generalized reasoning capability gains.</li>
                         
                         <li><strong>Comments as intermediate plans emerge naturally.</strong> When solving code induction tasks, AZR often interleaves step-by-step plans as comments and code (see <a href="#react-figure" class="figure-link">Figure 4</a>), resembling the ReAct prompting framework. Similar behavior has been observed in much larger formal-math models such as DeepSeek Prover v2 (671B). We therefore believe that allowing the model to use intermediate scratch-pads when generating long-form answers may be beneficial in other domains as well.</li>
                         
-                        <li><strong>Cognitive Behaviors and Token length depends on reasoning mode.</strong> Distinct cognitive behaviors—such as step-by-step reasoning, enumeration, and trial-and-error all emerged through AZR training, but different behaviors are particularly evident across different types of tasks. Furthermore token counts grow over AZR training, but the magnitude of increase also differs by task types: abduction grows the most because the model performs trial-and-error until output matches, whereas deduction and induction grow modestly.</li>
+                        <li><strong>Cognitive Behaviors and Token length depends on reasoning mode.</strong> Distinct cognitive behaviors—such as step-by-step reasoning, enumeration, and trial-and-error all emerged through AZR training, but different behaviors are particularly evident across different types of tasks, a canonical example is trial-and-error in abduction, as shown in <a href="#example-figure" class="figure-link">Figure 5</a>. Furthermore token counts grow over AZR training, but the magnitude of increase also differs by task types: abduction grows the most because the model performs trial-and-error until output matches, whereas deduction and induction grow modestly.</li>
                         
-                        <li><strong>Safety alarms ringing.</strong> We observe AZR with <code>Llama3.1-8b</code> as the base occasionally produces concerning chains of thought, we term the "uh‑oh moment", example shown in <a href="#uhoh-figure" class="figure-link">Figure 5</a>, highlighting the need for future work on safety‑aware training.</li>
+                        <li><strong>Safety alarms ringing.</strong> We observe AZR with <code>Llama3.1-8b</code> as the base occasionally produces concerning chains of thought, we term the "uh-oh moment", example shown in <a href="#uhoh-figure" class="figure-link">Figure 6</a>, highlighting the need for future work on safety-aware training.</li>
                     </ul>
                 </div>
                 
@@ -3417,21 +3416,7 @@ if __name__ == "__main__":
                     </figcaption>
                 </figure>
 
-                <figure class="numbered-figure" id="uhoh-figure">
-                    <img src="/assets/absolute-zero-reasoner/uh_oh.png" 
-                         class="research-image" 
-                         alt="Safety Concerns in Reasoning">
-                    <figcaption class="latex-caption">
-                        <span class="textbf">Example of "Uh-Oh Moment" in AZR Training.</span>
-                        When using Llama3.1-8b as the base model, we occasionally observe concerning chains of thought during reasoning.
-                        This example highlights the need for safety-aware training in future iterations of the Absolute Zero paradigm.
-                    </figcaption>
-                </figure>
-            </div>
 
-            <div class="subsection" id="examples">
-                <h3 class="subsection-title">3.4. Examples</h3>
-                
                 <figure class="numbered-figure" id="example-figure">
                     <img src="/assets/absolute-zero-reasoner/aaa.png" 
                          class="research-image" 
@@ -3445,7 +3430,19 @@ if __name__ == "__main__":
                         Interestingly, the agent arrives at a different input than the gold one, but since it produces the correct output, the answer is considered correct.
                     </figcaption>
                 </figure>
+
+                <figure class="numbered-figure" id="uhoh-figure">
+                    <img src="/assets/absolute-zero-reasoner/uh_oh.png" 
+                         class="research-image" 
+                         alt="Safety Concerns in Reasoning">
+                    <figcaption class="latex-caption">
+                        <span class="textbf">Example of "Uh-Oh Moment" in AZR Training.</span>
+                        When using Llama3.1-8b as the base model, we occasionally observe concerning chains of thought during reasoning.
+                        This example highlights the need for safety-aware training in future iterations of the Absolute Zero paradigm.
+                    </figcaption>
+                </figure>
             </div>
+
         </section>
 
         <section class="section" id="citation">
