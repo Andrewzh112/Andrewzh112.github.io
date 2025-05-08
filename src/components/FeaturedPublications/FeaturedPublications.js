@@ -69,6 +69,16 @@ const FeaturedPublications = () => {
                     <i className="fas fa-globe"></i> {/* Icon for project page */}
                   </a>
                 )}
+                {pub.models && (
+                  <a href={pub.models} rel="noopener noreferrer" target="_blank">
+                    <i className="fas fa-box"></i> {/* Icon for models */}
+                  </a>
+                )}
+                {pub.logs && (
+                  <a href={pub.logs} rel="noopener noreferrer" target="_blank">
+                    <i className="fas fa-chart-line"></i> {/* Icon for logs */}
+                  </a>
+                )}
               </div>
             </div>
           </div>

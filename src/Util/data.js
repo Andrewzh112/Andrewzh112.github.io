@@ -5,9 +5,11 @@ import expel from '../assets/expel.png';
 import recon from '../assets/recon.png';
 import seg from '../assets/seg.png';
 import diverct from '../assets/diverct.png';
+import azr from '../assets/azr.png';
 import motion from '../assets/motion.png';
 import surgery from '../assets/surgery.png';
 import optim from '../assets/optim.png';
+import limits from '../assets/limits.png';
 import sr from '../assets/sr.png';
 
 export const FULL_NAME = "Andrew Zhao 赵启晨";
@@ -82,6 +84,30 @@ export const NEWS = [
 
 export const FEATUREDPUBLICATIONS = [
     {
+        id: 6,
+        name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        journal: "Preprint",
+        date: "May 2025",
+        authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
+        link: "https://www.arxiv.org/abs/2505.03335",
+        image: azr,
+        projectPage: "https://andrewzh112.github.io/absolute-zero-reasoner",
+        code: "https://github.com/LeapLabTHU/absolute-zero-reasoner",
+        models: "https://huggingface.co/collections/andrewzh/absolute-zero-reasoner-68139b2bca82afb00bc69e5b",
+        logs: "https://wandb.ai/andrewzhao112/AbsoluteZeroReasoner",
+    },
+    {
+        id: 5,
+        name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
+        journal: "Preprint",
+        date: "May 2025",
+        authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
+        link: "https://arxiv.org/abs/2504.13837",
+        image: limits,
+        projectPage: "https://limit-of-rlvr.github.io/",
+        code: "https://github.com/LeapLabTHU/limit-of-RLVR",
+    },
+    {
         id: 4,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
         journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (Oral)",
@@ -127,6 +153,28 @@ export const FEATUREDPUBLICATIONS = [
 
 export const PUBLICATIONS = [
     {
+        id: 13,
+        name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        journal: "Preprint",
+        date: "May 2025",
+        authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
+        link: "https://arxiv.org/abs/2505.03335",
+        image: azr,
+        projectPage: "https://andrewzh112.github.io/absolute-zero-reasoner",
+        code: "https://github.com/LeapLabTHU/absolute-zero-reasoner",
+        models: "https://huggingface.co/collections/andrewzh/absolute-zero-reasoner-68139b2bca82afb00bc69e5b",
+        logs: "https://wandb.ai/andrewzhao112/AbsoluteZeroReasoner",
+    },
+    {
+        id: 12,
+        name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
+        journal: "Preprint",
+        date: "May 2025",
+        authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
+        link: "https://arxiv.org/abs/2504.13837",
+        image: limits
+    },
+    {
         id: 11,
         name: "LLM-based Optimization of Compound AI Systems: A Survey",
         journal: "arXiv Preprint",
@@ -138,7 +186,7 @@ export const PUBLICATIONS = [
     {
         id: 10,
         name: "Model Surgery: Modulating LLM's Behavior Via Simple Parameter Editing",
-        journal: "arXiv Preprint",
+        journal: "NAACL 2025",
         date: "July 2024",
         authors: "Huanqian Wang, Yang Yue, Rui Lu, Jingxin Shi, Andrew Zhao, Shenzhi Wang, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2407.08770",
