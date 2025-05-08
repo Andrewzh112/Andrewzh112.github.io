@@ -11,7 +11,7 @@ import optim from '../assets/optim.png';
 import sr from '../assets/sr.png';
 
 export const FULL_NAME = "Andrew Zhao 赵启晨";
-export const RESUME_LINK = "https://Andrewzh112.github.io/resume/resume.pdf";
+export const RESUME_LINK = "/assets/CV-Andrew.pdf";
 export const FOOTER_TEXT = "Built by Yash Walia, Edited by Andrew Zhao/ChatGPT";
 export const SOCIAL_LINKS = [
     {

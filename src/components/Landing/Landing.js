@@ -3,9 +3,14 @@ import './Landing.css';
 import focus from '../../img/focus.png'; // Default image
 import focus2 from '../../img/focus2.png'; // Hover image
 import Typed from 'react-typed';
-import { SOCIAL_LINKS, FULL_NAME } from '../../Util/data';
+import { SOCIAL_LINKS, FULL_NAME, RESUME_LINK } from '../../Util/data';
 
 const Landing = () => {
+    // Function to open CV in a new window
+    const openCV = () => {
+        window.open(RESUME_LINK, '_blank');
+    };
+    
     return (
         <section className="landing">
             <div className="text-content">
@@ -17,7 +22,7 @@ const Landing = () => {
                                 'Researcher',
                                 'PhD Student',
                                 'Research Intern @ Microsoft Research',
-                                'Happily Engaged',
+                                'Happily Married',
                             ]}
                             typeSpeed={40}
                             backSpeed={50}
@@ -33,10 +38,27 @@ const Landing = () => {
                             </a>
                         </li>
                     ))}
+                    <li>
+                        <button 
+                            onClick={openCV} 
+                            className="cv-button"
+                            aria-label="CV"
+                        >
+                            <i className="far fa-file-pdf"></i>
+                        </button>
+                    </li>
                 </ul>
                 {/* job notice */}
                 <div className="job-notice">
                     <p><a href="https://andrewzh112.github.io/" target="_blank" rel="noopener noreferrer">Andrew Zhao</a> is currently looking for <span className="highlight-text">full-time research scientist industry positions</span> (preferrably in NA) starting June 2026. Feel free to email: <span className="email">andrewzhao112@gmail.com</span> or <span className="email">zqc21@mails.tsinghua.edu.cn</span>. His research interests mainly include RL for LLMs, reasoning, and RL agents.</p>
+                    <div className="cv-download-container">
+                        <button 
+                            onClick={openCV} 
+                            className="cv-download-button"
+                        >
+                            <i className="far fa-file-pdf"></i> View CV
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="image-container">

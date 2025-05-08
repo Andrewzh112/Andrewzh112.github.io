@@ -1894,6 +1894,49 @@
                 width: 100%;
             }
         }
+
+        /* CV Download Button in Job Notice */
+        .cv-download-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.2rem;
+        }
+
+        .cv-download-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white !important;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cv-download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.4);
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+        }
+
+        .cv-download-button i {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .cv-download-button {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 <body class="dark-mode">
@@ -1989,6 +2032,11 @@
         
         <div class="job-notice">
             <p><a href="https://andrewzh112.github.io/" target="_blank">Andrew Zhao</a> is currently looking for <span class="highlight-text">full-time research scientist industry positions</span> (preferrably in NA) starting June 2026. Feel free to email: <span class="email">andrewzhao112@gmail.com</span> or <span class="email">zqc21@mails.tsinghua.edu.cn</span>. His research interests mainly include RL for LLMs, reasoning, and RL agents.</p>
+            <div class="cv-download-container">
+                <a href="/assets/CV-Andrew.pdf" target="_blank" rel="noopener noreferrer" class="cv-download-button">
+                    <i class="far fa-file-pdf"></i> View CV
+                </a>
+            </div>
         </div>
     </div>
 

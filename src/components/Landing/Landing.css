@@ -42,6 +42,22 @@
     color: var(--first-color);
 }
 
+/* CV Button styling */
+.cv-button {
+    background: none;
+    border: none;
+    color: var(--second-color);
+    font-size: 1em;
+    margin-right: 30px;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.cv-button:hover {
+    color: var(--first-color);
+}
+
 .image-container {
     position: relative;
     width: 400px; /* Set the width of your image */
@@ -192,5 +208,45 @@
     
     .job-notice p {
         font-size: 0.95rem;
+    }
+}
+
+/* CV Download Button in Job Notice */
+.cv-download-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.2rem;
+}
+
+.cv-download-button {
+    background: linear-gradient(to right, var(--second-color), var(--third-color));
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(54, 48, 98, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cv-download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(54, 48, 98, 0.4);
+    background: linear-gradient(to right, var(--third-color), var(--second-color));
+}
+
+.cv-download-button i {
+    font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .cv-download-button {
+        font-size: 1rem;
+        padding: 8px 16px;
     }
 }
