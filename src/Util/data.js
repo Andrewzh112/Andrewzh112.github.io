@@ -45,6 +45,10 @@ export const SOCIAL_LINKS = [
 
 export const NEWS = [
     {
+        date: "May 2025",
+        content: "Two new preprints on LLM Reasoning! Absolute Zero X thread: https://x.com/AndrewZ45732491/status/1919920459748909288, 300k+ views, 1k+ likes!",
+    },
+    {
         date: "Apr 2025",
         content: "Self-Reference has been accepted to Neural Networks!",
     },
