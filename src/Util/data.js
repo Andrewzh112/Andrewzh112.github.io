@@ -46,7 +46,7 @@ export const SOCIAL_LINKS = [
 export const NEWS = [
     {
         date: "May 2025",
-        content: "Two new preprints on LLM Reasoning! Absolute Zero X thread: https://x.com/AndrewZ45732491/status/1919920459748909288, 300k+ views, 1k+ likes!",
+        content: "Two new preprints on LLM Reasoning! Absolute Zero X thread: https://x.com/AndrewZ45732491/status/1919920459748909288, 490k views, 1.7k likes!",
     },
     {
         date: "Apr 2025",
@@ -292,6 +292,21 @@ export const PUBLICATIONS = [
 ];
 
 export const ACADEMIC_TALKS = [
+    {
+        title: "Absolute Zero",
+        date: "May/June 2025",
+        venue: [
+            { name: "Hugging Face X AI Insight" },
+            { name: "BAAI", link: "https://www.baai.ac.cn/" },
+            { name: "Amazon AGI Labs", link: "https://labs.amazon.science/" },
+            { name: "ERIC Lab", link: "http://eric-lab.soe.ucsc.edu/home" },
+            { name: "ByteDance" },
+            { name: "The Network School", link: "https://ns.com/" },
+            { name: "Ploutos", link: "https://www.ploutos.dev/explore" },
+            { name: "Gaoling School of AI" }
+        ],
+        description: "Invited Talks",
+    },
     {
         title: "ExpeL: LLM Agents are Experiential Learners",
         date: "August 2024",

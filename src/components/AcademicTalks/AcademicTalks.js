@@ -14,7 +14,23 @@ const AcademicTalks = () => {
                     <div key={index} className="talk-item">
                         <h2>{talk.title}</h2>
                         <p className="talk-date">{talk.date}</p>
-                        <p className="talk-venue">{talk.venue}</p>
+                        <p className="talk-venue">
+                            {Array.isArray(talk.venue) 
+                                ? talk.venue.map((venueItem, venueIndex) => (
+                                    <span key={venueIndex}>
+                                        {venueItem.link ? (
+                                            <a href={venueItem.link} target="_blank" rel="noopener noreferrer">
+                                                {venueItem.name}
+                                            </a>
+                                        ) : (
+                                            venueItem.name
+                                        )}
+                                        {venueIndex < talk.venue.length - 1 && ', '}
+                                    </span>
+                                ))
+                                : talk.venue
+                            }
+                        </p>
                         {talk.description && <p className="talk-description">{talk.description}</p>}
                         {talk.link && (
                             <a href={talk.link} target="_blank" rel="noopener noreferrer">
