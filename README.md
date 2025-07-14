@@ -10,6 +10,7 @@ Hi, my name is Yash Walia and I welcome you to my little
 2. Run `npm install` to install all dependencies for the application.
 
 2.1 Run `export NODE_OPTIONS=--openssl-legacy-provider`
+    `$env:NODE_OPTIONS = "--openssl-legacy-provider"`
 
 3. Run `npm start` to start the development server at `http://localhost:3000`.
 
