@@ -8,6 +8,7 @@ header {
     margin: 20px auto 30px auto; /* Reduced top and bottom margins */
     top: 0;
     left: 0;
+    z-index: 100;
 }
 nav ul {
     display: flex;

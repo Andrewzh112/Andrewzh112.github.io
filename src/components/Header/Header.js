@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import './Header.css';
 import menuIcon from "../../img/menu2.png";
+import Search from "../Search/Search";
 
 const Header = () => {
   const [showLinks, setShowLinks] = useState(false);
@@ -26,6 +27,7 @@ const Header = () => {
           <li><a href="#academic-talks" onClick={(e) => smoothScroll(e, '#academic-talks')}>Academic Talks</a></li>
           <li><a href="#contact" onClick={(e) => smoothScroll(e, '#contact')}>Contact</a></li>
         </ul>
+        <Search />
       </nav>
     </header>
   );

@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.2f3503b7.chunk.css",
-    "main.js": "/static/js/main.99f9764d.chunk.js",
-    "main.js.map": "/static/js/main.99f9764d.chunk.js.map",
+    "main.css": "/static/css/main.2add5349.chunk.css",
+    "main.js": "/static/js/main.8b9aacff.chunk.js",
+    "main.js.map": "/static/js/main.8b9aacff.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.351e9c47.js",
     "runtime-main.js.map": "/static/js/runtime-main.351e9c47.js.map",
-    "static/js/2.10394b7d.chunk.js": "/static/js/2.10394b7d.chunk.js",
-    "static/js/2.10394b7d.chunk.js.map": "/static/js/2.10394b7d.chunk.js.map",
+    "static/js/2.6acad903.chunk.js": "/static/js/2.6acad903.chunk.js",
+    "static/js/2.6acad903.chunk.js.map": "/static/js/2.6acad903.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.14af710d699fbd3dc712e04ed52b3802.js": "/precache-manifest.14af710d699fbd3dc712e04ed52b3802.js",
+    "precache-manifest.e885d045d7e8b3496f85e59d227887ef.js": "/precache-manifest.e885d045d7e8b3496f85e59d227887ef.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.2f3503b7.chunk.css.map": "/static/css/main.2f3503b7.chunk.css.map",
-    "static/js/2.10394b7d.chunk.js.LICENSE.txt": "/static/js/2.10394b7d.chunk.js.LICENSE.txt",
+    "static/css/main.2add5349.chunk.css.map": "/static/css/main.2add5349.chunk.css.map",
+    "static/js/2.6acad903.chunk.js.LICENSE.txt": "/static/js/2.6acad903.chunk.js.LICENSE.txt",
     "static/media/azr.png": "/static/media/azr.2d63a409.png",
     "static/media/diverct.png": "/static/media/diverct.d499079a.png",
     "static/media/dmotion.gif": "/static/media/dmotion.77e66b0f.gif",
@@ -26,12 +26,13 @@
     "static/media/recon.png": "/static/media/recon.256f97bf.png",
     "static/media/seg.png": "/static/media/seg.c5ebb4e4.png",
     "static/media/sr.png": "/static/media/sr.840e3225.png",
-    "static/media/surgery.png": "/static/media/surgery.06c0c390.png"
+    "static/media/surgery.png": "/static/media/surgery.06c0c390.png",
+    "static/media/ultrabot.png": "/static/media/ultrabot.d0fd2ef9.png"
   },
   "entrypoints": [
     "static/js/runtime-main.351e9c47.js",
-    "static/js/2.10394b7d.chunk.js",
-    "static/css/main.2f3503b7.chunk.css",
-    "static/js/main.99f9764d.chunk.js"
+    "static/js/2.6acad903.chunk.js",
+    "static/css/main.2add5349.chunk.css",
+    "static/js/main.8b9aacff.chunk.js"
   ]
 }

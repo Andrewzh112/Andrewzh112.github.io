@@ -182,6 +182,84 @@ img {
     z-index: 1;
 }
 
+/* Page Transition Styles */
+.section-enter {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-exit {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-exit-active {
+    opacity: 0.8;
+    transform: translateY(-10px);
+}
+
+/* Enhanced section transitions */
+section {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: calc(var(--section-index, 0) * 0.1s);
+}
+
+/* Staggered animation for sections */
+section:nth-child(1) { --section-index: 0; }
+section:nth-child(2) { --section-index: 1; }
+section:nth-child(3) { --section-index: 2; }
+section:nth-child(4) { --section-index: 3; }
+section:nth-child(5) { --section-index: 4; }
+section:nth-child(6) { --section-index: 5; }
+section:nth-child(7) { --section-index: 6; }
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Smooth scroll enhancement */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced hover effects for interactive elements */
+a, button, .button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover, button:hover, .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading state transitions */
+.loading-enter {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.loading-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Add these styles to your existing App.css */
 
 /* Scrollbar Styles */

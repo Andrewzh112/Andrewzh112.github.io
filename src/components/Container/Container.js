@@ -3,6 +3,7 @@ import './Container.css';
 import Landing from "../Landing/Landing";
 import About from "../About/About";
 import Contact from "../Contact/Contact";
+import ContactForm from "../ContactForm/ContactForm";
 import News from "../News/News";
 import Publications from "../Publications/Publications";
 import FeaturedPublications from "../FeaturedPublications/FeaturedPublications";
@@ -18,6 +19,7 @@ const Container = () => {
             <Publications />
             <AcademicTalks /> {/* Add this line */}
             <Contact />
+            <ContactForm />
         </div>
     );
 };

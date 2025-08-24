@@ -26,7 +26,7 @@ const highlightText = (text) => {
 
 const formatAuthors = (authors) => {
   return authors.split(', ').map((author, index, array) => {
-    const isBold = author === "Andrew Zhao";
+    const isBold = author === "Andrew Zhao" || author === "Andrew Zhao*";
     const needsComma = index !== array.length - 1;
 
     return (

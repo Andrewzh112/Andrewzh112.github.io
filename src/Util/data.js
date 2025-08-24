@@ -11,6 +11,7 @@ import surgery from '../assets/surgery.png';
 import optim from '../assets/optim.png';
 import limits from '../assets/limits.png';
 import sr from '../assets/sr.png';
+import carotid from '../assets/ultrabot.png';
 
 export const FULL_NAME = "Andrew Zhao 赵启晨";
 export const RESUME_LINK = "/assets/CV-Andrew.pdf";
@@ -44,6 +45,10 @@ export const SOCIAL_LINKS = [
 ];
 
 export const NEWS = [
+    {
+        date: "Aug 2025",
+        content: "Our Ultrasound Robotics paper was accepted to Nature Communications!",
+    },
     {
         date: "May 2025",
         content: "Two new preprints on LLM Reasoning! Absolute Zero X thread: https://x.com/AndrewZ45732491/status/1919920459748909288, 490k views, 1.7k likes!",
@@ -87,6 +92,16 @@ export const NEWS = [
 ];
 
 export const FEATUREDPUBLICATIONS = [
+    {
+        id: 7,
+        name: "Towards expert-level autonomous carotid ultrasonography with large-scale learning-based robotic system",
+        journal: "Nature Communications",
+        date: "August 2025",
+        authors: "Haojun Jiang*, Andrew Zhao*, Qian Yang*, Xiangjie Yan, Teng Wang, Yulin Wang, Ning Jia, Jiangshan Wang, Guokun Wu, Yang Yue, Shaqi Luo, Huanqian Wang, Ling Ren, Siming Chen, Pan Liu, Guocai Yao, Wenming Yang, Shiji Song, Xiang Li, Kunlun He, Gao Huang",
+        link: "https://www.nature.com/articles/s41467-025-62865-w",
+        image: carotid,
+        code: "https://github.com/LeapLabTHU/ultrabot",
+    },
     {
         id: 6,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
@@ -147,7 +162,7 @@ export const FEATUREDPUBLICATIONS = [
         name: "A Mixture Of Surprises for Unsupervised Reinforcement Learning",
         journal: "36th Conference on Neural Information Processing Systems (NeurIPS 2022)",
         date: "Oct 2022",
-        authors: "Andrew Zhao, Matthieu Lin, Yangguang Li, Yong-jin Liu, Gao Huang",
+        authors: "Andrew Zhao*, Matthieu Lin*, Yangguang Li, Yong-jin Liu, Gao Huang",
         link: "https://proceedings.neurips.cc/paper_files/paper/2022/hash/a7667ee5d545a43d2f0fda98863c260e-Abstract-Conference.html",
         image: moss, // Optional
         code: "https://github.com/LeapLabTHU/MOSS", // Optional
@@ -156,6 +171,16 @@ export const FEATUREDPUBLICATIONS = [
 ]
 
 export const PUBLICATIONS = [
+    {
+        id: 14,
+        name: "Towards expert-level autonomous carotid ultrasonography with large-scale learning-based robotic system",
+        journal: "Nature Communications",
+        date: "August 2025",
+        authors: "Haojun Jiang*, Andrew Zhao*, Qian Yang*, Xiangjie Yan, Teng Wang, Yulin Wang, Ning Jia, Jiangshan Wang, Guokun Wu, Yang Yue, Shaqi Luo, Huanqian Wang, Ling Ren, Siming Chen, Pan Liu, Guocai Yao, Wenming Yang, Shiji Song, Xiang Li, Kunlun He, Gao Huang",
+        link: "https://www.nature.com/articles/s41467-025-62865-w",
+        image: carotid,
+        code: "https://github.com/LeapLabTHU/ultrabot",
+    },
     {
         id: 13,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
@@ -261,7 +286,7 @@ export const PUBLICATIONS = [
         name: "A Mixture Of Surprises for Unsupervised Reinforcement Learning",
         journal: "36th Conference on Neural Information Processing Systems (NeurIPS 2022)",
         date: "Oct 2022",
-        authors: "Andrew Zhao, Matthieu Lin, Yangguang Li, Yong-jin Liu, Gao Huang",
+        authors: "Andrew Zhao*, Matthieu Lin*, Yangguang Li, Yong-jin Liu, Gao Huang",
         link: "https://proceedings.neurips.cc/paper_files/paper/2022/hash/a7667ee5d545a43d2f0fda98863c260e-Abstract-Conference.html",
         image: moss, // Optional
         code: "https://github.com/LeapLabTHU/MOSS", // Optional
@@ -283,7 +308,7 @@ export const PUBLICATIONS = [
         name: "DMotion: Robotic Visuomotor Control with Unsupervised Forward Model Learned from Videos",
         journal: "2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
         date: "Sep 2021",
-        authors: "Haoqi Yuan, Ruihai Wu, Andrew Zhao, Haipeng Zhang, Zihan Ding, Hao Dong",
+        authors: "Haoqi Yuan*, Ruihai Wu*, Andrew Zhao*, Haipeng Zhang, Zihan Ding, Hao Dong",
         link: "https://ieeexplore.ieee.org/abstract/document/9636362/",
         image: dmotion, // Optional
         // code: "https://github.com/username/project1", // Optional
