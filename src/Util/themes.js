@@ -4,11 +4,11 @@ function setTheme(themeName) {
 }
 
 function keepTheme() {
-  if (localStorage.getItem('theme')) {
-    setTheme('theme-dark')
-    if (localStorage.getItem('theme') === 'theme-dark') {
+  const storedTheme = localStorage.getItem('theme');
+  if (storedTheme) {
+    if (storedTheme === 'theme-dark') {
       setTheme('theme-dark');
-    } else if (localStorage.getItem('theme') === 'theme-light') {
+    } else if (storedTheme === 'theme-light') {
       setTheme('theme-light')
     }
   } else {

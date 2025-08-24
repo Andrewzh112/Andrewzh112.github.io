@@ -1,12 +1,20 @@
 .theme-dark {
-    --first-color: #ffffff; 
-    --second-color: rgb(255, 233, 157); 
+    --first-color: #ffffff;
+    --second-color: rgb(255, 233, 157);
     --third-color: #818FB4;
     --fourth-color: #435585;
     --gradient-col1: rgb(54, 48, 98);
     --gradient-col2: rgb(67, 85, 133);
     --highlight-gradient-start: #FFFF00; /* Bright Yellow for dark mode */
     --highlight-gradient-end: #FFA500;   /* Orange for dark mode */
+    --search-bg: rgba(255, 255, 255, 0.1);
+    --search-border: rgba(255, 255, 255, 0.2);
+    --search-bg-hover: rgba(255, 255, 255, 0.15);
+    --search-border-hover: rgba(255, 255, 255, 0.3);
+    --search-focus-shadow: rgba(255, 255, 255, 0.1);
+    --search-text: rgba(255, 255, 255, 0.8);
+    --search-kbd-bg: rgba(255, 255, 255, 0.1);
+    --search-kbd-border: rgba(255, 255, 255, 0.2);
 }
 
 /* Hover and Transition Effects */
@@ -27,6 +35,14 @@
     --gradient-col2: rgb(235, 227, 213);
     --highlight-gradient-start: #00008B; /* Dark Blue for light mode */
     --highlight-gradient-end: #008080;   /* Teal for light mode */
+    --search-bg: rgba(0, 0, 0, 0.05);
+    --search-border: rgba(0, 0, 0, 0.1);
+    --search-bg-hover: rgba(0, 0, 0, 0.08);
+    --search-border-hover: rgba(0, 0, 0, 0.15);
+    --search-focus-shadow: rgba(0, 0, 0, 0.1);
+    --search-text: rgba(0, 0, 0, 0.7);
+    --search-kbd-bg: rgba(0, 0, 0, 0.05);
+    --search-kbd-border: rgba(0, 0, 0, 0.1);
 }
 
 /* Hover and Transition Effects */

@@ -9,8 +9,8 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--search-bg, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--search-border, rgba(255, 255, 255, 0.2));
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -22,14 +22,14 @@
 }
 
 .search-trigger:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--search-bg-hover, rgba(255, 255, 255, 0.15));
+  border-color: var(--search-border-hover, rgba(255, 255, 255, 0.3));
 }
 
 .search-trigger:focus {
   outline: none;
   border-color: var(--second-color);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 2px var(--search-focus-shadow, rgba(255, 255, 255, 0.1));
 }
 
 .search-icon {
@@ -40,7 +40,7 @@
 
 .search-text {
   flex: 1;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--search-text, rgba(255, 255, 255, 0.8));
 }
 
 .search-shortcut {
@@ -50,8 +50,8 @@
 }
 
 .search-shortcut kbd {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--search-kbd-bg, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--search-kbd-border, rgba(255, 255, 255, 0.2));
   border-radius: 3px;
   padding: 2px 4px;
   font-size: 11px;
