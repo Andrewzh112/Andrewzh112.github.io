@@ -12,6 +12,7 @@ import optim from '../assets/optim.png';
 import limits from '../assets/limits.png';
 import sr from '../assets/sr.png';
 import carotid from '../assets/ultrabot.png';
+import beyond from '../assets/beyond.png';
 
 export const FULL_NAME = "Andrew Zhao 赵启晨";
 export const RESUME_LINK = "/assets/CV-Andrew.pdf";
@@ -45,6 +46,10 @@ export const SOCIAL_LINKS = [
 ];
 
 export const NEWS = [
+    {
+        date: "Sep 2025",
+        content: "All three papers on LLM Reasoning were accepted to NeurIPS 2025 (1 Oral, 1 Spotlight)!",
+    },
     {
         date: "Aug 2025",
         content: "Our Ultrasound Robotics paper was accepted to Nature Communications!",
@@ -105,7 +110,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 6,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "Preprint",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Spotlight)",
         date: "May 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://www.arxiv.org/abs/2505.03335",
@@ -118,7 +123,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 5,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "Preprint",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Oral)",
         date: "May 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
@@ -172,7 +177,7 @@ export const FEATUREDPUBLICATIONS = [
 
 export const PUBLICATIONS = [
     {
-        id: 14,
+        id: 15,
         name: "Towards expert-level autonomous carotid ultrasonography with large-scale learning-based robotic system",
         journal: "Nature Communications",
         date: "August 2025",
@@ -182,10 +187,10 @@ export const PUBLICATIONS = [
         code: "https://github.com/LeapLabTHU/ultrabot",
     },
     {
-        id: 13,
+        id: 14,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "Preprint",
-        date: "May 2025",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Spotlight)",
+        date: "Sep 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2505.03335",
         image: azr,
@@ -195,10 +200,19 @@ export const PUBLICATIONS = [
         logs: "https://wandb.ai/andrewzhao112/AbsoluteZeroReasoner",
     },
     {
+        id: 13,
+        name: "Beyond the 80/20 Rule: High-entropy Minority Tokens Rive Effective Reinforcement Learning for LLM Reasoning",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025)",
+        date: "Sep 2025",
+        authors: "Shenzhi Wang, Le Yu, Chang Gao, Chujie Zheng, Shixuan Liu, Rui Lu, Kai Dang, Xionghui Chen, Jianxin Yang, Zhenru Zhang, Yuqiong Liu, An Yang, Andrew Zhao, Yang Yue, Shiji Song, Bowen Yu, Gao Huang, Junyang Lin",
+        link: "https://arxiv.org/abs/2506.01939",
+        image: beyond
+    },
+    {
         id: 12,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "Preprint",
-        date: "May 2025",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Oral)",
+        date: "Sep 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
         image: limits
