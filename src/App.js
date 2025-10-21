@@ -23,7 +23,7 @@ function App() {
 
     // Add scroll listener to track current section
     const handleScroll = () => {
-      const sections = ['landing', 'about', 'news', 'featured-publications', 'publications', 'academic-talks', 'contact'];
+      const sections = ['landing', 'about', 'news', 'featured-publications', 'publications', 'academic-talks', 'academic-services', 'contact'];
       const scrollPosition = window.scrollY + 200;
 
       for (let i = sections.length - 1; i >= 0; i--) {

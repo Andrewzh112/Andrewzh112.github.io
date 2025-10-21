@@ -12,6 +12,8 @@ import optim from '../assets/optim.png';
 import limits from '../assets/limits.png';
 import sr from '../assets/sr.png';
 import carotid from '../assets/ultrabot.png';
+import prompt from '../assets/prompt.png';
+import forking from '../assets/forking.png';
 
 export const FULL_NAME = "Andrew Zhao 赵启晨";
 export const RESUME_LINK = "/assets/CV-Andrew.pdf";
@@ -45,6 +47,18 @@ export const SOCIAL_LINKS = [
 ];
 
 export const NEWS = [
+    {
+        date: "Oct 2025",
+        content: "Selected as Top Reviewer in NeurIPS 2025.",
+    },
+    {
+        date: "Oct 2025",
+        content: "New preprint on safety implications of LLM-based prompt optimizers.",
+    },
+    {
+        date: "Sep 2025",
+        content: "Three papers on LLM reasoning accepted at NeurIPS 2025 (1 Oral, 1 Spotlight)!",
+    },
     {
         date: "Aug 2025",
         content: "Our Ultrasound Robotics paper was accepted to Nature Communications!",
@@ -93,6 +107,15 @@ export const NEWS = [
 
 export const FEATUREDPUBLICATIONS = [
     {
+        id: 8,
+        name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
+        journal: "arXiv Preprint",
+        date: "Oct 2025",
+        authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
+        link: "https://arxiv.org/abs/2510.14381",
+        image: prompt,
+    },
+    {
         id: 7,
         name: "Towards expert-level autonomous carotid ultrasonography with large-scale learning-based robotic system",
         journal: "Nature Communications",
@@ -105,7 +128,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 6,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "Preprint",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Spotlight)",
         date: "May 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://www.arxiv.org/abs/2505.03335",
@@ -118,7 +141,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 5,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "Preprint",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Oral)",
         date: "May 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
@@ -172,7 +195,16 @@ export const FEATUREDPUBLICATIONS = [
 
 export const PUBLICATIONS = [
     {
-        id: 14,
+        id: 16,
+        name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
+        journal: "arXiv Preprint",
+        date: "Oct 2025",
+        authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
+        link: "https://arxiv.org/abs/2510.14381",
+        image: prompt,
+    },
+    {
+        id: 15,
         name: "Towards expert-level autonomous carotid ultrasonography with large-scale learning-based robotic system",
         journal: "Nature Communications",
         date: "August 2025",
@@ -182,9 +214,18 @@ export const PUBLICATIONS = [
         code: "https://github.com/LeapLabTHU/ultrabot",
     },
     {
+        id: 14,
+        name: "Beyond the 80/20 Rule: High-Entropy Minority Tokens Drive Effective Reinforcement Learning for LLM Reasoning",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025)",
+        date: "June 2025",
+        authors: "Shenzhi Wang, Le Yu, Chang Gao, Chujie Zheng, Shixuan Liu, Rui Lu, Kai Dang, Xionghui Chen, Jianxin Yang, Zhenru Zhang, Yuqiong Liu, An Yang, Andrew Zhao, Yang Yue, Shiji Song, Bowen Yu, Gao Huang, Junyang Lin",
+        link: "https://arxiv.org/abs/2506.01939",
+        image: forking
+    },
+    {
         id: 13,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "Preprint",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Spotlight)",
         date: "May 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2505.03335",
@@ -197,7 +238,7 @@ export const PUBLICATIONS = [
     {
         id: 12,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "Preprint",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Oral)",
         date: "May 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
@@ -321,11 +362,14 @@ export const ACADEMIC_TALKS = [
         title: "Absolute Zero",
         date: "May/June 2025",
         venue: [
+            { name: "Microsoft" },
+            { name: "NVIDIA" },
+            { name: "Snowflake" },
+            { name: "Amazon AGI Labs", link: "https://labs.amazon.science/" },
+            { name: "ByteDance" },
             { name: "Hugging Face X AI Insight" },
             { name: "BAAI", link: "https://www.baai.ac.cn/" },
-            { name: "Amazon AGI Labs", link: "https://labs.amazon.science/" },
             { name: "ERIC Lab", link: "http://eric-lab.soe.ucsc.edu/home" },
-            { name: "ByteDance" },
             { name: "The Network School", link: "https://ns.com/" },
             { name: "Ploutos", link: "https://www.ploutos.dev/explore" },
             { name: "Gaoling School of AI" }
@@ -354,6 +398,16 @@ export const ACADEMIC_TALKS = [
         title: "A Mixture of Surprises for Unsupervised Reinforcement Learning",
         date: "February 2023",
         venue: "AI TIME Youth PhD Talk"
+    }
+];
+
+export const ACADEMIC_SERVICES = [
+    {
+        title: "Top Reviewer in NeurIPS 2025",
+    },
+    {
+        title: "Academic Reviewer",
+        detail: "NeurIPS 2023/2024/2025; ICLR 2024/2025/2026; AAAI 2025/2026; ICML 2024/2025; AISTATS 2025",
     }
 ];
 

@@ -8,6 +8,7 @@ import News from "../News/News";
 import Publications from "../Publications/Publications";
 import FeaturedPublications from "../FeaturedPublications/FeaturedPublications";
 import AcademicTalks from "../AcademicTalks/AcademicTalks"; // Add this line
+import AcademicServices from "../AcademicServices/AcademicServices";
 
 const Container = () => {
     return (
@@ -18,6 +19,7 @@ const Container = () => {
             <FeaturedPublications />
             <Publications />
             <AcademicTalks /> {/* Add this line */}
+            <AcademicServices />
             <Contact />
             <ContactForm />
         </div>
