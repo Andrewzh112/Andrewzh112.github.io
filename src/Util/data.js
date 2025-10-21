@@ -214,15 +214,6 @@ export const PUBLICATIONS = [
         code: "https://github.com/LeapLabTHU/ultrabot",
     },
     {
-        id: 14,
-        name: "Beyond the 80/20 Rule: High-Entropy Minority Tokens Drive Effective Reinforcement Learning for LLM Reasoning",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025)",
-        date: "June 2025",
-        authors: "Shenzhi Wang, Le Yu, Chang Gao, Chujie Zheng, Shixuan Liu, Rui Lu, Kai Dang, Xionghui Chen, Jianxin Yang, Zhenru Zhang, Yuqiong Liu, An Yang, Andrew Zhao, Yang Yue, Shiji Song, Bowen Yu, Gao Huang, Junyang Lin",
-        link: "https://arxiv.org/abs/2506.01939",
-        image: forking
-    },
-    {
         id: 13,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
         journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Spotlight)",
@@ -236,10 +227,19 @@ export const PUBLICATIONS = [
         logs: "https://wandb.ai/andrewzhao112/AbsoluteZeroReasoner",
     },
     {
+        id: 14,
+        name: "Beyond the 80/20 Rule: High-Entropy Minority Tokens Drive Effective Reinforcement Learning for LLM Reasoning",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025)",
+        date: "June 2025",
+        authors: "Shenzhi Wang, Le Yu, Chang Gao, Chujie Zheng, Shixuan Liu, Rui Lu, Kai Dang, Xionghui Chen, Jianxin Yang, Zhenru Zhang, Yuqiong Liu, An Yang, Andrew Zhao, Yang Yue, Shiji Song, Bowen Yu, Gao Huang, Junyang Lin",
+        link: "https://arxiv.org/abs/2506.01939",
+        image: forking
+    },
+    {
         id: 12,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
         journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (Oral)",
-        date: "May 2025",
+        date: "Sep 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
         image: limits
