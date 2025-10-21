@@ -360,19 +360,15 @@ export const PUBLICATIONS = [
 export const ACADEMIC_TALKS = [
     {
         title: "Absolute Zero",
-        date: "May/June 2025",
+        date: "May-Sep 2025",
         venue: [
             { name: "Microsoft" },
             { name: "NVIDIA" },
             { name: "Snowflake" },
             { name: "Amazon AGI Labs", link: "https://labs.amazon.science/" },
             { name: "ByteDance" },
-            { name: "Hugging Face X AI Insight" },
-            { name: "BAAI", link: "https://www.baai.ac.cn/" },
-            { name: "ERIC Lab", link: "http://eric-lab.soe.ucsc.edu/home" },
-            { name: "The Network School", link: "https://ns.com/" },
-            { name: "Ploutos", link: "https://www.ploutos.dev/explore" },
-            { name: "Gaoling School of AI" }
+            { name: "HuggingFace" },
+            { name: "and more..." },
         ],
         description: "Invited Talks",
     },
