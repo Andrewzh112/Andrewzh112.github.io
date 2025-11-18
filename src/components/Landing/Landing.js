@@ -20,8 +20,7 @@ const Landing = () => {
                         <Typed
                             strings={[
                                 'Researcher',
-                                'PhD Student',
-                                'Research Intern @ Microsoft Research',
+                                'PhD Candidate',
                                 'Happily Married',
                             ]}
                             typeSpeed={40}
@@ -48,18 +47,6 @@ const Landing = () => {
                         </button>
                     </li>
                 </ul>
-                {/* job notice */}
-                <div className="job-notice">
-                    <p><a href="https://andrewzh112.github.io/" target="_blank" rel="noopener noreferrer">Andrew Zhao</a> is currently looking for <span className="highlight-text">full-time research scientist industry positions</span> (preferrably in NA) starting June 2026. Feel free to email: <span className="email">andrewzhao112@gmail.com</span> or <span className="email">zqc21@mails.tsinghua.edu.cn</span>. His research interests mainly include RL for LLMs, reasoning, and RL agents.</p>
-                    <div className="cv-download-container">
-                        <button 
-                            onClick={openCV} 
-                            className="cv-download-button"
-                        >
-                            <i className="far fa-file-pdf"></i> View CV
-                        </button>
-                    </div>
-                </div>
             </div>
             <div className="image-container">
                 <img className="default-image" src={focus} alt="Default Illustration"/>

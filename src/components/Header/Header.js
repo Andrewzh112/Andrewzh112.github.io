@@ -20,6 +20,9 @@ const Header = () => {
       <nav>
         <img src={menuIcon} onClick={()=>setShowLinks(!showLinks)} className="menu-icon" alt="menu-icon"/>
         <ul className="nav-menu" id={showLinks ? "hidden" : ""} >
+          <li className="cv-nav-button">
+            <a href="/assets/CV-Andrew.pdf" target="_blank" rel="noopener noreferrer">CV</a>
+          </li>
           <li><a href="#about" onClick={(e) => smoothScroll(e, '#about')}>About</a></li>
           <li><a href="#news" onClick={(e) => smoothScroll(e, '#news')}>News</a></li>
           <li><a href="#publications" onClick={(e) => smoothScroll(e, '#publications')}>Publications</a></li>

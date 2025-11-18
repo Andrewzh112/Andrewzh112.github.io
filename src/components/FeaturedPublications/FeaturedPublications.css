@@ -6,7 +6,6 @@
     margin: 0 auto;
     padding: 40px 15px;
 }
-
 .publication-date {
     font-weight: bold;
     color: #333;
@@ -108,4 +107,5 @@
     .publication-content {
         background-image: none;
     }
+
 }

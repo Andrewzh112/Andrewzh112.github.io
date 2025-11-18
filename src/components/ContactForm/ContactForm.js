@@ -40,7 +40,7 @@ This message was sent from the contact form on Andrew Zhao's website.
       `.trim();
 
       // Create mailto URL
-      const mailtoUrl = `mailto:zqc21@mails.tsinghua.edu.cn?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(emailBody)}`;
+      const mailtoUrl = `mailto:andewzhao112@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(emailBody)}`;
 
       // Open email client
       window.open(mailtoUrl, '_blank');
@@ -66,7 +66,7 @@ This message was sent from the contact form on Andrew Zhao's website.
       console.error('Error sending message:', error);
       setSubmitStatus({
         type: 'error',
-        message: 'There was an error opening your email client. Please contact me directly at zqc21@mails.tsinghua.edu.cn'
+        message: 'There was an error opening your email client. Please contact me directly at andewzhao112@gmail.com'
       });
     } finally {
       setIsSubmitting(false);
@@ -173,9 +173,9 @@ This message was sent from the contact form on Andrew Zhao's website.
         <div className="contact-alternatives">
           <h3>Other Ways to Connect</h3>
           <div className="contact-links">
-            <a href="mailto:zqc21@mails.tsinghua.edu.cn" className="contact-link">
+            <a href="mailto:andewzhao112@gmail.com" className="contact-link">
               <span className="contact-icon" role="img" aria-label="email">✉</span>
-              <span className="contact-text">zqc21@mails.tsinghua.edu.cn</span>
+              <span className="contact-text">andewzhao112@gmail.com</span>
             </a>
             <a href="https://github.com/Andrewzh112" target="_blank" rel="noopener noreferrer" className="contact-link">
               <span className="contact-icon" role="img" aria-label="computer">💻</span>

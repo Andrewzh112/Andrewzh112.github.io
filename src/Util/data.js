@@ -22,7 +22,7 @@ export const SOCIAL_LINKS = [
     {
         name: "Email",
         icon: "far fa-lg fa-envelope",
-        link: "mailto:zqc21@mails.tsinghua.edu.cn",
+        link: "mailto:andrewzhao112@gmail.com",
     },
     {
         name: "Google Scholar",
@@ -40,9 +40,9 @@ export const SOCIAL_LINKS = [
         link: "https://www.linkedin.com/in/andrewqzhao",
     },
     {
-        name: "Twitter",
+        name: "X",
         icon: "fab fa-lg fa-twitter",
-        link: "https://twitter.com/AndrewZ45732491",
+        link: "https://x.com/_AndrewZhao",
     },
 ];
 

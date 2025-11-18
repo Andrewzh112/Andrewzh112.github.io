@@ -1,6 +1,5 @@
 import React from "react";
 import './About.css';
-import { ABOUT } from '../../Util/data';
 
 const About = () => {
     return (
@@ -8,21 +7,14 @@ const About = () => {
             <h1 className="section-title">
                 <span role="img" aria-label="about">👨‍🔬</span> About Me
             </h1>
-            <div className="about-container">
-                {ABOUT.map((item, index) => (
-                    <div key={index} className="about-item">
-                        <div className="hover-icon" aria-hidden="true"></div>
-                        <div className="about-item-inner">
-                            <div className="about-item-front">
-                                <div className="about-icon">{item.icon}</div>
-                                <h3>{item.title}</h3>
-                            </div>
-                            <div className="about-item-back">
-                                <p>{item.text}</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            <div className="about-textbox" aria-label="About me text">
+                <p>
+                    My name is Andrew Zhao, final year PhD candidate at Tsinghua University advised by Professor <a href="https://gaohuang-net.github.io/" target="_blank" rel="noopener noreferrer">Gao Huang</a>.
+                    I obtained my masters degree from the University of Southern California and my Undergraduate degree from the University of British Columbia.\n
+                </p>
+                <p>
+                    My research interest is in self-improving AI, reasoning of LLMs, and agents. In my free time I like to play basketball and video games.
+                </p>
             </div>
         </section>
     );
