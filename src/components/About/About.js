@@ -10,7 +10,8 @@ const About = () => {
             <div className="about-textbox" aria-label="About me text">
                 <p>
                     My name is Andrew Zhao, final year PhD candidate at Tsinghua University advised by Professor <a href="https://gaohuang-net.github.io/" target="_blank" rel="noopener noreferrer">Gao Huang</a>.
-                    I obtained my masters degree from the University of Southern California and my Undergraduate degree from the University of British Columbia.\n
+                    I obtained my masters degree from the University of Southern California and my Undergraduate degree from the University of British Columbia.
+
                 </p>
                 <p>
                     My research interest is in self-improving AI, reasoning of LLMs, and agents. In my free time I like to play basketball and video games.

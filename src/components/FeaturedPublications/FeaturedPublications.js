@@ -9,8 +9,8 @@ const formatDate = (dateString) => {
 };
 
 const highlightText = (text) => {
-  // Pattern to highlight "Spotlight" and "Oral"
-  const regex = /(Spotlight|Oral)/g;
+  // Pattern to highlight "Spotlight" and "Oral" and "Best Paper Runner-up"
+  const regex = /(Spotlight|Oral|Best Paper Runner-up)/g;
   const parts = text.split(regex);
 
   return (
