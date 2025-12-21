@@ -75,6 +75,8 @@ input:checked + .slider:before {
 @media only screen and (max-width: 768px) {
     .toggle-container {
         left: 5%;
+        right: auto;
         top: 27px;
+        width: max-content;
     }
 }

@@ -110,6 +110,13 @@
         flex-direction: column-reverse;
         justify-content: center;
         text-align: center;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding: 24px 20px;
+    }
+
+    .text-content {
+        flex: 0 1 auto;
     }
 
     .social-links {
@@ -120,7 +127,7 @@
         display: none;
     }
 
-    .landing-scroll-arrow {
+    .saucer-container {
         display: none;
     }
 
@@ -542,6 +549,11 @@
 
 .landing-scroll-arrow-left {
     left: 22px;
+}
+
+.landing-scroll-arrow-center {
+    left: 50%;
+    margin-left: -64px;
 }
 
 .landing-scroll-arrow-right {

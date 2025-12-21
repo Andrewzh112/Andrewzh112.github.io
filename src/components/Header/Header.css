@@ -107,8 +107,10 @@ nav #hidden {
     }
 
     #hidden {
-        max-height: 190px;
-        overflow: hidden;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
+        overflow-x: hidden;
         transition: 0.3s;
+        -webkit-overflow-scrolling: touch;
     }
 }

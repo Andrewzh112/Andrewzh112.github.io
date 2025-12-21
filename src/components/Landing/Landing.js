@@ -24,6 +24,7 @@ const Landing = () => {
     // UFO State (using refs for animation performance)
     const [, setSaucers] = useState([]);
     const saucersRef = useRef([]);
+    const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
 
     // Laser Gun State
     const [gunAngle, setGunAngle] = useState(0);
@@ -87,6 +88,24 @@ const Landing = () => {
         applyHintSizing(leftHint, leftAvailable);
         applyHintSizing(rightHint, rightAvailable);
     }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isMobile) {
+            setLasers([]);
+        }
+    }, [isMobile]);
 
     const respawnSaucer = useCallback((saucerId, width = 80, height = 40) => {
         const { width: boundsW, height: boundsH } = getBounds();
@@ -153,6 +172,11 @@ const Landing = () => {
 
     // Initialize UFOs with bounds from landing container
     useEffect(() => {
+        if (isMobile) {
+            saucersRef.current = [];
+            setSaucers([]);
+            return;
+        }
         const { width: w, height: h } = getBounds();
         const margin = 60; // Keep UFOs away from edges
         const usableWidth = Math.max(120, w - 2 * margin - 80);
@@ -170,14 +194,17 @@ const Landing = () => {
         }));
         setSaucers(initialSaucers);
         saucersRef.current = initialSaucers;
-    }, [getBounds]);
+    }, [getBounds, isMobile]);
 
     // Animation Loop using refs for performance
     const animate = useCallback(() => {
         const { width: boundsW, height: boundsH } = getBounds();
         const isCompact = boundsW <= 768;
-        const textRect = !isCompact ? textRef.current?.getBoundingClientRect() : null;
-        const imageRect = !isCompact ? imageRef.current?.getBoundingClientRect() : null;
+        if (isCompact) {
+            return;
+        }
+        const textRect = textRef.current?.getBoundingClientRect();
+        const imageRect = imageRef.current?.getBoundingClientRect();
         const margin = 50; // Keep UFOs visible with margin
         const separationDistance = 120; // Minimum distance between UFOs
         const maxXBound = Math.max(margin, boundsW - margin);
@@ -289,9 +316,20 @@ const Landing = () => {
     }, [getBounds]);
 
     useEffect(() => {
+        if (isMobile) {
+            if (requestRef.current) {
+                cancelAnimationFrame(requestRef.current);
+            }
+            return;
+        }
+
         requestRef.current = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(requestRef.current);
-    }, [animate]);
+        return () => {
+            if (requestRef.current) {
+                cancelAnimationFrame(requestRef.current);
+            }
+        };
+    }, [animate, isMobile]);
 
     // Sync ref with state for rendering
     useEffect(() => {
@@ -330,6 +368,13 @@ const Landing = () => {
 
     useEffect(() => {
         // Fallback listener so the gun still tracks even if the mouse leaves the landing bounds
+        if (isMobile) {
+            if (moveRafRef.current) {
+                cancelAnimationFrame(moveRafRef.current);
+            }
+            return;
+        }
+
         window.addEventListener('mousemove', handleMouseMove);
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
@@ -337,7 +382,7 @@ const Landing = () => {
                 cancelAnimationFrame(moveRafRef.current);
             }
         };
-    }, [handleMouseMove]);
+    }, [handleMouseMove, isMobile]);
 
     const navigateToSaucer = useCallback((saucerId) => {
         saucersRef.current = saucersRef.current.map(saucer => {
@@ -358,7 +403,7 @@ const Landing = () => {
 
     const handleLandingClick = useCallback((e) => {
         // Only fire if on landing page
-        if (!isVisible) return;
+        if (!isVisible || isMobile) return;
 
         // Priority: interactive links/buttons first, then UFOs
         const target = e.target;
@@ -415,7 +460,7 @@ const Landing = () => {
         setTimeout(() => {
             setLasers(prev => prev.filter(l => l.id !== newLaser.id));
         }, 300);
-    }, [gunAngle, gunX, isVisible, navigateToSaucer, respawnSaucer]);
+    }, [gunAngle, gunX, isMobile, isVisible, navigateToSaucer, respawnSaucer]);
 
     // Function to open CV
     const openCV = (e) => {
@@ -433,45 +478,49 @@ const Landing = () => {
             className="landing"
             ref={landingRef}
             id="landing"
-            onMouseMove={handleMouseMove}
+            onMouseMove={isMobile ? undefined : handleMouseMove}
             onClick={handleLandingClick}
         >
             {/* Laser Gun at bottom */}
-            <div
-                className={`laser-gun-container ${isVisible ? '' : 'hidden'}`}
-                style={{
-                    left: gunX,
-                    transform: 'translateX(-50%)'
-                }}
-            >
-                <div
-                    className="laser-gun"
-                    style={{
-                        transform: `rotate(${gunAngle}deg)`
-                    }}
-                >
-                    <div className="gun-body">
-                        <div className="gun-barrel"></div>
-                        <div className="gun-core"></div>
-                        <div className="gun-glow"></div>
+            {!isMobile && (
+                <>
+                    <div
+                        className={`laser-gun-container ${isVisible ? '' : 'hidden'}`}
+                        style={{
+                            left: gunX,
+                            transform: 'translateX(-50%)'
+                        }}
+                    >
+                        <div
+                            className="laser-gun"
+                            style={{
+                                transform: `rotate(${gunAngle}deg)`
+                            }}
+                        >
+                            <div className="gun-body">
+                                <div className="gun-barrel"></div>
+                                <div className="gun-core"></div>
+                                <div className="gun-glow"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            {/* Laser Beams */}
-            {lasers.map(laser => (
-                <div
-                    key={laser.id}
-                    className="laser-beam firing"
-                    style={{
-                        left: laser.x,
-                        bottom: laser.bottom,
-                        height: laser.length,
-                        transform: `translateX(-50%) rotate(${laser.angle}deg)`,
-                        '--beam-height': `${laser.length}px`
-                    }}
-                ></div>
-            ))}
+                    {/* Laser Beams */}
+                    {lasers.map(laser => (
+                        <div
+                            key={laser.id}
+                            className="laser-beam firing"
+                            style={{
+                                left: laser.x,
+                                bottom: laser.bottom,
+                                height: laser.length,
+                                transform: `translateX(-50%) rotate(${laser.angle}deg)`,
+                                '--beam-height': `${laser.length}px`
+                            }}
+                        ></div>
+                    ))}
+                </>
+            )}
 
             {/* Playful edge prompts */}
             <div
@@ -491,35 +540,47 @@ const Landing = () => {
             </div>
 
             {/* Bottom scroll arrows */}
-            <div className={`landing-scroll-arrow landing-scroll-arrow-left ${showHints ? '' : 'hidden'}`} aria-hidden="true">
-                <i className="fas fa-chevron-down"></i>
-            </div>
-            <div className={`landing-scroll-arrow landing-scroll-arrow-right ${showHints ? '' : 'hidden'}`} aria-hidden="true">
-                <i className="fas fa-chevron-down"></i>
-            </div>
+            {isMobile ? (
+                <div className={`landing-scroll-arrow landing-scroll-arrow-center ${showHints ? '' : 'hidden'}`} aria-hidden="true">
+                    <i className="fas fa-chevron-down"></i>
+                </div>
+            ) : (
+                <>
+                    <div className={`landing-scroll-arrow landing-scroll-arrow-left ${showHints ? '' : 'hidden'}`} aria-hidden="true">
+                        <i className="fas fa-chevron-down"></i>
+                    </div>
+                    <div className={`landing-scroll-arrow landing-scroll-arrow-right ${showHints ? '' : 'hidden'}`} aria-hidden="true">
+                        <i className="fas fa-chevron-down"></i>
+                    </div>
+                </>
+            )}
 
             {/* Pointer dot to show exact cursor position on landing */}
-            <div
-                ref={pointerRef}
-                className={`laser-pointer ${isVisible ? '' : 'hidden'}`}
-            ></div>
+            {!isMobile && (
+                <div
+                    ref={pointerRef}
+                    className={`laser-pointer ${isVisible ? '' : 'hidden'}`}
+                ></div>
+            )}
 
             {/* UFOs */}
-            <div className="saucer-container">
-                {saucersRef.current.map((saucer) => (
-                    <div
-                        key={saucer.id}
-                        className={`saucer ${saucer.popped ? 'popped' : ''}`}
-                        data-id={saucer.id}
-                        style={{
-                            left: saucer.x,
-                            top: saucer.y,
-                        }}
-                    >
-                        <div className="saucer-text">{saucer.label}</div>
-                    </div>
-                ))}
-            </div>
+            {!isMobile && (
+                <div className="saucer-container">
+                    {saucersRef.current.map((saucer) => (
+                        <div
+                            key={saucer.id}
+                            className={`saucer ${saucer.popped ? 'popped' : ''}`}
+                            data-id={saucer.id}
+                            style={{
+                                left: saucer.x,
+                                top: saucer.y,
+                            }}
+                        >
+                            <div className="saucer-text">{saucer.label}</div>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {/* Main Content */}
             <div className="text-content" ref={textRef}>
