@@ -5,22 +5,26 @@ header {
     position: sticky;
     background: transparent;
     width: 50vw;
-    margin: 20px auto 30px auto; /* Reduced top and bottom margins */
+    margin: 20px auto 30px auto;
+    /* Reduced top and bottom margins */
     top: 0;
     left: 0;
     z-index: 100;
 }
+
 nav ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 nav ul li {
     list-style-type: none;
     display: inline-block;
     color: var(--second-color);
     margin: 10px;
 }
+
 .cv-nav-button a {
     padding: 8px 14px;
     border-radius: 10px;
@@ -30,24 +34,29 @@ nav ul li {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
+
 .cv-nav-button a:hover {
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
     opacity: 0.95;
 }
+
 nav ul li a {
     text-decoration: none;
     color: var(--second-color);
 }
+
 nav ul li a:hover {
     color: var(--first-color);
 }
+
 .menu-icon {
     width: 30px;
     cursor: pointer;
     display: none;
 }
+
 nav #hidden {
     display: flex;
 }
@@ -57,11 +66,13 @@ nav #hidden {
         width: 65vw;
     }
 }
+
 @media only screen and (max-width: 1048px) {
     header {
         width: 75vw;
     }
 }
+
 @media only screen and (max-width: 768px) {
     header {
         width: 100%;
@@ -70,6 +81,7 @@ nav #hidden {
         margin-left: auto;
         margin-right: auto;
     }
+
     nav ul {
         right: 0;
         z-index: 2;
@@ -77,19 +89,23 @@ nav #hidden {
         margin-top: 20px;
         /* position: absolute; */
     }
+
     nav ul li {
         /* display: block; */
         margin-top: 10px;
         margin-bottom: 10px;
         margin-left: auto;
     }
+
     .menu-icon {
         display: block;
         margin-left: auto;
     }
+
     .nav-menu {
         display: none;
     }
+
     #hidden {
         max-height: 190px;
         overflow: hidden;

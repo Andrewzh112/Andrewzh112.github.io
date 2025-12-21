@@ -18,15 +18,15 @@ const Header = () => {
   return (
     <header>
       <nav>
-        <img src={menuIcon} onClick={()=>setShowLinks(!showLinks)} className="menu-icon" alt="menu-icon"/>
+        <img src={menuIcon} onClick={() => setShowLinks(!showLinks)} className="menu-icon" alt="menu-icon" />
         <ul className="nav-menu" id={showLinks ? "hidden" : ""} >
           <li className="cv-nav-button">
             <a href="/assets/CV-Andrew.pdf" target="_blank" rel="noopener noreferrer">CV</a>
           </li>
           <li><a href="#about" onClick={(e) => smoothScroll(e, '#about')}>About</a></li>
           <li><a href="#news" onClick={(e) => smoothScroll(e, '#news')}>News</a></li>
+          <li><a href="#featured-publications" onClick={(e) => smoothScroll(e, '#featured-publications')}>Selected Works</a></li>
           <li><a href="#publications" onClick={(e) => smoothScroll(e, '#publications')}>Publications</a></li>
-          <li><a href="#featured-publications" onClick={(e) => smoothScroll(e, '#featured-publications')}>Featured Publications</a></li>
           <li><a href="#academic-talks" onClick={(e) => smoothScroll(e, '#academic-talks')}>Academic Talks</a></li>
           <li><a href="#academic-services" onClick={(e) => smoothScroll(e, '#academic-services')}>Academic Services/Awards</a></li>
           <li><a href="#contact" onClick={(e) => smoothScroll(e, '#contact')}>Contact</a></li>

@@ -4,45 +4,69 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background: radial-gradient(circle at 30% 30%, rgba(0,0,0,0.65), rgba(0,0,0,0.85));
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
 }
 
-.loader {
+.loading-saucer-spinner {
+    position: relative;
+    width: 200px;
+    height: 200px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    animation: saucer-float 3s ease-in-out infinite;
 }
 
-.circle {
-    width: 20px;
-    height: 20px;
-    background-color: var(--first-color);
+.loading-saucer {
+    position: relative;
+    width: 120px;
+    height: 60px;
+    background: linear-gradient(to bottom, #a0a0a0 0%, #505050 50%, #202020 100%);
     border-radius: 50%;
-    margin: 0 10px;
-    animation: bounce 0.5s ease-in-out infinite;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45), inset 0 2px 6px rgba(255, 255, 255, 0.25);
 }
 
-.circle:nth-child(2) {
-    animation-delay: 0.1s;
+.loading-saucer::before {
+    content: '';
+    position: absolute;
+    top: -25px;
+    left: 35px;
+    width: 50px;
+    height: 36px;
+    background: radial-gradient(circle at 30% 30%, rgba(135, 206, 235, 0.85), rgba(0, 191, 255, 0.5));
+    border-radius: 50% 50% 0 0;
+    box-shadow: 0 0 10px rgba(135, 206, 235, 0.7);
 }
 
-.circle:nth-child(3) {
-    animation-delay: 0.2s;
+.loading-saucer::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 18px;
+    width: 84px;
+    height: 10px;
+    background: repeating-linear-gradient(90deg, transparent 0, transparent 12px, #ffd700 12px, #ffd700 18px);
+    border-radius: 50%;
+    animation: saucer-lights 1s infinite linear;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
 }
 
-.circle:nth-child(4) {
-    animation-delay: 0.3s;
+@keyframes saucer-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
+@keyframes saucer-lights {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes saucer-float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0); }
 }

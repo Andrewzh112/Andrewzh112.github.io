@@ -1,252 +1,477 @@
-/* ************************************************** */
-/* Landing Section Styling */
-/* ************************************************** */
 .landing {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px; /* Reduced padding */
-    margin-bottom: 30px; /* Add margin-bottom to create space before About section */
+    min-height: 90vh;
+    padding: 0 50px;
 }
 
 .text-content {
-    min-width: 250px;
+    flex: 1;
+    color: var(--first-color);
 }
 
-.landing h1,
-.landing h4 {
-    margin: 20px 0;
+.text-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
 }
 
-.typing {
-    color: var(--second-color);
+.text-content h4 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 30px;
 }
 
 .social-links {
+    list-style: none;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    list-style-type: none;
-    padding: 0;
-    margin-top: 20px;
+    gap: 20px;
+    position: relative;
+    z-index: 200;
 }
 
-.social-links li a {
-    color: var(--second-color);
-    margin-right: 30px;
-    transition: color 0.3s ease;
-}
-
-.social-links li a:hover {
-    color: var(--first-color);
-}
-
-/* CV Button styling */
+.social-links li a,
 .cv-button {
+    font-size: 1.5rem;
+    color: var(--first-color);
+    transition: color 0.3s ease;
     background: none;
     border: none;
-    color: var(--second-color);
-    font-size: 1em;
-    margin-right: 30px;
-    padding: 0;
     cursor: pointer;
-    transition: color 0.3s ease;
 }
 
+.social-links li a:hover,
 .cv-button:hover {
-    color: var(--first-color);
+    color: var(--glow-color-1);
 }
 
 .image-container {
-    position: relative;
-    width: 400px; /* Set the width of your image */
-    height: 400px; /* Set the height of your image */
+    flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-.default-image, .hover-image {
-    position: absolute;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    transition: opacity 0.3s ease-in-out;
+    position: relative;
+    max-width: 500px;
 }
 
 .default-image {
-    opacity: 1;
-    z-index: 1; /* Ensures this image is on top initially */
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
 }
 
 .hover-image {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
     opacity: 0;
-    z-index: 0; /* Ensures this image is behind initially */
+    transition: opacity 0.3s ease;
 }
 
 .image-container:hover .default-image {
     opacity: 0;
-    z-index: 0; /* This will send the image to the back when hovering */
 }
 
 .image-container:hover .hover-image {
     opacity: 1;
-    z-index: 1; /* This will bring the image to the front when hovering */
 }
 
-@media only screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .landing {
-        flex-direction: column;
+        flex-direction: column-reverse;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
     }
 
     .image-container {
-        width: 100px; /* Adjust the size for smaller devices */
-        height: 100px;
-        margin-bottom: 35px;
+        margin-bottom: 40px;
+        width: 80%;
     }
 }
 
-/* Job Notice Styles */
-.job-notice {
-    margin-top: 1.5rem;
-    padding: 1.2rem 1.8rem;
-    background: linear-gradient(to right, rgba(54, 48, 98, 0.15), rgba(67, 85, 133, 0.15));
-    border-radius: 0.8rem;
-    border: 2px solid transparent;
-    border-image: linear-gradient(to right, var(--second-color), var(--third-color)) 1;
-    display: inline-block;
-    max-width: 100%;
-    box-shadow: 0 4px 12px rgba(54, 48, 98, 0.3), 0 0 20px rgba(67, 85, 133, 0.2);
-    transition: all 0.3s ease;
-    position: relative;
-    animation: glow-pulse 3s infinite ease-in-out;
-}
-
-.job-notice::before {
-    content: '';
+/* UFO Styles */
+.saucer-container {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, var(--second-color), var(--third-color));
-    z-index: -1;
-    border-radius: 1rem;
-    opacity: 0.4;
-    filter: blur(8px);
-    animation: glow-rotation 4s infinite linear;
-}
-
-@keyframes glow-pulse {
-    0% { box-shadow: 0 4px 12px rgba(54, 48, 98, 0.3), 0 0 20px rgba(67, 85, 133, 0.2); }
-    50% { box-shadow: 0 4px 25px rgba(54, 48, 98, 0.6), 0 0 30px rgba(67, 85, 133, 0.5); }
-    100% { box-shadow: 0 4px 12px rgba(54, 48, 98, 0.3), 0 0 20px rgba(67, 85, 133, 0.2); }
-}
-
-@keyframes glow-rotation {
-    0% { filter: blur(8px) hue-rotate(0deg); }
-    100% { filter: blur(8px) hue-rotate(360deg); }
-}
-
-.job-notice p {
-    margin: 0;
-    line-height: 1.6;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--first-color);
-}
-
-.job-notice a {
-    color: var(--second-color);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.2s ease;
-}
-
-.job-notice a:hover {
-    color: var(--third-color);
-    text-decoration: underline;
-}
-
-.job-notice .email {
-    font-family: monospace;
-    padding: 0.1rem 0.4rem;
-    background: rgba(54, 48, 98, 0.6);
-    border-radius: 4px;
-    margin-left: 0.3rem;
-}
-
-.job-notice .highlight-text {
-    font-weight: 700;
-    background: linear-gradient(to right, var(--highlight-gradient-start), var(--highlight-gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    padding: 0 2px;
-    position: relative;
-    display: inline-block;
-}
-
-.job-notice .highlight-text::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(to right, var(--highlight-gradient-start), var(--highlight-gradient-end));
-    border-radius: 1px;
+    height: 100%;
+    pointer-events: none;
+    /* Let clicks pass through to saucers mostly, but saucers have pointer-events: auto */
+    z-index: 10;
+    overflow: hidden;
 }
 
-@media only screen and (max-width: 768px) {
-    .job-notice {
-        padding: 1rem 1.2rem;
-        margin-top: 1.2rem;
-        margin-bottom: 1.2rem;
-    }
-    
-    .job-notice p {
-        font-size: 0.95rem;
-    }
-}
-
-/* CV Download Button in Job Notice */
-.cv-download-container {
+.saucer {
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    /* UFO Shape */
+    background: linear-gradient(to bottom, #a0a0a0 0%, #505050 50%, #202020 100%);
+    border-radius: 50%;
     display: flex;
     justify-content: center;
-    margin-top: 1.2rem;
-}
-
-.cv-download-button {
-    background: linear-gradient(to right, var(--second-color), var(--third-color));
-    color: var(--bg-color);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(54, 48, 98, 0.3);
-    display: flex;
     align-items: center;
-    gap: 8px;
+    color: var(--first-color);
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: crosshair;
+    pointer-events: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.3);
+    will-change: transform;
+    text-align: center;
+    z-index: 10;
 }
 
-.cv-download-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(54, 48, 98, 0.4);
-    background: linear-gradient(to right, var(--third-color), var(--second-color));
+/* Glass Dome */
+.saucer::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    width: 40px;
+    height: 30px;
+    background: radial-gradient(circle at 30% 30%, rgba(135, 206, 235, 0.8), rgba(0, 191, 255, 0.4));
+    border-radius: 50% 50% 0 0;
+    box-shadow: 0 0 5px rgba(135, 206, 235, 0.6);
+    z-index: -1;
 }
 
-.cv-download-button i {
-    font-size: 1.2rem;
+/* Lights */
+.saucer::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    width: 60px;
+    height: 5px;
+    background: repeating-linear-gradient(90deg, transparent 0, transparent 10px, yellow 10px, yellow 15px);
+    border-radius: 50%;
+    animation: blinkLights 1s infinite linear;
 }
 
-@media only screen and (max-width: 768px) {
-    .cv-download-button {
-        font-size: 1rem;
-        padding: 8px 16px;
+.saucer-text {
+    position: absolute;
+    top: -40px;
+    /* Text above UFO */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: #fff;
+    pointer-events: none;
+    font-size: 0.8rem;
+}
+
+
+.saucer.popped {
+    animation: explode 0.4s forwards;
+    pointer-events: none;
+}
+
+@keyframes blinkLights {
+    0% {
+        filter: hue-rotate(0deg);
     }
+
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.8;
+        filter: brightness(2);
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* Laser Gun Styles */
+.laser-gun-container {
+    position: fixed;
+    bottom: 0px;
+    width: 120px;
+    height: 120px;
+    z-index: 100;
+    pointer-events: none;
+    transition: transform 0.4s ease, opacity 0.4s ease, left 0.08s ease-out;
+}
+
+.laser-gun-container.hidden {
+    transform: translateX(-50%) translateY(100px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.laser-gun {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform-origin: bottom center;
+    margin-left: -30px;
+    transition: transform 0.08s ease-out;
+}
+
+.gun-body {
+    position: relative;
+    width: 60px;
+    height: 90px;
+}
+
+/* Main barrel - futuristic design */
+.gun-barrel {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 70px;
+    background: linear-gradient(180deg,
+            #00ff88 0%,
+            #00cc66 10%,
+            #1a1a2e 20%,
+            #16213e 50%,
+            #0f3460 80%,
+            #1a1a2e 100%);
+    border-radius: 8px 8px 5px 5px;
+    box-shadow:
+        0 0 20px rgba(0, 255, 136, 0.6),
+        inset 0 -20px 30px rgba(0, 0, 0, 0.5),
+        inset 0 5px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Glowing muzzle tip */
+.gun-barrel::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #00ff88 0%, #00cc66 50%, transparent 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88;
+    animation: muzzleGlow 1.5s ease-in-out infinite;
+}
+
+/* Side panels */
+.gun-barrel::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -8px;
+    width: 36px;
+    height: 40px;
+    background: linear-gradient(90deg,
+            #0f3460 0%,
+            #16213e 30%,
+            #16213e 70%,
+            #0f3460 100%);
+    border-radius: 5px;
+    z-index: -1;
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.5),
+        inset 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+/* Glowing energy core */
+.gun-core {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 30px;
+    background: linear-gradient(180deg, #00ff88 0%, #00cc66 100%);
+    border-radius: 3px;
+    box-shadow: 0 0 10px #00ff88;
+    animation: coreFlicker 0.8s ease-in-out infinite alternate;
+}
+
+/* Ambient glow around gun */
+.gun-glow {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.2) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: ambientGlow 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes muzzleGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88;
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 25px #00ff88, 0 0 50px #00ff88, 0 0 75px rgba(0, 255, 136, 0.5);
+        transform: translateX(-50%) scale(1.2);
+    }
+}
+
+@keyframes coreFlicker {
+    0% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes ambientGlow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateX(-50%) scale(1.1);
+    }
+}
+
+.laser-beam {
+    position: fixed;
+    --beam-height: 150px;
+    width: 4px;
+    background: linear-gradient(180deg,
+            rgba(0, 255, 136, 0) 0%,
+            #00ff88 10%,
+            #88ffcc 50%,
+            #00ff88 90%,
+            rgba(0, 255, 136, 0) 100%);
+    box-shadow:
+        0 0 10px #00ff88,
+        0 0 20px #00ff88,
+        0 0 40px rgba(0, 255, 136, 0.5);
+    transform-origin: bottom center;
+    opacity: 0;
+    z-index: 99;
+    pointer-events: none;
+    height: var(--beam-height);
+    overflow: visible;
+}
+
+.laser-beam::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #00ff88 0%, #00cc66 60%, transparent 75%);
+    box-shadow: 0 0 18px rgba(0, 255, 136, 0.9);
+    transform: translate(-50%, -50%);
+}
+
+.laser-beam.firing {
+    animation: beamShoot 0.22s ease-out forwards;
+}
+
+.laser-pointer {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #00ff88 0%, #00cc66 60%, rgba(0, 255, 136, 0));
+    box-shadow:
+        0 0 10px rgba(0, 255, 136, 0.9),
+        0 0 18px rgba(0, 255, 136, 0.4);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 120;
+    left: 0;
+    top: 0;
+    transition: opacity 0.15s ease;
+}
+
+.laser-pointer.hidden {
+    opacity: 0;
+}
+
+@keyframes beamShoot {
+    0% {
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        height: var(--beam-height);
+        opacity: 1;
+    }
+}
+
+/* Adjust landing for balloon visibility */
+.landing {
+    position: relative;
+    /* Container for absolute balloons */
+}
+
+.landing-hint {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0b0c0f;
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    padding: 18px 20px;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 15;
+    pointer-events: none;
+    animation: floatHint 4s ease-in-out infinite;
+}
+
+.landing-hint-left {
+    left: 22px;
+    transform: translateY(-50%) rotate(-6deg);
+}
+
+.landing-hint-right {
+    right: 22px;
+    transform: translateY(-50%) rotate(6deg);
+}
+
+.landing-hint.hidden {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+@keyframes floatHint {
+    0% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-52%) translateX(2px); }
+    100% { transform: translateY(-50%) translateX(0); }
 }

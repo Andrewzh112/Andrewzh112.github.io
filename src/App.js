@@ -17,6 +17,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [currentSection, setCurrentSection] = useState('landing');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isOnLanding, setIsOnLanding] = useState(true);
 
   useEffect(() => {
     keepTheme();
@@ -56,7 +57,9 @@ function App() {
       currentSection,
       setCurrentSection,
       isTransitioning,
-      setIsTransitioning
+      setIsTransitioning,
+      isOnLanding,
+      setIsOnLanding
     }}>
       <div className="wrapper">
         <div className="content">

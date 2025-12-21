@@ -225,6 +225,23 @@
   background: var(--first-color);
 }
 
+/* Light theme fixes: keep panel legible */
+.theme-light .contact-form-container {
+  background: #ffffff;
+  color: #111;
+}
+
+.theme-light .contact-form-section h2,
+.theme-light .form-group label,
+.theme-light .contact-alternatives h3,
+.theme-light .contact-link {
+  color: #111;
+}
+
+.theme-light .contact-form-description {
+  color: rgba(0, 0, 0, 0.75);
+}
+
 .contact-icon {
   font-size: 20px;
   flex-shrink: 0;
