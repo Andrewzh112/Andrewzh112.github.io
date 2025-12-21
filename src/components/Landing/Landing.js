@@ -30,6 +30,7 @@ const Landing = () => {
     const [gunX, setGunX] = useState(typeof window !== 'undefined' ? window.innerWidth / 2 : 500);
     const [lasers, setLasers] = useState([]);
     const [isVisible, setIsVisible] = useState(true);
+    const [showHints, setShowHints] = useState(true);
     const [, forceUpdate] = useState(0);
 
     const landingRef = useRef(null);
@@ -39,6 +40,8 @@ const Landing = () => {
     const imageRef = useRef(null);
     const moveRafRef = useRef(null);
     const pointerRef = useRef(null);
+    const hintLeftRef = useRef(null);
+    const hintRightRef = useRef(null);
     const pointerLatestRef = useRef({
         x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
         y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0
@@ -50,6 +53,39 @@ const Landing = () => {
             width: rect?.width || window.innerWidth,
             height: rect?.height || window.innerHeight
         };
+    }, []);
+
+    const updateHintLayout = useCallback(() => {
+        const leftHint = hintLeftRef.current;
+        const rightHint = hintRightRef.current;
+        if (!leftHint || !rightHint) return;
+
+        const textRect = textRef.current?.getBoundingClientRect();
+        const imageRect = imageRef.current?.getBoundingClientRect();
+        const rects = [textRect, imageRect].filter(Boolean);
+        if (!rects.length) return;
+
+        const panelLeft = Math.min(...rects.map(rect => rect.left));
+        const panelRight = Math.max(...rects.map(rect => rect.right));
+        const viewportW = window.innerWidth;
+        const edgeOffset = 22;
+        const buffer = 16;
+        const baseWidth = 240;
+        const minScaleToShow = 0.45;
+
+        const leftAvailable = Math.max(0, panelLeft - buffer - edgeOffset);
+        const rightAvailable = Math.max(0, viewportW - panelRight - buffer - edgeOffset);
+
+        const applyHintSizing = (element, availableWidth) => {
+            const scale = Math.min(1, availableWidth / baseWidth);
+            const finalScale = scale >= minScaleToShow ? scale : 0;
+            const maxWidth = Math.max(0, Math.min(baseWidth, availableWidth));
+            element.style.setProperty('--hint-scale', finalScale.toFixed(3));
+            element.style.setProperty('--hint-max-width', `${maxWidth}px`);
+        };
+
+        applyHintSizing(leftHint, leftAvailable);
+        applyHintSizing(rightHint, rightAvailable);
     }, []);
 
     const respawnSaucer = useCallback((saucerId, width = 80, height = 40) => {
@@ -95,17 +131,25 @@ const Landing = () => {
             if (landingSection) {
                 const rect = landingSection.getBoundingClientRect();
                 const isOnLandingPage = rect.bottom > 100;
+                const hintHideOffset = 120;
+                const shouldShowHints = isOnLandingPage && rect.top > -hintHideOffset;
                 setIsVisible(isOnLandingPage);
+                setShowHints(shouldShowHints);
                 if (setIsOnLanding) {
                     setIsOnLanding(isOnLandingPage);
                 }
             }
+            updateHintLayout();
         };
 
         window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', updateHintLayout);
         handleScroll(); // Initial check
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [setIsOnLanding]);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', updateHintLayout);
+        };
+    }, [setIsOnLanding, updateHintLayout]);
 
     // Initialize UFOs with bounds from landing container
     useEffect(() => {
@@ -130,11 +174,12 @@ const Landing = () => {
 
     // Animation Loop using refs for performance
     const animate = useCallback(() => {
-        const textRect = textRef.current?.getBoundingClientRect();
-        const imageRect = imageRef.current?.getBoundingClientRect();
+        const { width: boundsW, height: boundsH } = getBounds();
+        const isCompact = boundsW <= 768;
+        const textRect = !isCompact ? textRef.current?.getBoundingClientRect() : null;
+        const imageRect = !isCompact ? imageRef.current?.getBoundingClientRect() : null;
         const margin = 50; // Keep UFOs visible with margin
         const separationDistance = 120; // Minimum distance between UFOs
-        const { width: boundsW, height: boundsH } = getBounds();
         const maxXBound = Math.max(margin, boundsW - margin);
         const maxYBound = Math.max(margin, boundsH - 180);
 
@@ -317,7 +362,7 @@ const Landing = () => {
 
         // Priority: interactive links/buttons first, then UFOs
         const target = e.target;
-        const interactive = target.closest('a, button, .social-links, .landing-hint');
+        const interactive = target.closest('a, button, .social-links, .landing-hint, .landing-scroll-arrow');
         if (interactive) {
             return; // let the link/button handle the click
         }
@@ -429,14 +474,28 @@ const Landing = () => {
             ))}
 
             {/* Playful edge prompts */}
-            <div className={`landing-hint landing-hint-left ${isVisible ? '' : 'hidden'}`}>
+            <div
+                ref={hintLeftRef}
+                className={`landing-hint landing-hint-left ${showHints ? '' : 'hidden'}`}
+            >
                 <span>Aim & shoot the UFOs!</span>
             </div>
-            <div className={`landing-hint landing-hint-right ${isVisible ? '' : 'hidden'}`}>
+            <div
+                ref={hintRightRef}
+                className={`landing-hint landing-hint-right ${showHints ? '' : 'hidden'}`}
+            >
                 <span>
                     Scroll down to explore more!
                     <i className="fas fa-arrow-down" aria-hidden="true" style={{ marginLeft: '8px' }}></i>
                 </span>
+            </div>
+
+            {/* Bottom scroll arrows */}
+            <div className={`landing-scroll-arrow landing-scroll-arrow-left ${showHints ? '' : 'hidden'}`} aria-hidden="true">
+                <i className="fas fa-chevron-down"></i>
+            </div>
+            <div className={`landing-scroll-arrow landing-scroll-arrow-right ${showHints ? '' : 'hidden'}`} aria-hidden="true">
+                <i className="fas fa-chevron-down"></i>
             </div>
 
             {/* Pointer dot to show exact cursor position on landing */}

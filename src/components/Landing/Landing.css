@@ -117,8 +117,19 @@
     }
 
     .image-container {
-        margin-bottom: 40px;
-        width: 80%;
+        display: none;
+    }
+
+    .landing-scroll-arrow {
+        display: none;
+    }
+
+    .social-links .social-icon-svg {
+        display: none;
+    }
+
+    .landing-hint {
+        display: none;
     }
 }
 
@@ -463,14 +474,20 @@
 }
 
 .landing-hint {
+    --hint-rotate: 0deg;
+    --hint-scale: 1;
+    --hint-max-width: 240px;
     position: fixed;
     top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
+    max-width: var(--hint-max-width);
+    width: max-content;
+    text-align: center;
+    transform: translateY(-50%) rotate(var(--hint-rotate)) scale(var(--hint-scale));
+    font-size: clamp(0.8rem, 1.2vw, 1.1rem);
     font-weight: 800;
     color: #0b0c0f;
     background: #ffffff;
-    padding: 14px 18px;
+    padding: clamp(10px, 1.2vw, 14px) clamp(12px, 1.5vw, 18px);
     border-radius: 14px;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
     text-transform: uppercase;
@@ -483,14 +500,14 @@
 
 .landing-hint-left {
     left: 22px;
-    transform: translateY(-50%) rotate(-4deg);
+    --hint-rotate: -4deg;
     animation-duration: 3.4s;
     animation-delay: 0.2s;
 }
 
 .landing-hint-right {
     right: 22px;
-    transform: translateY(-50%) rotate(4deg);
+    --hint-rotate: 4deg;
     animation-duration: 4.1s;
     animation-delay: 0.6s;
 }
@@ -500,8 +517,59 @@
     transition: opacity 0.25s ease;
 }
 
+/* Bottom scroll arrows */
+.landing-scroll-arrow {
+    position: fixed;
+    bottom: 28px;
+    width: 128px;
+    height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00ff88;
+    font-size: 4.8rem;
+    text-shadow:
+        0 0 10px rgba(0, 255, 136, 0.95),
+        0 0 24px rgba(0, 255, 136, 0.8),
+        0 0 40px rgba(0, 255, 136, 0.6);
+    filter: drop-shadow(0 0 14px rgba(0, 255, 136, 0.85));
+    z-index: 14;
+    pointer-events: auto;
+    user-select: none;
+    animation: arrowBounce 1.1s ease-in-out infinite;
+    transition: opacity 0.2s ease;
+}
+
+.landing-scroll-arrow-left {
+    left: 22px;
+}
+
+.landing-scroll-arrow-right {
+    right: 22px;
+    animation-delay: 0.2s;
+}
+
+.landing-scroll-arrow:hover {
+    opacity: 0;
+}
+
+.landing-scroll-arrow.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes arrowBounce {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(18px) scale(1.12);
+    }
+}
+
 @keyframes floatBox {
-    0% { transform: translateY(-50%) translateX(0); }
-    50% { transform: translateY(-60%) translateX(6px); }
-    100% { transform: translateY(-50%) translateX(0); }
+    0% { transform: translateY(-50%) translateX(0) rotate(var(--hint-rotate)) scale(var(--hint-scale)); }
+    50% { transform: translateY(-60%) translateX(6px) rotate(var(--hint-rotate)) scale(var(--hint-scale)); }
+    100% { transform: translateY(-50%) translateX(0) rotate(var(--hint-rotate)) scale(var(--hint-scale)); }
 }

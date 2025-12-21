@@ -66,6 +66,12 @@
     color: var(--second-color);
 }
 
+@media (max-width: 768px) {
+    .contact-social .social-icon-svg {
+        display: none;
+    }
+}
+
 @media (min-width: 720px) {
     .contact-social {
         flex-wrap: nowrap;

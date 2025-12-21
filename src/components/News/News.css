@@ -74,3 +74,16 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(110, 69, 226, 0.5);
 }
+
+@media screen and (max-width: 768px) {
+    .news-item {
+        grid-template-columns: minmax(90px, 120px) 1fr;
+        gap: 12px;
+        align-items: start;
+    }
+
+    .news-date {
+        text-align: left;
+        border-right: none;
+    }
+}
