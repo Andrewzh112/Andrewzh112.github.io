@@ -41,8 +41,9 @@ export const SOCIAL_LINKS = [
     },
     {
         name: "X",
-        icon: "fab fa-lg fa-twitter",
+        icon: "fab fa-lg fa-x-twitter fa-x-icon",
         link: "https://x.com/_AndrewZhao",
+        customIcon: "x"
     },
 ];
 

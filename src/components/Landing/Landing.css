@@ -34,15 +34,40 @@
 .cv-button {
     font-size: 1.5rem;
     color: var(--first-color);
+    /* Icons inherit this for consistent color */
     transition: color 0.3s ease;
     background: none;
     border: none;
     cursor: pointer;
 }
 
+.social-links li a i {
+    color: inherit;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.social-icon-svg {
+    width: 1.2em;
+    height: 1.2em;
+    fill: currentColor;
+    transition: color 0.3s ease, filter 0.3s ease;
+}
+
 .social-links li a:hover,
 .cv-button:hover {
     color: var(--glow-color-1);
+}
+
+.theme-dark .social-links li a:hover,
+.theme-dark .cv-button:hover {
+    color: #f4d67c;
+    text-shadow: 0 0 8px rgba(255, 233, 157, 0.8);
+}
+
+.theme-light .social-links li a:hover,
+.theme-light .cv-button:hover {
+    color: #5e3bbd;
+    text-shadow: 0 0 6px rgba(104, 81, 179, 0.6);
 }
 
 .image-container {
@@ -163,11 +188,12 @@
     top: -40px;
     /* Text above UFO */
     background: rgba(0, 0, 0, 0.7);
-    padding: 2px 5px;
+    padding: 3px 8px;
     border-radius: 5px;
     color: #fff;
     pointer-events: none;
     font-size: 0.8rem;
+    white-space: nowrap;
 }
 
 
@@ -440,29 +466,33 @@
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: #0b0c0f;
-    background: rgba(255, 255, 255, 0.92);
-    border: 2px solid rgba(0, 0, 0, 0.12);
-    padding: 18px 20px;
-    border-radius: 16px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    background: #ffffff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
     text-transform: uppercase;
     letter-spacing: 1px;
     z-index: 15;
     pointer-events: none;
-    animation: floatHint 4s ease-in-out infinite;
+    animation: floatBox 3.6s ease-in-out infinite;
+    border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .landing-hint-left {
     left: 22px;
-    transform: translateY(-50%) rotate(-6deg);
+    transform: translateY(-50%) rotate(-4deg);
+    animation-duration: 3.4s;
+    animation-delay: 0.2s;
 }
 
 .landing-hint-right {
     right: 22px;
-    transform: translateY(-50%) rotate(6deg);
+    transform: translateY(-50%) rotate(4deg);
+    animation-duration: 4.1s;
+    animation-delay: 0.6s;
 }
 
 .landing-hint.hidden {
@@ -470,8 +500,8 @@
     transition: opacity 0.25s ease;
 }
 
-@keyframes floatHint {
+@keyframes floatBox {
     0% { transform: translateY(-50%) translateX(0); }
-    50% { transform: translateY(-52%) translateX(2px); }
+    50% { transform: translateY(-60%) translateX(6px); }
     100% { transform: translateY(-50%) translateX(0); }
 }

@@ -4,3 +4,71 @@
 #contact div {
     padding: 0 5% 0 5%;
 }
+
+.contact-social-wrapper {
+    width: 100%;
+}
+
+.contact-social {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    padding: 0;
+    margin: 20px auto 0;
+    max-width: 780px;
+}
+
+.contact-social li {
+    display: flex;
+    justify-content: center;
+}
+
+.contact-social a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--first-color);
+    padding: 6px 4px;
+    border-radius: 6px;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.contact-social a i {
+    font-size: 1.4rem;
+    display: block;
+    line-height: 1;
+}
+
+.contact-social .social-icon-svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    fill: currentColor;
+    display: block;
+    line-height: 1;
+}
+
+.contact-social-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    line-height: 1.1;
+    margin-top: 2px;
+}
+
+.contact-social a:hover {
+    transform: translateY(-2px);
+    color: var(--second-color);
+}
+
+@media (min-width: 720px) {
+    .contact-social {
+        flex-wrap: nowrap;
+        gap: 24px;
+    }
+}

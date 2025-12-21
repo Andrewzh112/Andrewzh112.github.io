@@ -74,6 +74,15 @@
     /* Dark brown for hover effect */
 }
 
+/* Fallback styling for X (Twitter) icon if font set is missing */
+.fa-x-icon:before,
+.fa-x-twitter:before {
+    content: "X";
+    font-family: "Font Awesome 5 Free", "Font Awesome 5 Brands", sans-serif;
+    font-weight: 900;
+    display: inline-block;
+}
+
 * {
     margin: 0;
     padding: 0;

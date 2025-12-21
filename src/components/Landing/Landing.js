@@ -13,7 +13,7 @@ const sections = [
     { id: 'publications', label: 'Publications' },
     { id: 'academic-talks', label: 'Talks' },
     { id: 'academic-services', label: 'Service/Awards' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'contact', label: 'Contact & Links' },
 ];
 
 const GUN_BOTTOM_OFFSET = 30; // distance from bottom of viewport to gun muzzle
@@ -315,10 +315,11 @@ const Landing = () => {
         // Only fire if on landing page
         if (!isVisible) return;
 
-        // Don't fire if clicking on interactive elements
+        // Priority: interactive links/buttons first, then UFOs
         const target = e.target;
-        if (target.closest('a') || target.closest('button') || target.closest('.social-links')) {
-            return;
+        const interactive = target.closest('a, button, .social-links, .landing-hint');
+        if (interactive) {
+            return; // let the link/button handle the click
         }
 
         // Create laser from gun position
@@ -429,10 +430,13 @@ const Landing = () => {
 
             {/* Playful edge prompts */}
             <div className={`landing-hint landing-hint-left ${isVisible ? '' : 'hidden'}`}>
-                <span>Take aim & pop the UFOs</span>
+                <span>Aim & shoot the UFOs!</span>
             </div>
             <div className={`landing-hint landing-hint-right ${isVisible ? '' : 'hidden'}`}>
-                <span>Scroll to explore the rest</span>
+                <span>
+                    Scroll down to explore more!
+                    <i className="fas fa-arrow-down" aria-hidden="true" style={{ marginLeft: '8px' }}></i>
+                </span>
             </div>
 
             {/* Pointer dot to show exact cursor position on landing */}
@@ -485,7 +489,18 @@ const Landing = () => {
                                 aria-label={social.name}
                                 onClick={handleLinkClick}
                             >
-                                <i className={social.icon}></i>
+                                {social.customIcon === 'x' ? (
+                                    <svg
+                                        className="social-icon-svg"
+                                        aria-hidden="true"
+                                        viewBox="0 0 1200 1227"
+                                        role="img"
+                                    >
+                                        <path d="M714.163 519.284L1160.89 0H1054.09L667.137 450.887L357.328 0H0L465.501 681.821L0 1226.37H106.798L515.77 749.218L842.672 1226.37H1200L714.137 519.284H714.163ZM566.248 686.087L521.704 622.646L145.769 79.6946H306.615L612.405 524.348L656.949 587.789L1054.15 1150.3H893.304L566.248 686.113V686.087Z" />
+                                    </svg>
+                                ) : (
+                                    <i className={social.icon}></i>
+                                )}
                             </a>
                         </li>
                     ))}

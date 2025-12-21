@@ -29,7 +29,7 @@ const Header = () => {
           <li><a href="#publications" onClick={(e) => smoothScroll(e, '#publications')}>Publications</a></li>
           <li><a href="#academic-talks" onClick={(e) => smoothScroll(e, '#academic-talks')}>Academic Talks</a></li>
           <li><a href="#academic-services" onClick={(e) => smoothScroll(e, '#academic-services')}>Academic Services/Awards</a></li>
-          <li><a href="#contact" onClick={(e) => smoothScroll(e, '#contact')}>Contact</a></li>
+          <li><a href="#contact" onClick={(e) => smoothScroll(e, '#contact')}>Contact & Links</a></li>
         </ul>
         <Search />
       </nav>

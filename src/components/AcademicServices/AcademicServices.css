@@ -13,7 +13,7 @@
 .service-item {
     background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
     border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     padding: 20px;
     transition: all 0.3s ease;
     min-height: 140px;
@@ -23,32 +23,15 @@
     position: relative;
 }
 
-.service-item::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
-    transform: rotate(30deg);
-    transition: all 0.5s ease;
-}
-
 .service-item:hover {
-    transform: translateY(-5px) rotate(1deg);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
-}
-
-.service-item:hover::before {
-    transform: rotate(0deg);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.12);
 }
 
 .service-item h2 {
     font-size: 1rem;
     margin-bottom: 8px;
     color: #333;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
 }
 
 .service-detail {
@@ -68,4 +51,3 @@
         grid-template-columns: 1fr;
     }
 }
-
