@@ -1,0 +1,44 @@
+---
+const {
+  title = 'Untitled article',
+  description = 'A distill-style academic blog template.'
+} = Astro.props;
+import '../styles/article.css';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Space+Grotesk:wght@400;600;700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <p class="eyebrow">Academic notes</p>
+        <h1>{title}</h1>
+        <p class="dek">{description}</p>
+        <div class="meta">
+          <span class="meta-pill">Interactive figures</span>
+          <span class="meta-pill">MathJax</span>
+          <span class="meta-pill">BibTeX citations</span>
+        </div>
+      </header>
+      <main class="content">
+        <article>
+          <slot />
+        </article>
+      </main>
+      <footer class="site-footer">
+        <span>Built with Astro + MDX + React.</span>
+      </footer>
+    </div>
+  </body>
+</html>
