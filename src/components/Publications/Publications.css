@@ -2,9 +2,9 @@
 /* Publications Section Styling (LaTeX Style) */
 /* ************************************************** */
 #publications {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 15px 15px;
+    padding: 30px 20px;
 }
 
 #publications h1 {

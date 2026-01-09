@@ -49,6 +49,10 @@ export const SOCIAL_LINKS = [
 
 export const NEWS = [
     {
+        date: "Jan 2026",
+        content: "LLM-optimizer safety paper accepted to EACL 2026 Main!",
+    },
+    {
         date: "Dec 2025",
         content: "Limits-of-RLVR has been selected as the 🏆 Best Paper Runner-up @ NeurIPS 2025!",
     },
@@ -62,7 +66,7 @@ export const NEWS = [
     },
     {
         date: "Sep 2025",
-        content: "Three papers on LLM reasoning accepted at NeurIPS 2025 (1 Oral, 1 Spotlight)!",
+        content: "Three papers on LLM reasoning accepted to NeurIPS 2025 (1 Oral, 1 Spotlight)!",
     },
     {
         date: "Aug 2025",
@@ -114,8 +118,8 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 8,
         name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
-        journal: "arXiv Preprint",
-        date: "Oct 2025",
+        journal: "Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
+        date: "Jan 2026",
         authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
         link: "https://arxiv.org/abs/2510.14381",
         image: prompt,
@@ -133,7 +137,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 6,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (🏆Spotlight)",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025), 🏆Spotlight",
         date: "May 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://www.arxiv.org/abs/2505.03335",
@@ -146,7 +150,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 5,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (🏆Best Paper Runner-up)",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025), 🏆Best Paper Runner-up/Oral",
         date: "May 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
@@ -157,7 +161,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 4,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (🏆Oral)",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025), 🏆Oral",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
@@ -168,7 +172,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 3,
         name: "ExpeL: LLM Agents are Experiential Learners",
-        journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024) (🏆Oral)",
+        journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024), 🏆Oral",
         date: "Aug 2023",
         authors: "Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, Gao Huang",
         link: "https://arxiv.org/abs/2308.10144",
@@ -221,7 +225,7 @@ export const PUBLICATIONS = [
     {
         id: 13,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (🏆Spotlight)",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025), 🏆Spotlight",
         date: "May 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2505.03335",
@@ -243,7 +247,7 @@ export const PUBLICATIONS = [
     {
         id: 12,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025) (🏆Best Paper Runner-up)",
+        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025), 🏆Best Paper Runner-up/Oral",
         date: "Sep 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
@@ -270,7 +274,7 @@ export const PUBLICATIONS = [
     {
         id: 9,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025) (🏆Oral)",
+        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025), 🏆Oral",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
@@ -310,7 +314,7 @@ export const PUBLICATIONS = [
     {
         id: 5,
         name: "ExpeL: LLM Agents are Experiential Learners",
-        journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024) (🏆Oral)",
+        journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024), 🏆Oral",
         date: "Aug 2023",
         authors: "Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, Gao Huang",
         link: "https://arxiv.org/abs/2308.10144",
@@ -341,7 +345,7 @@ export const PUBLICATIONS = [
     {
         id: 2,
         name: "Provable General Function Class Representation Learning in Multitask Bandits and MDP",
-        journal: "36th Conference on Neural Information Processing Systems (NeurIPS 2022) (🏆Spotlight)",
+        journal: "36th Conference on Neural Information Processing Systems (NeurIPS 2022), 🏆Spotlight",
         date: "Oct 2022",
         authors: "Rui Lu, Andrew Zhao, Simon S Du, Gao Huang",
         link: "https://proceedings.neurips.cc/paper_files/paper/2022/hash/4b121e627d3c5683f312ad168988f3f0-Abstract-Conference.html",

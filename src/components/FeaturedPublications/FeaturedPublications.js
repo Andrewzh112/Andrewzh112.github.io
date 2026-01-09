@@ -53,8 +53,14 @@ const FeaturedPublications = () => {
                 {highlightText(pub.name)}
               </h2>
               <p className="publication-date">{formatDate(pub.date)}</p>
-              <p className="publication-venue">{highlightText(pub.journal)}</p>
-              <p style={{ fontStyle: 'italic' }}>{formatAuthors(pub.authors)}</p>
+              <p className="publication-venue">
+                <i className="fas fa-book venue-icon"></i>
+                <span className="venue-text">{highlightText(pub.journal)}</span>
+              </p>
+              <p className="publication-authors">
+                <i className="fas fa-users authors-icon"></i>
+                <span className="authors-text">{formatAuthors(pub.authors)}</span>
+              </p>
               <div className="publication-links">
                 <a href={pub.link} rel="noopener noreferrer" target="_blank" className="publication-link">
                   <i className="fas fa-file-alt"></i>
