@@ -146,6 +146,8 @@ export const FEATUREDPUBLICATIONS = [
         code: "https://github.com/LeapLabTHU/absolute-zero-reasoner",
         models: "https://huggingface.co/collections/andrewzh/absolute-zero-reasoner-68139b2bca82afb00bc69e5b",
         logs: "https://wandb.ai/andrewzhao112/AbsoluteZeroReasoner",
+        xLink: "https://x.com/_AndrewZhao/status/1919920459748909288?s=20",
+        wiredLink: "https://www.wired.com/story/ai-models-keep-learning-after-training-research/",
     },
     {
         id: 5,
@@ -206,8 +208,8 @@ export const PUBLICATIONS = [
     {
         id: 16,
         name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
-        journal: "arXiv Preprint",
-        date: "Oct 2025",
+        journal: "Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
+        date: "Jan 2026",
         authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
         link: "https://arxiv.org/abs/2510.14381",
         image: prompt,

@@ -31,7 +31,7 @@
     color: var(--first-color);
     line-height: 1.6;
     font-size: 1rem;
-    max-width: 900px;
+    width: 100%;
 }
 
 .about-textbox a {
@@ -48,4 +48,12 @@
 .about-textbox a:focus {
     color: var(--first-color);
     outline: none;
+}
+
+.about-textbox p {
+    margin: 0 0 16px 0;
+}
+
+.about-textbox p:last-child {
+    margin-bottom: 0;
 }

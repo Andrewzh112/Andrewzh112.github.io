@@ -165,10 +165,12 @@
 
 .publication-links {
     display: flex;
-    gap: 15px;
+    justify-content: flex-start;
+    gap: 12px;
     margin-top: 5px;
     padding-top: 5px;
     border-top: 1px solid rgba(0, 0, 0, 0.04);
+    flex-wrap: wrap;
 }
 
 .publication-link {
@@ -179,6 +181,9 @@
     text-decoration: none;
     transition: all 0.2s ease;
     color: #444;
+    width: 110px;
+    min-width: 110px;
+    flex-shrink: 0;
 }
 
 .publication-link i {
@@ -238,7 +243,12 @@
     }
 
     .publication-links {
-        justify-content: center;
+        justify-content: flex-start;
+    }
+    
+    .publication-link {
+        width: 90px;
+        min-width: 90px;
     }
 }
 

@@ -90,6 +90,18 @@ const FeaturedPublications = () => {
                     <span>Logs</span>
                   </a>
                 )}
+                {pub.xLink && (
+                  <a href={pub.xLink} rel="noopener noreferrer" target="_blank" className="publication-link">
+                    <i className="fab fa-x-twitter"></i>
+                    <span>X</span>
+                  </a>
+                )}
+                {pub.wiredLink && (
+                  <a href={pub.wiredLink} rel="noopener noreferrer" target="_blank" className="publication-link">
+                    <i className="fas fa-newspaper"></i>
+                    <span>Wired Magazine</span>
+                  </a>
+                )}
               </div>
             </div>
           </div>
