@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef, useCallback } from "rea
 import './Landing.css';
 import focus from '../../img/focus.png';
 import focus2 from '../../img/focus2.png';
-import Typed from 'react-typed';
+import Typewriter from 'typewriter-effect';
 import { SOCIAL_LINKS, FULL_NAME, RESUME_LINK } from '../../Util/data';
 import { PageTransitionContext } from '../../App';
 
@@ -587,15 +587,18 @@ const Landing = () => {
                 <h1>{FULL_NAME}</h1>
                 <h4>
                     <span className="typing">
-                        <Typed
-                            strings={[
-                                'Researcher',
-                                'PhD Candidate',
-                                'Happily Married',
-                            ]}
-                            typeSpeed={40}
-                            backSpeed={50}
-                            loop
+                        <Typewriter
+                            options={{
+                                strings: [
+                                    'Researcher',
+                                    'PhD Candidate',
+                                    'Happily Married',
+                                ],
+                                autoStart: true,
+                                loop: true,
+                                delay: 40,
+                                deleteSpeed: 50,
+                            }}
                         />
                     </span>
                 </h4>
