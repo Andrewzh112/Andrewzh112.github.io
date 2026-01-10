@@ -9,7 +9,7 @@ const About = () => {
             </h1>
             <div className="about-textbox" aria-label="About me text">
                 <p>
-                    My name is Andrew Zhao, final year PhD candidate at Tsinghua University advised by Professor <a href="https://gaohuang-net.github.io/" target="_blank" rel="noopener noreferrer">Gao Huang</a>.
+                    My name is Andrew Zhao, final year PhD candidate at Tsinghua University <a href="https://www.leaplab.ai/members" target="_blank" rel="noopener noreferrer">Leap Lab</a> advised by Professor <a href="https://gaohuang-net.github.io/" target="_blank" rel="noopener noreferrer">Gao Huang</a>.
                     I obtained my masters degree from the University of Southern California and my Undergraduate degree from the University of British Columbia.
 
                 </p>
