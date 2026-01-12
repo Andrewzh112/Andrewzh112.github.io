@@ -118,7 +118,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 8,
         name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
-        journal: "Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
+        journal: "Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
         date: "Jan 2026",
         authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
         link: "https://arxiv.org/abs/2510.14381",
@@ -208,7 +208,7 @@ export const PUBLICATIONS = [
     {
         id: 16,
         name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
-        journal: "Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
+        journal: "Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
         date: "Jan 2026",
         authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
         link: "https://arxiv.org/abs/2510.14381",
