@@ -50,7 +50,7 @@ export const SOCIAL_LINKS = [
 export const NEWS = [
     {
         date: "Jan 2026",
-        content: "LLM-optimizer safety paper accepted to EACL 2026 Main!",
+        content: "LLM-optimizer safety paper accepted to EACL 2026 Main (Oral)!",
     },
     {
         date: "Dec 2025",
@@ -118,7 +118,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 8,
         name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
-        journal: "Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
+        journal: "EACL 2026, 🏆Oral",
         date: "Jan 2026",
         authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
         link: "https://arxiv.org/abs/2510.14381",
@@ -137,7 +137,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 6,
         name: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025), 🏆Spotlight",
+        journal: "NeurIPS 2025, 🏆Spotlight",
         date: "May 2025",
         authors: "Andrew Zhao, Yiran Wu, Yang Yue, Tong Wu, Quentin Xu, Yang Yue, Matthieu Lin, Shenzhi Wang, Qingyun Wu, Zilong Zheng, Gao Huang",
         link: "https://www.arxiv.org/abs/2505.03335",
@@ -152,7 +152,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 5,
         name: "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
-        journal: "39th Conference on Neural Information Processing Systems (NeurIPS 2025), 🏆Best Paper Runner-up/Oral",
+        journal: "NeurIPS 2025, 🏆Best Paper Runner-up/Oral",
         date: "May 2025",
         authors: "Yang Yue, Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, Gao Huang",
         link: "https://arxiv.org/abs/2504.13837",
@@ -163,7 +163,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 4,
         name: "DiveR-CT: Diversity-enhanced Red Teaming with Relaxing Constraints",
-        journal: "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI 2025), 🏆Oral",
+        journal: "AAAI 2025, 🏆Oral",
         date: "May 2024",
         authors: "Andrew Zhao, Quentin Xu, Matthieu Lin, Shenzhi Wang, Yong-jin Liu, Zilong Zheng, Gao Huang",
         link: "https://arxiv.org/abs/2405.19026",
@@ -174,7 +174,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 3,
         name: "ExpeL: LLM Agents are Experiential Learners",
-        journal: "Thirty-Eighth AAAI Conference on Artificial Intelligence (AAAI 2024), 🏆Oral",
+        journal: "AAAI 2024, 🏆Oral",
         date: "Aug 2023",
         authors: "Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, Gao Huang",
         link: "https://arxiv.org/abs/2308.10144",
@@ -194,7 +194,7 @@ export const FEATUREDPUBLICATIONS = [
     {
         id: 1,
         name: "A Mixture Of Surprises for Unsupervised Reinforcement Learning",
-        journal: "36th Conference on Neural Information Processing Systems (NeurIPS 2022)",
+        journal: "NeurIPS 2022",
         date: "Oct 2022",
         authors: "Andrew Zhao*, Matthieu Lin*, Yangguang Li, Yong-jin Liu, Gao Huang",
         link: "https://proceedings.neurips.cc/paper_files/paper/2022/hash/a7667ee5d545a43d2f0fda98863c260e-Abstract-Conference.html",
@@ -208,7 +208,7 @@ export const PUBLICATIONS = [
     {
         id: 16,
         name: "Are My Optimized Prompts Compromised? Exploring Vulnerabilities of LLM-based Optimizers",
-        journal: "Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026)",
+        journal: "Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2026 Main), 🏆Oral",
         date: "Jan 2026",
         authors: "Andrew Zhao, Reshmi Ghosh, Vitor Carvalho, Emily Lawton, Keegan Hines, Gao Huang, Jack W. Stokes",
         link: "https://arxiv.org/abs/2510.14381",
