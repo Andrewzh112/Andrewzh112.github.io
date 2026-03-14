@@ -1,0 +1,14 @@
+{
+  "name": "on-policy-distillation-adventures-blog",
+  "version": "1.0.0",
+  "description": "A premium, research-quality blog for documenting on-policy distillation experiments.",
+  "scripts": {
+    "start": "python3 -m http.server 3000",
+    "serve": "python3 -m http.server 3000",
+    "sync:data": "python3 scripts/sync_run_data.py",
+    "update:data": "python3 scripts/update_data.py"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
