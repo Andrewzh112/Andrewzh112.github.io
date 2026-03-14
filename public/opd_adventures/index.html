@@ -6594,14 +6594,14 @@ for batch in train_loader:
             makeChart(
                 performanceCanvas,
                 makeDatasets('reward'),
-                'Eval Performance (mean@8, EMA α=0.15)',
+                'EMA Eval mean@8 Average',
                 true
             );
 
             makeChart(
                 klCanvas,
                 makeDatasets('kl'),
-                'Train KL (EMA α=0.15)',
+                'EMA Train KL',
                 false
             );
 
@@ -6766,7 +6766,7 @@ for batch in train_loader:
                 const oodPoints = toPoints(series.steps, oodSmoothed);
                 const klPoints = toPoints(series.steps, series.kl);
 
-                buildChart(oodCanvas, 'Eval Performance (mean@8, EMA α=0.15)', oodPoints, true);
+                buildChart(oodCanvas, 'EMA Eval mean@8 Average', oodPoints, true);
                 buildChart(klCanvas, 'Train KL', klPoints, false);
 
                 if (!oodPoints.length && !klPoints.length) {
